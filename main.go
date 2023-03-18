@@ -1,6 +1,10 @@
 package main
 
 import (
+	"backend-ekkn/modules/student/repository"
+	"backend-ekkn/modules/student/resthandler"
+	"backend-ekkn/modules/student/service"
+	"github.com/gin-gonic/gin"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 	"log"
@@ -13,4 +17,15 @@ func main() {
 	if err != nil {
 		log.Fatal(err.Error())
 	}
+
+	studentRepository := repository.NewStudentRepository(db)
+	studentService := service.NewStudentService(studentRepository)
+	studentReshandler := resthandler.NewStudentResthandler(studentService)
+
+	router := gin.Default()
+	api := router.Group("/api/v1")
+
+	api.POST("/students", studentReshandler.CreateStudent)
+
+	router.Run()
 }
