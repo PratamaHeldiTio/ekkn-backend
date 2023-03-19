@@ -9,6 +9,11 @@ type CreateStudentRequest struct {
 	Fakultas string `json:"fakultas"`
 }
 
+type LoginStudentRequest struct {
+	Nim      string `json:"nim" binding:"required,min=1,max=13"`
+	Password string `json:"password" binding:"required"`
+}
+
 type StudentResponse struct {
 	Nim      string `json:"nim"`
 	Name     string `json:"name"`

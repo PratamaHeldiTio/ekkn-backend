@@ -4,6 +4,7 @@ import (
 	"backend-ekkn/modules/student/domain"
 	"backend-ekkn/modules/student/repository"
 	"backend-ekkn/pkg/shareddomain"
+	"errors"
 	"golang.org/x/crypto/bcrypt"
 	"time"
 )
@@ -48,6 +49,10 @@ func (service *StudentServiceImpl) FindStudentByNim(nim string) (domain.Student,
 	student, err := service.repo.FindByNim(nim)
 	if err != nil {
 		return student, err
+	}
+
+	if student.Nim == "" {
+		return student, errors.New("No student found on that nim")
 	}
 
 	return student, nil

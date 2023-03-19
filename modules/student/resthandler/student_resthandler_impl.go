@@ -47,9 +47,9 @@ func (handler *StudentResthandlerImpl) CreateStudent(c *gin.Context) {
 
 func (handler *StudentResthandlerImpl) FindStudentByNim(c *gin.Context) {
 	nim := c.Param("nim")
-	student, _ := handler.service.FindStudentByNim(nim)
-	if student.Nim == "" {
-		errorData := gin.H{"error": "Your input nim is wrong"}
+	student, err := handler.service.FindStudentByNim(nim)
+	if err != nil {
+		errorData := gin.H{"error": err.Error()}
 		response := helper.APIResponse(http.StatusNotFound, false, "Mahasiswa tidak ditemukan", errorData)
 
 		c.JSON(http.StatusNotFound, response)
