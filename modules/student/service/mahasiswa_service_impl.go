@@ -57,3 +57,24 @@ func (service *StudentServiceImpl) FindStudentByNim(nim string) (domain.Student,
 
 	return student, nil
 }
+
+func (service *StudentServiceImpl) LoginStudent(request shareddomain.LoginStudentRequest) (domain.Student, error) {
+	// check nim request is exist
+	student, err := service.repo.FindByNim(request.Nim)
+
+	if err != nil {
+		return student, err
+	}
+
+	if student.Nim == "" {
+		return student, errors.New("No student found on that nim")
+	}
+
+	// check password is match
+	err = bcrypt.CompareHashAndPassword([]byte(student.Password), []byte(request.Password))
+	if err != nil {
+		return student, err
+	}
+
+	return student, nil
+}

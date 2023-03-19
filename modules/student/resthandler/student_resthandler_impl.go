@@ -23,7 +23,7 @@ func (handler *StudentResthandlerImpl) CreateStudent(c *gin.Context) {
 		errors := helper.FormatValidationError(err)
 		errorData := gin.H{"errors": errors}
 		response := helper.APIResponse(http.StatusUnprocessableEntity, false, "Mahasiswa gagal ditambahkan", errorData)
-		c.JSON(http.StatusBadRequest, response)
+		c.JSON(http.StatusUnprocessableEntity, response)
 		return
 	}
 
@@ -42,7 +42,7 @@ func (handler *StudentResthandlerImpl) CreateStudent(c *gin.Context) {
 	// build api respon
 	response := helper.APIResponse(http.StatusCreated, true, "Mahasiswa berhasil ditambahkan", responseStudent)
 
-	c.JSON(http.StatusOK, response)
+	c.JSON(http.StatusCreated, response)
 }
 
 func (handler *StudentResthandlerImpl) FindStudentByNim(c *gin.Context) {
@@ -59,6 +59,35 @@ func (handler *StudentResthandlerImpl) FindStudentByNim(c *gin.Context) {
 	responseStudent := shareddomain.ToResponseFindStudentByNim(student)
 
 	response := helper.APIResponse(http.StatusOK, true, "Mahasiswa berhasil didapatkan", responseStudent)
+
+	c.JSON(http.StatusOK, response)
+}
+
+func (handler *StudentResthandlerImpl) LoginStudent(c *gin.Context) {
+	var studentRequest shareddomain.LoginStudentRequest
+
+	if err := c.ShouldBindJSON(&studentRequest); err != nil {
+		errors := helper.FormatValidationError(err)
+		errorData := gin.H{"errors": errors}
+		response := helper.APIResponse(http.StatusUnprocessableEntity, false, "Mahasiswa gagal login", errorData)
+		c.JSON(http.StatusUnprocessableEntity, response)
+		return
+	}
+
+	student, err := handler.service.LoginStudent(studentRequest)
+	if err != nil {
+		errorData := gin.H{"error": err.Error()}
+		response := helper.APIResponse(http.StatusNotFound, false, "Mahasiswa gagal login", errorData)
+		c.JSON(http.StatusNotFound, response)
+		return
+	}
+
+	// jwt service generation
+
+	//map domain to respon data
+	responseStudent := shareddomain.ToResponseStudent(student, "sfsffdfds")
+	// build api respon
+	response := helper.APIResponse(http.StatusOK, true, "Mahasiswa berhasil Login", responseStudent)
 
 	c.JSON(http.StatusOK, response)
 }
