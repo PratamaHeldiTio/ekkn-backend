@@ -20,3 +20,12 @@ func (repo *StudentRepositoryImpl) Save(student domain.Student) (domain.Student,
 		return student, nil
 	}
 }
+
+func (repo *StudentRepositoryImpl) FindByNim(nim string) (domain.Student, error) {
+	var student domain.Student
+	if err := repo.db.Where("nim = ?", nim).Find(&student).Error; err != nil {
+		return student, err
+	}
+
+	return student, nil
+}

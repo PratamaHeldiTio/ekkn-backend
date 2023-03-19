@@ -7,4 +7,5 @@ import (
 
 type StudentService interface {
 	CreateStudent(request shareddomain.CreateStudentRequest) (domain.Student, error)
+	FindStudentByNim(nim string) (domain.Student, error)
 }

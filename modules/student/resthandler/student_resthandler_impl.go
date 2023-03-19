@@ -29,7 +29,7 @@ func (handler *StudentResthandlerImpl) CreateStudent(c *gin.Context) {
 
 	student, err := handler.service.CreateStudent(studentRequest)
 	if err != nil {
-		errorData := gin.H{"errors": err.Error()}
+		errorData := gin.H{"error": err.Error()}
 		response := helper.APIResponse(http.StatusBadRequest, false, "Mahasiswa gagal ditambahkan", errorData)
 		c.JSON(http.StatusBadRequest, response)
 		return
@@ -41,6 +41,24 @@ func (handler *StudentResthandlerImpl) CreateStudent(c *gin.Context) {
 	responseStudent := shareddomain.ToResponseStudent(student, "sfsffdfds")
 	// build api respon
 	response := helper.APIResponse(http.StatusCreated, true, "Mahasiswa berhasil ditambahkan", responseStudent)
+
+	c.JSON(http.StatusOK, response)
+}
+
+func (handler *StudentResthandlerImpl) FindStudentByNim(c *gin.Context) {
+	nim := c.Param("nim")
+	student, _ := handler.service.FindStudentByNim(nim)
+	if student.Nim == "" {
+		errorData := gin.H{"error": "Your input nim is wrong"}
+		response := helper.APIResponse(http.StatusNotFound, false, "Mahasiswa tidak ditemukan", errorData)
+
+		c.JSON(http.StatusNotFound, response)
+		return
+	}
+
+	responseStudent := shareddomain.ToResponseFindStudentByNim(student)
+
+	response := helper.APIResponse(http.StatusOK, true, "Mahasiswa berhasil didapatkan", responseStudent)
 
 	c.JSON(http.StatusOK, response)
 }

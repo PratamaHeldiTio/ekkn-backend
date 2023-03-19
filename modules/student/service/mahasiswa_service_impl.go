@@ -20,7 +20,7 @@ func (service *StudentServiceImpl) CreateStudent(request shareddomain.CreateStud
 
 	createdAt := time.Now().Unix()
 	updateAt := createdAt
-	Student := domain.Student{
+	student := domain.Student{
 		Nim:       request.Nim,
 		Name:      request.Name,
 		Prodi:     request.Prodi,
@@ -32,14 +32,23 @@ func (service *StudentServiceImpl) CreateStudent(request shareddomain.CreateStud
 
 	passwordHash, err := bcrypt.GenerateFromPassword([]byte(request.Nim), bcrypt.MinCost)
 	if err != nil {
-		return Student, err
+		return student, err
 	}
 
-	Student.Password = string(passwordHash)
-	Student, err = service.repo.Save(Student)
+	student.Password = string(passwordHash)
+	student, err = service.repo.Save(student)
 	if err != nil {
-		return Student, err
+		return student, err
 	}
 
-	return Student, nil
+	return student, nil
+}
+
+func (service *StudentServiceImpl) FindStudentByNim(nim string) (domain.Student, error) {
+	student, err := service.repo.FindByNim(nim)
+	if err != nil {
+		return student, err
+	}
+
+	return student, nil
 }

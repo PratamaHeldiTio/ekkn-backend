@@ -4,4 +4,5 @@ import "github.com/gin-gonic/gin"
 
 type StudentResthandler interface {
 	CreateStudent(c *gin.Context)
+	FindStudentByNim(c *gin.Context)
 }

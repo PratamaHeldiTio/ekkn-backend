@@ -26,6 +26,7 @@ func main() {
 	api := router.Group("/api/v1")
 
 	api.POST("/students", studentReshandler.CreateStudent)
+	api.GET("/students/:nim", studentReshandler.FindStudentByNim)
 
 	router.Run()
 }

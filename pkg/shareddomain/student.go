@@ -17,6 +17,20 @@ type StudentResponse struct {
 	Token    string `json:"token"`
 }
 
+type FindStudentByNimResponse struct {
+	Nim          string `json:"nim"`
+	Name         string `json:"name"`
+	Prodi        string `json:"prodi"`
+	Fakultas     string `json:"fakultas"`
+	Gender       string `json:"gender"`
+	Role         string `json:"role"`
+	BahasaMadura bool   `json:"bahasa_madura"`
+	GroupKkn     string `json:"groupKkn"`
+	Grade        string `json:"grade"`
+	CreatedAt    int64  `json:"created_at"`
+	UpdateAt     int64  `json:"update_at"`
+}
+
 func ToResponseStudent(student domain.Student, token string) StudentResponse {
 	studentResponse := StudentResponse{
 		Nim:      student.Nim,
@@ -24,6 +38,25 @@ func ToResponseStudent(student domain.Student, token string) StudentResponse {
 		Prodi:    student.Prodi,
 		Fakultas: student.Fakultas,
 		Token:    token,
+	}
+
+	return studentResponse
+
+}
+
+func ToResponseFindStudentByNim(student domain.Student) FindStudentByNimResponse {
+	studentResponse := FindStudentByNimResponse{
+		Nim:          student.Nim,
+		Name:         student.Name,
+		Prodi:        student.Prodi,
+		Fakultas:     student.Fakultas,
+		Gender:       student.Gender,
+		Role:         student.Role,
+		BahasaMadura: student.BahasaMadura,
+		GroupKkn:     student.GroupKkn,
+		Grade:        student.Grade,
+		CreatedAt:    student.CreatedAt,
+		UpdateAt:     student.UpdateAt,
 	}
 
 	return studentResponse
