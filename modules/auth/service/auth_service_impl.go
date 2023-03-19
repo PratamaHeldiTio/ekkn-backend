@@ -19,7 +19,7 @@ func (service *AuthServiceImpl) GenerateTokenJwt(nim string) (string, error) {
 	// create peyload token
 	claim := jwt.MapClaims{
 		"nim": nim,
-		"iat": time.Now().Unix(),
+		"exp": time.Now().Add(60 * time.Minute).Unix(),
 	}
 
 	// generate token
