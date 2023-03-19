@@ -31,6 +31,7 @@ func (service *StudentServiceImpl) CreateStudent(request shareddomain.CreateStud
 		Role:      "none",
 	}
 
+	// hashing password
 	passwordHash, err := bcrypt.GenerateFromPassword([]byte(request.Nim), bcrypt.MinCost)
 	if err != nil {
 		return student, err
