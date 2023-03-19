@@ -1,6 +1,7 @@
 package resthandler
 
 import (
+	authservice "backend-ekkn/modules/auth/service"
 	"backend-ekkn/modules/student/service"
 	"backend-ekkn/pkg/helper"
 	"backend-ekkn/pkg/shareddomain"
@@ -9,11 +10,15 @@ import (
 )
 
 type StudentResthandlerImpl struct {
-	service service.StudentService
+	service     service.StudentService
+	authService authservice.AuthService
 }
 
-func NewStudentResthandler(service service.StudentService) StudentResthandler {
-	return &StudentResthandlerImpl{service}
+func NewStudentResthandler(service service.StudentService, authService authservice.AuthService) StudentResthandler {
+	return &StudentResthandlerImpl{
+		service,
+		authService,
+	}
 }
 
 func (handler *StudentResthandlerImpl) CreateStudent(c *gin.Context) {
@@ -41,8 +46,6 @@ func (handler *StudentResthandlerImpl) CreateStudent(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, response)
 		return
 	}
-
-	// jwt service generation
 
 	//map domain to respon data
 	responseStudent := shareddomain.ToResponseStudent(student, "sfsffdfds")
@@ -104,12 +107,20 @@ func (handler *StudentResthandlerImpl) LoginStudent(c *gin.Context) {
 	}
 
 	// jwt service generation
+	token, err := handler.authService.GenerateTokenJwt(student.Nim)
+	if err != nil {
+		errorData := gin.H{"error": err.Error()}
 
-	//map domain to respon data
-	responseStudent := shareddomain.ToResponseStudent(student, "sfsffdfds")
+		// create response
+		response := helper.APIResponse(http.StatusBadRequest, false, "Mahasiswa gagal login", errorData)
+		c.JSON(http.StatusNotFound, response)
+		return
+	}
 
+	//access token for response data
+	accessToken := gin.H{"access_token": token}
 	// create response
-	response := helper.APIResponse(http.StatusOK, true, "Mahasiswa berhasil Login", responseStudent)
+	response := helper.APIResponse(http.StatusOK, true, "Mahasiswa berhasil Login", accessToken)
 
 	c.JSON(http.StatusOK, response)
 }
