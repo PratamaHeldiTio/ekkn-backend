@@ -3,14 +3,14 @@ package shareddomain
 import "backend-ekkn/modules/student/domain"
 
 type CreateStudentRequest struct {
-	Nim      string `json:"nim" binding:"required,min=1,max=13"`
-	Name     string `json:"name" binding:"required,min=1,max=100"`
+	Nim      string `json:"nim" binding:"required,max=13"`
+	Name     string `json:"name" binding:"required,max=100"`
 	Prodi    string `json:"prodi"`
 	Fakultas string `json:"fakultas"`
 }
 
 type LoginStudentRequest struct {
-	Nim      string `json:"nim" binding:"required,min=1,max=13"`
+	Nim      string `json:"nim" binding:"required,max=13"`
 	Password string `json:"password" binding:"required"`
 }
 
