@@ -5,7 +5,7 @@ type Student struct {
 	Name         string
 	Gender       string
 	Password     string
-	Role         string
+	Position     string
 	Prodi        string
 	Fakultas     string
 	BahasaMadura bool

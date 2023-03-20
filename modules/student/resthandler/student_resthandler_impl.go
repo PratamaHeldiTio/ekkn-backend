@@ -107,7 +107,7 @@ func (handler *StudentResthandlerImpl) LoginStudent(c *gin.Context) {
 	}
 
 	// jwt service generation
-	token, err := handler.authService.GenerateTokenJwt(student.Nim)
+	token, err := handler.authService.GenerateTokenJwt(student.Nim, "student")
 	if err != nil {
 		errorData := gin.H{"error": err.Error()}
 

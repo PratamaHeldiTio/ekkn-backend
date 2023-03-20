@@ -28,7 +28,7 @@ type FindStudentByNimResponse struct {
 	Prodi        string `json:"prodi"`
 	Fakultas     string `json:"fakultas"`
 	Gender       string `json:"gender"`
-	Role         string `json:"role"`
+	Position     string `json:"position"`
 	BahasaMadura bool   `json:"bahasa_madura"`
 	GroupKkn     string `json:"groupKkn"`
 	Grade        string `json:"grade"`
@@ -56,7 +56,7 @@ func ToResponseFindStudentByNim(student domain.Student) FindStudentByNimResponse
 		Prodi:        student.Prodi,
 		Fakultas:     student.Fakultas,
 		Gender:       student.Gender,
-		Role:         student.Role,
+		Position:     student.Position,
 		BahasaMadura: student.BahasaMadura,
 		GroupKkn:     student.GroupKkn,
 		Grade:        student.Grade,

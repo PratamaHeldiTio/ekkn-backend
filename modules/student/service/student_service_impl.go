@@ -28,7 +28,7 @@ func (service *StudentServiceImpl) CreateStudent(request shareddomain.CreateStud
 		Fakultas:  request.Fakultas,
 		CreatedAt: createdAt,
 		UpdateAt:  updateAt,
-		Role:      "none",
+		Position:  "none",
 	}
 
 	// hashing password

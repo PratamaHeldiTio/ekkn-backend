@@ -15,11 +15,12 @@ func NewAuthServiceImpl() AuthService {
 }
 
 // func for generate token jwt
-func (service *AuthServiceImpl) GenerateTokenJwt(nim string) (string, error) {
+func (service *AuthServiceImpl) GenerateTokenJwt(nim, role string) (string, error) {
 	// create peyload token
 	claim := jwt.MapClaims{
-		"nim": nim,
-		"exp": time.Now().Add(60 * time.Minute).Unix(),
+		"nim":  nim,
+		"exp":  time.Now().Add(60 * time.Minute).Unix(),
+		"role": role,
 	}
 
 	// generate token
