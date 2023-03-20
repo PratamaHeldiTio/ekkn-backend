@@ -1,7 +1,7 @@
 package main
 
 import (
-	authservice "backend-ekkn/modules/auth/service"
+	"backend-ekkn/jwt_manager"
 	"backend-ekkn/modules/student/repository"
 	"backend-ekkn/modules/student/resthandler"
 	"backend-ekkn/modules/student/service"
@@ -21,7 +21,7 @@ func main() {
 
 	studentRepository := repository.NewStudentRepository(db)
 	studentService := service.NewStudentService(studentRepository)
-	authService := authservice.NewAuthServiceImpl()
+	authService := jwtmanager.NewJwtManagerImpl()
 	studentReshandler := resthandler.NewStudentResthandler(studentService, authService)
 
 	router := gin.Default()

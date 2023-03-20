@@ -19,7 +19,7 @@ type StudentResponse struct {
 	Name     string `json:"name"`
 	Prodi    string `json:"prodi"`
 	Fakultas string `json:"fakultas"`
-	Token    string `json:"token"`
+	Token    string `json:"jwt_manager"`
 }
 
 type FindStudentByNimResponse struct {
