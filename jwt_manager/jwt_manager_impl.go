@@ -15,7 +15,7 @@ func NewJwtManager() JwtManager {
 }
 
 // func for generate jwt_manager jwt
-func (service *JwtManagerImpl) GenerateJwt(nim, role string) (string, error) {
+func (manager *JwtManagerImpl) GenerateJwt(nim, role string) (string, error) {
 	// create peyload jwt_manager
 	claim := jwt.MapClaims{
 		"id":   nim,
@@ -36,13 +36,13 @@ func (service *JwtManagerImpl) GenerateJwt(nim, role string) (string, error) {
 }
 
 // validate jwt_manager
-func (service *JwtManagerImpl) ValidateJwt(token string) (*jwt.Token, error) {
+func (manager *JwtManagerImpl) ValidateJwt(tokenStr string) (*jwt.Token, error) {
 	// parse jwt_manager
-	validToken, err := jwt.Parse(token, func(token *jwt.Token) (interface{}, error) {
+	validToken, err := jwt.Parse(tokenStr, func(token *jwt.Token) (interface{}, error) {
 		_, ok := token.Method.(*jwt.SigningMethodHMAC)
 
 		if !ok {
-			return nil, errors.New("Invalid jwt_manager")
+			return nil, errors.New("Invalid jwt manager")
 		}
 
 		return []byte(SECRET_KEY), nil
