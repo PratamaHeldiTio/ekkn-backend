@@ -2,6 +2,7 @@ package main
 
 import (
 	"backend-ekkn/jwt_manager"
+	"backend-ekkn/middleware"
 	"backend-ekkn/modules/student/repository"
 	"backend-ekkn/modules/student/resthandler"
 	"backend-ekkn/modules/student/service"
@@ -21,15 +22,17 @@ func main() {
 
 	studentRepository := repository.NewStudentRepository(db)
 	studentService := service.NewStudentService(studentRepository)
-	authService := jwtmanager.NewJwtManagerImpl()
-	studentReshandler := resthandler.NewStudentResthandler(studentService, authService)
+	jwtManager := jwtmanager.NewJwtManager()
+	studentReshandler := resthandler.NewStudentResthandler(studentService, jwtManager)
 
 	router := gin.Default()
 	api := router.Group("/api/v1")
 
-	api.POST("/students", studentReshandler.CreateStudent)
+	authMiddleware := middleware.NewAtuhMiddleware(jwtManager)
+
+	api.POST("/students", authMiddleware.AuthMiddleWare(), studentReshandler.CreateStudent)
 	api.POST("/auth/students/login", studentReshandler.LoginStudent)
-	api.GET("/students/:nim", studentReshandler.FindStudentByNim)
+	api.GET("/students/:nim", authMiddleware.AuthMiddleWare(), studentReshandler.FindStudentByNim)
 
 	router.Run()
 }

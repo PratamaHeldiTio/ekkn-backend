@@ -10,7 +10,7 @@ type JwtManagerImpl struct{}
 
 var SECRET_KEY = []byte("INI SECRET KEY BUAT PEMBELAJARAN")
 
-func NewJwtManagerImpl() JwtManager {
+func NewJwtManager() JwtManager {
 	return &JwtManagerImpl{}
 }
 
@@ -18,7 +18,7 @@ func NewJwtManagerImpl() JwtManager {
 func (service *JwtManagerImpl) GenerateJwt(nim, role string) (string, error) {
 	// create peyload jwt_manager
 	claim := jwt.MapClaims{
-		"nim":  nim,
+		"id":   nim,
 		"exp":  time.Now().Add(60 * time.Minute).Unix(),
 		"role": role,
 	}
