@@ -31,6 +31,7 @@ func main() {
 	authMiddleware := middleware.NewAtuhMiddleware(jwtManager)
 
 	api.POST("/students", authMiddleware.AuthMiddleWare(), studentReshandler.CreateStudent)
+	api.GET("/students", authMiddleware.AuthMiddleWare(), studentReshandler.FindAllStudent)
 	api.POST("/auth/students/login", studentReshandler.LoginStudent)
 	api.GET("/students/:nim", authMiddleware.AuthMiddleWare(), studentReshandler.FindStudentByNim)
 

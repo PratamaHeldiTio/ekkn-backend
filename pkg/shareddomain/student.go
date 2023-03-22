@@ -19,7 +19,6 @@ type StudentResponse struct {
 	Name     string `json:"name"`
 	Prodi    string `json:"prodi"`
 	Fakultas string `json:"fakultas"`
-	Token    string `json:"jwt_manager"`
 }
 
 type FindStudentByNimResponse struct {
@@ -36,13 +35,12 @@ type FindStudentByNimResponse struct {
 	UpdateAt     int64  `json:"update_at"`
 }
 
-func ToResponseStudent(student domain.Student, token string) StudentResponse {
+func ToResponseStudent(student domain.Student) StudentResponse {
 	studentResponse := StudentResponse{
 		Nim:      student.Nim,
 		Name:     student.Name,
 		Prodi:    student.Prodi,
 		Fakultas: student.Fakultas,
-		Token:    token,
 	}
 
 	return studentResponse

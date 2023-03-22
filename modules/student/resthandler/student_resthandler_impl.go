@@ -48,7 +48,7 @@ func (handler *StudentResthandlerImpl) CreateStudent(c *gin.Context) {
 	}
 
 	//map domain to respon data
-	responseStudent := shareddomain.ToResponseStudent(student, "sfsffdfds")
+	responseStudent := shareddomain.ToResponseStudent(student)
 
 	// create response
 	response := helper.APIResponse(http.StatusCreated, true, "Mahasiswa berhasil ditambahkan", responseStudent)
@@ -122,5 +122,27 @@ func (handler *StudentResthandlerImpl) LoginStudent(c *gin.Context) {
 	// create response
 	response := helper.APIResponse(http.StatusOK, true, "Mahasiswa berhasil Login", accessToken)
 
+	c.JSON(http.StatusOK, response)
+}
+
+func (handler *StudentResthandlerImpl) FindAllStudent(c *gin.Context) {
+	// send data to service and get return
+	students, err := handler.service.FindAllSudent()
+	if err != nil {
+		errorData := gin.H{"error": err.Error()}
+
+		// create response
+		response := helper.APIResponse(http.StatusInternalServerError, false, "Mahasiswa gagal ditambahkan", errorData)
+		c.JSON(http.StatusInternalServerError, response)
+		return
+	}
+
+	// map data slice to response student slice
+	responseStudent := []shareddomain.StudentResponse{}
+	for _, student := range students {
+		responseStudent = append(responseStudent, shareddomain.ToResponseStudent(student))
+	}
+
+	response := helper.APIResponse(http.StatusOK, true, "Mahasiswa berhasil didapatkan", responseStudent)
 	c.JSON(http.StatusOK, response)
 }

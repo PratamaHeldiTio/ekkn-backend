@@ -32,3 +32,13 @@ func (repo *StudentRepositoryImpl) FindByNim(nim string) (domain.Student, error)
 
 	return student, nil
 }
+
+func (repo *StudentRepositoryImpl) FindAll() ([]domain.Student, error) {
+	var students []domain.Student
+	if err := repo.db.Find(&students).Error; err != nil {
+		return students, err
+	}
+
+	return students, nil
+
+}

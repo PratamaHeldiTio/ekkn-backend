@@ -79,3 +79,13 @@ func (service *StudentServiceImpl) LoginStudent(request shareddomain.LoginStuden
 
 	return student, nil
 }
+
+// get all student use repository
+func (service *StudentServiceImpl) FindAllSudent() ([]domain.Student, error) {
+	students, err := service.repo.FindAll()
+	if err != nil {
+		return students, err
+	}
+
+	return students, nil
+}
