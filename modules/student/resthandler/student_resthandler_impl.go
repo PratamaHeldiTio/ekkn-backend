@@ -22,13 +22,11 @@ func NewStudentResthandler(service service.StudentService, authService jwtmanage
 }
 
 func (handler *StudentResthandlerImpl) CreateStudent(c *gin.Context) {
-	var studentRequest shareddomain.CreateStudentRequest
+	var studentRequest shareddomain.CreateStudent
 
 	// validation with gin validator playground golang/v10
 	if err := c.ShouldBindJSON(&studentRequest); err != nil {
-		// format better error
-		errors := helper.FormatValidationError(err)
-		errorData := gin.H{"errors": errors}
+		errorData := gin.H{"error": err.Error()}
 
 		// create response
 		response := helper.APIResponse(http.StatusUnprocessableEntity, false, "Mahasiswa gagal ditambahkan", errorData)
@@ -82,15 +80,14 @@ func (handler *StudentResthandlerImpl) FindStudentByNim(c *gin.Context) {
 }
 
 func (handler *StudentResthandlerImpl) LoginStudent(c *gin.Context) {
-	var studentRequest shareddomain.LoginStudentRequest
+	var studentRequest shareddomain.LoginStudent
 
 	// validation with gin validator playground golang/v10
 	if err := c.ShouldBindJSON(&studentRequest); err != nil {
-		errors := helper.FormatValidationError(err)
-		errorData := gin.H{"errors": errors}
+		errorData := gin.H{"error": err.Error()}
 
 		// create response
-		response := helper.APIResponse(http.StatusUnprocessableEntity, false, "Mahasiswa gagal login", errorData)
+		response := helper.APIResponse(http.StatusUnprocessableEntity, false, "Mahasiswa gagal login, NIM atau password salah", errorData)
 		c.JSON(http.StatusUnprocessableEntity, response)
 		return
 	}
@@ -101,7 +98,7 @@ func (handler *StudentResthandlerImpl) LoginStudent(c *gin.Context) {
 		errorData := gin.H{"error": err.Error()}
 
 		// create response
-		response := helper.APIResponse(http.StatusBadRequest, false, "Mahasiswa gagal login, nim atau password salah", errorData)
+		response := helper.APIResponse(http.StatusBadRequest, false, "Mahasiswa gagal login, NIM atau password salah", errorData)
 		c.JSON(http.StatusBadRequest, response)
 		return
 	}
@@ -113,7 +110,7 @@ func (handler *StudentResthandlerImpl) LoginStudent(c *gin.Context) {
 
 		// create response
 		response := helper.APIResponse(http.StatusBadRequest, false, "Mahasiswa gagal login", errorData)
-		c.JSON(http.StatusNotFound, response)
+		c.JSON(http.StatusBadRequest, response)
 		return
 	}
 
@@ -138,7 +135,7 @@ func (handler *StudentResthandlerImpl) FindAllStudent(c *gin.Context) {
 	}
 
 	// map data slice to response student slice
-	responseStudent := []shareddomain.StudentResponse{}
+	responseStudent := []shareddomain.CreateStudent{}
 	for _, student := range students {
 		responseStudent = append(responseStudent, shareddomain.ToResponseStudent(student))
 	}
@@ -148,38 +145,35 @@ func (handler *StudentResthandlerImpl) FindAllStudent(c *gin.Context) {
 }
 
 func (handler *StudentResthandlerImpl) UpdateStudent(c *gin.Context) {
-	var studentRequest shareddomain.UpdateStudentRequest
+	var studentRequest shareddomain.UpdateStudent
 
-	// get nim from uri
-	if err := c.ShouldBindUri(&studentRequest); err != nil {
-		errorData := gin.H{"error": err.Error()}
-
-		// create response
-		response := helper.APIResponse(http.StatusBadRequest, false, "Gagal update mahasiswa", errorData)
-		c.JSON(http.StatusNotFound, response)
-		return
-	}
+	// get id from url
+	nim := c.Param("nim")
 
 	if err := c.ShouldBindJSON(&studentRequest); err != nil {
-		errors := helper.FormatValidationError(err)
-		errorData := gin.H{"errors": errors}
+		//errors := helper.FormatValidationError(err)
+		//errorData := gin.H{"errors": errors}
 
 		// create response
-		response := helper.APIResponse(http.StatusUnprocessableEntity, false, "Gagal update mahasiswa", errorData)
+		response := helper.APIResponse(http.StatusUnprocessableEntity, false, "Gagal update mahasiswa", err.Error())
 		c.JSON(http.StatusUnprocessableEntity, response)
 		return
 	}
 
+	// asign nim to struct
+	studentRequest.Nim = nim
+
 	student, err := handler.service.UpdateStudent(studentRequest)
+
 	if err != nil {
 		errorData := gin.H{"error": err.Error()}
 
 		// create response
-		response := helper.APIResponse(http.StatusBadRequest, false, "Gagal update mahasiswa", errorData)
+		response := helper.APIResponse(http.StatusNotFound, false, "Gagal update mahasiswa", errorData)
 		c.JSON(http.StatusNotFound, response)
 		return
 	}
-	responseStudent := shareddomain.ToResponseFindStudentByNim(student)
+	responseStudent := shareddomain.ToResponseUpdateStudent(student)
 
 	// create response
 	response := helper.APIResponse(http.StatusOK, true, "Mahasiswa berhasil didapatkan", responseStudent)

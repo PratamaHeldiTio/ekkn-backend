@@ -2,35 +2,28 @@ package shareddomain
 
 import "backend-ekkn/modules/student/domain"
 
-type CreateStudentRequest struct {
+type CreateStudent struct {
 	Nim      string `json:"nim" binding:"required,max=13"`
 	Name     string `json:"name" binding:"required,max=100"`
 	Prodi    string `json:"prodi" binding:"max=50"`
 	Fakultas string `json:"fakultas" binding:"max=50"`
 }
 
-type UpdateStudentRequest struct {
-	Nim        string `uri:"nim" binding:"required"`
-	Name       string `json:"name" binding:"max=100"`
+type UpdateStudent struct {
+	Nim        string `json:"nim"`
+	Name       string `json:"name" binding:"required,max=100"`
 	Prodi      string `json:"prodi" binding:"max=50"`
 	Fakultas   string `json:"fakultas" binding:"max=50"`
 	Gender     string `json:"gender" binding:"max=9"`
 	MaduraLang bool   `json:"madura_lang" binding:"boolean"`
 }
 
-type LoginStudentRequest struct {
+type LoginStudent struct {
 	Nim      string `json:"nim" binding:"required,max=13"`
 	Password string `json:"password" binding:"required"`
 }
 
-type StudentResponse struct {
-	Nim      string `json:"nim"`
-	Name     string `json:"name"`
-	Prodi    string `json:"prodi"`
-	Fakultas string `json:"fakultas"`
-}
-
-type FindStudentByNimResponse struct {
+type FindStudentByNim struct {
 	Nim        string `json:"nim"`
 	Name       string `json:"name"`
 	Prodi      string `json:"prodi"`
@@ -44,8 +37,8 @@ type FindStudentByNimResponse struct {
 	UpdateAt   int64  `json:"update_at"`
 }
 
-func ToResponseStudent(student domain.Student) StudentResponse {
-	studentResponse := StudentResponse{
+func ToResponseStudent(student domain.Student) CreateStudent {
+	studentResponse := CreateStudent{
 		Nim:      student.Nim,
 		Name:     student.Name,
 		Prodi:    student.Prodi,
@@ -56,8 +49,22 @@ func ToResponseStudent(student domain.Student) StudentResponse {
 
 }
 
-func ToResponseFindStudentByNim(student domain.Student) FindStudentByNimResponse {
-	studentResponse := FindStudentByNimResponse{
+func ToResponseUpdateStudent(student domain.Student) UpdateStudent {
+	studentResponse := UpdateStudent{
+		Nim:        student.Nim,
+		Name:       student.Name,
+		Prodi:      student.Prodi,
+		Fakultas:   student.Fakultas,
+		Gender:     student.Gender,
+		MaduraLang: student.MaduraLang,
+	}
+
+	return studentResponse
+
+}
+
+func ToResponseFindStudentByNim(student domain.Student) FindStudentByNim {
+	studentResponse := FindStudentByNim{
 		Nim:        student.Nim,
 		Name:       student.Name,
 		Prodi:      student.Prodi,

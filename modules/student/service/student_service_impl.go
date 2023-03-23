@@ -16,7 +16,7 @@ func NewStudentService(repo repository.StudentRepository) StudentService {
 	return &StudentServiceImpl{repo}
 }
 
-func (service *StudentServiceImpl) CreateStudent(request shareddomain.CreateStudentRequest) (domain.Student, error) {
+func (service *StudentServiceImpl) CreateStudent(request shareddomain.CreateStudent) (domain.Student, error) {
 
 	student := domain.Student{
 		Nim:      request.Nim,
@@ -54,7 +54,7 @@ func (service *StudentServiceImpl) FindStudentByNim(nim string) (domain.Student,
 	return student, nil
 }
 
-func (service *StudentServiceImpl) LoginStudent(request shareddomain.LoginStudentRequest) (domain.Student, error) {
+func (service *StudentServiceImpl) LoginStudent(request shareddomain.LoginStudent) (domain.Student, error) {
 	// check nim request is exist
 	student, err := service.repo.FindByNim(request.Nim)
 
@@ -85,7 +85,7 @@ func (service *StudentServiceImpl) FindAllStudent() ([]domain.Student, error) {
 	return students, nil
 }
 
-func (service *StudentServiceImpl) UpdateStudent(request shareddomain.UpdateStudentRequest) (domain.Student, error) {
+func (service *StudentServiceImpl) UpdateStudent(request shareddomain.UpdateStudent) (domain.Student, error) {
 	// cek nim isExist
 	student, err := service.repo.FindByNim(request.Nim)
 	if err != nil {
