@@ -5,8 +5,8 @@ import "backend-ekkn/modules/student/domain"
 type CreateStudentRequest struct {
 	Nim      string `json:"nim" binding:"required,max=13"`
 	Name     string `json:"name" binding:"required,max=100"`
-	Prodi    string `json:"prodi" binding:"min=1,max=50"`
-	Fakultas string `json:"fakultas" binding:"min=1,max=50"`
+	Prodi    string `json:"prodi" binding:"max=50"`
+	Fakultas string `json:"fakultas" binding:"max=50"`
 }
 
 type UpdateStudentRequest struct {
@@ -15,7 +15,7 @@ type UpdateStudentRequest struct {
 	Prodi      string `json:"prodi" binding:"max=50"`
 	Fakultas   string `json:"fakultas" binding:"max=50"`
 	Gender     string `json:"gender" binding:"max=9"`
-	MaduraLang bool   `json:"maduran_lang" binding:"boolean"`
+	MaduraLang bool   `json:"madura_lang" binding:"boolean"`
 }
 
 type LoginStudentRequest struct {

@@ -45,7 +45,7 @@ func (repo *StudentRepositoryImpl) FindAll() ([]domain.Student, error) {
 
 // update data to db from data service
 func (repo *StudentRepositoryImpl) Update(student domain.Student) (domain.Student, error) {
-	if err := repo.db.Save(&student).Error; err != nil {
+	if err := repo.db.Model(&student).Updates(student).Error; err != nil {
 		return student, err
 	} else {
 		return student, nil
