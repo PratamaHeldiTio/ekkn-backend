@@ -6,7 +6,6 @@ import (
 	"backend-ekkn/pkg/shareddomain"
 	"errors"
 	"golang.org/x/crypto/bcrypt"
-	"time"
 )
 
 type StudentServiceImpl struct {
@@ -19,16 +18,12 @@ func NewStudentService(repo repository.StudentRepository) StudentService {
 
 func (service *StudentServiceImpl) CreateStudent(request shareddomain.CreateStudentRequest) (domain.Student, error) {
 
-	createdAt := time.Now().Unix()
-	updateAt := createdAt
 	student := domain.Student{
-		Nim:       request.Nim,
-		Name:      request.Name,
-		Prodi:     request.Prodi,
-		Fakultas:  request.Fakultas,
-		CreatedAt: createdAt,
-		UpdateAt:  updateAt,
-		Position:  "none",
+		Nim:      request.Nim,
+		Name:     request.Name,
+		Prodi:    request.Prodi,
+		Fakultas: request.Fakultas,
+		Position: "none",
 	}
 
 	// hashing password
@@ -108,7 +103,6 @@ func (service *StudentServiceImpl) UpdateStudent(request shareddomain.UpdateStud
 		Fakultas:   request.Fakultas,
 		Gender:     request.Gender,
 		MaduraLang: request.MaduraLang,
-		UpdateAt:   time.Now().Unix(),
 	}
 	student, err = service.repo.Update(student)
 	if err != nil {

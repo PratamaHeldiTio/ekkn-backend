@@ -11,6 +11,6 @@ type Student struct {
 	MaduraLang bool
 	GroupKkn   string
 	Grade      string
-	CreatedAt  int64
-	UpdateAt   int64
+	CreatedAt  int64 `gorm:"autoCreateTime"`
+	UpdateAt   int64 `gorm:"autoUpdateTime"`
 }
