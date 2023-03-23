@@ -127,7 +127,7 @@ func (handler *StudentResthandlerImpl) LoginStudent(c *gin.Context) {
 
 func (handler *StudentResthandlerImpl) FindAllStudent(c *gin.Context) {
 	// send data to service and get return
-	students, err := handler.service.FindAllSudent()
+	students, err := handler.service.FindAllStudent()
 	if err != nil {
 		errorData := gin.H{"error": err.Error()}
 
@@ -145,4 +145,45 @@ func (handler *StudentResthandlerImpl) FindAllStudent(c *gin.Context) {
 
 	response := helper.APIResponse(http.StatusOK, true, "Mahasiswa berhasil didapatkan", responseStudent)
 	c.JSON(http.StatusOK, response)
+}
+
+func (handler *StudentResthandlerImpl) UpdateStudent(c *gin.Context) {
+	var studentRequest shareddomain.UpdateStudentRequest
+
+	// get nim from uri
+	if err := c.ShouldBindUri(&studentRequest); err != nil {
+		errorData := gin.H{"error": err.Error()}
+
+		// create response
+		response := helper.APIResponse(http.StatusBadRequest, false, "Gagal update mahasiswa", errorData)
+		c.JSON(http.StatusNotFound, response)
+		return
+	}
+
+	if err := c.ShouldBindJSON(&studentRequest); err != nil {
+		errors := helper.FormatValidationError(err)
+		errorData := gin.H{"errors": errors}
+
+		// create response
+		response := helper.APIResponse(http.StatusUnprocessableEntity, false, "Gagal update mahasiswa", errorData)
+		c.JSON(http.StatusUnprocessableEntity, response)
+		return
+	}
+
+	student, err := handler.service.UpdateStudent(studentRequest)
+	if err != nil {
+		errorData := gin.H{"error": err.Error()}
+
+		// create response
+		response := helper.APIResponse(http.StatusBadRequest, false, "Gagal update mahasiswa", errorData)
+		c.JSON(http.StatusNotFound, response)
+		return
+	}
+	responseStudent := shareddomain.ToResponseFindStudentByNim(student)
+
+	// create response
+	response := helper.APIResponse(http.StatusOK, true, "Mahasiswa berhasil didapatkan", responseStudent)
+
+	c.JSON(http.StatusOK, response)
+
 }

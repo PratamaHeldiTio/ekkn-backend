@@ -34,6 +34,7 @@ func main() {
 	api.GET("/students", authMiddleware.AuthMiddleWare(), studentReshandler.FindAllStudent)
 	api.POST("/auth/students/login", studentReshandler.LoginStudent)
 	api.GET("/students/:nim", authMiddleware.AuthMiddleWare(), studentReshandler.FindStudentByNim)
+	api.PUT("/students/:nim", authMiddleware.AuthMiddleWare(), studentReshandler.UpdateStudent)
 
 	router.Run()
 }
