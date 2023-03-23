@@ -51,3 +51,12 @@ func (repo *StudentRepositoryImpl) Update(student domain.Student) (domain.Studen
 		return student, nil
 	}
 }
+
+func (repo *StudentRepositoryImpl) Delete(student domain.Student) error {
+	if err := repo.db.Delete(&student).Error; err != nil {
+		return err
+	}
+
+	return nil
+}
+

@@ -7,4 +7,5 @@ type StudentRepository interface {
 	FindByNim(nim string) (domain.Student, error)
 	FindAll() ([]domain.Student, error)
 	Update(student domain.Student) (domain.Student, error)
+	Delete(student domain.Student) error
 }

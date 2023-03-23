@@ -11,4 +11,5 @@ type StudentService interface {
 	LoginStudent(request shareddomain.LoginStudent) (domain.Student, error)
 	FindAllStudent() ([]domain.Student, error)
 	UpdateStudent(request shareddomain.UpdateStudent) (domain.Student, error)
+	DeleteStudent(nim string) error
 }

@@ -8,4 +8,5 @@ type StudentResthandler interface {
 	LoginStudent(c *gin.Context)
 	FindAllStudent(c *gin.Context)
 	UpdateStudent(c *gin.Context)
+	DeleteStudent(c *gin.Context)
 }

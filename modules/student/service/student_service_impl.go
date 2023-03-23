@@ -111,3 +111,24 @@ func (service *StudentServiceImpl) UpdateStudent(request shareddomain.UpdateStud
 
 	return student, nil
 }
+
+func (service *StudentServiceImpl) DeleteStudent(nim string) error {
+	student, err := service.repo.FindByNim(nim)
+	if err != nil {
+		return err
+	}
+
+	if student.Nim == "" {
+		return errors.New("No student found on that nim")
+	}
+
+	student = domain.Student{
+		Nim: nim,
+	}
+
+	if err := service.repo.Delete(student); err != nil {
+		return err
+	}
+
+	return nil
+}

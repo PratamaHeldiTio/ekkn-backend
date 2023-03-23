@@ -151,9 +151,6 @@ func (handler *StudentResthandlerImpl) UpdateStudent(c *gin.Context) {
 	nim := c.Param("nim")
 
 	if err := c.ShouldBindJSON(&studentRequest); err != nil {
-		//errors := helper.FormatValidationError(err)
-		//errorData := gin.H{"errors": errors}
-
 		// create response
 		response := helper.APIResponse(http.StatusUnprocessableEntity, false, "Gagal update mahasiswa", err.Error())
 		c.JSON(http.StatusUnprocessableEntity, response)
@@ -180,4 +177,23 @@ func (handler *StudentResthandlerImpl) UpdateStudent(c *gin.Context) {
 
 	c.JSON(http.StatusOK, response)
 
+}
+
+func (handler *StudentResthandlerImpl) DeleteStudent(c *gin.Context) {
+	// get id
+	nim := c.Param("nim")
+
+	if err := handler.service.DeleteStudent(nim); err != nil {
+		errorData := gin.H{"error": err.Error()}
+
+		// create response
+		response := helper.APIResponse(http.StatusBadRequest, false, "Gagal menghapus mahasiswa", errorData)
+		c.JSON(http.StatusBadRequest, response)
+		return
+	}
+
+	// create response
+	response := helper.APIResponse(http.StatusOK, true, "Berhasil menghapus mahasiswa", nil)
+
+	c.JSON(http.StatusOK, response)
 }
