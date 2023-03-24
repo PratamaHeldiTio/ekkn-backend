@@ -6,14 +6,22 @@ import (
 	"backend-ekkn/modules/student/repository"
 	"backend-ekkn/modules/student/resthandler"
 	"backend-ekkn/modules/student/service"
+	"fmt"
 	"github.com/gin-gonic/gin"
+	_ "github.com/joho/godotenv/autoload"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 	"log"
+	"os"
 )
 
 func main() {
-	dsn := "host=localhost user=pratama password=mecandoit dbname=ekknutm port=5432 sslmode=disable TimeZone=Asia/Shanghai"
+	host := os.Getenv("DB_HOST")
+	user := os.Getenv("DB_USER")
+	password := os.Getenv("USER_PASSWORD")
+	dbname := os.Getenv("DB_NAME")
+	port := os.Getenv("DB_PORT")
+	dsn := fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=%s sslmode=disable TimeZone=Asia/Shanghai", host, user, password, dbname, port)
 	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
 
 	if err != nil {

@@ -3,12 +3,11 @@ package jwtmanager
 import (
 	"errors"
 	"github.com/dgrijalva/jwt-go"
+	"os"
 	"time"
 )
 
 type JwtManagerImpl struct{}
-
-var SECRET_KEY = []byte("INI SECRET KEY BUAT PEMBELAJARAN")
 
 func NewJwtManager() JwtManager {
 	return &JwtManagerImpl{}
@@ -27,7 +26,8 @@ func (manager *JwtManagerImpl) GenerateJwt(nim, role string) (string, error) {
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claim)
 
 	// add sigin to jwt_manager
-	signedToken, err := token.SignedString(SECRET_KEY)
+	key := []byte(os.Getenv("SECRET_JWT"))
+	signedToken, err := token.SignedString(key)
 	if err != nil {
 		return signedToken, err
 	}
@@ -45,7 +45,8 @@ func (manager *JwtManagerImpl) ValidateJwt(tokenStr string) (*jwt.Token, error) 
 			return nil, errors.New("Invalid jwt manager")
 		}
 
-		return []byte(SECRET_KEY), nil
+		key := []byte(os.Getenv("SECRET_JWT"))
+		return []byte(key), nil
 	})
 
 	if err != nil {
