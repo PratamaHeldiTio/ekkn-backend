@@ -7,6 +7,7 @@ import (
 	"backend-ekkn/modules/student/resthandler"
 	"backend-ekkn/modules/student/service"
 	"fmt"
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	_ "github.com/joho/godotenv/autoload"
 	"gorm.io/driver/postgres"
@@ -34,6 +35,14 @@ func main() {
 	studentReshandler := resthandler.NewStudentResthandler(studentService, jwtManager)
 
 	router := gin.Default()
+
+	// config cors allow all origin
+	// same as
+	// config := cors.DefaultConfig()
+	// config.AllowAllOrigins = true
+	// router.Use(cors.New(config))
+	router.Use(cors.Default())
+
 	api := router.Group("/api/v1")
 
 	authMiddleware := middleware.NewAtuhMiddleware(jwtManager)
@@ -41,7 +50,7 @@ func main() {
 	api.POST("/students", authMiddleware.AuthMiddleWare(), studentReshandler.CreateStudent)
 	api.GET("/students", authMiddleware.AuthMiddleWare(), studentReshandler.FindAllStudent)
 	api.POST("/auth/students/login", studentReshandler.LoginStudent)
-	api.GET("/students/:nim", authMiddleware.AuthMiddleWare(), studentReshandler.FindStudentByNim)
+	api.GET("/students/:nim", studentReshandler.FindStudentByNim)
 	api.PUT("/students/:nim", authMiddleware.AuthMiddleWare(), studentReshandler.UpdateStudent)
 	api.DELETE("/students/:nim", authMiddleware.AuthMiddleWare(), studentReshandler.DeleteStudent)
 

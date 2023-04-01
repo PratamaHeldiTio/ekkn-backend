@@ -1,26 +1,31 @@
 package helper
 
-type Response struct {
-	Meta Meta        `json:"meta"`
-	Data interface{} `json:"data"`
+type ResponseSuccess struct {
+	Code    int         `json:"code"`
+	Success bool        `json:"success"`
+	Data    interface{} `json:"data"`
 }
 
-type Meta struct {
-	Code    int    `json:"code"`
-	Success bool   `json:"success"`
-	Message string `json:"message"`
+type ResponseFail struct {
+	Code    int         `json:"code"`
+	Success bool        `json:"success"`
+	Error   interface{} `json:"error"`
 }
 
-func APIResponse(code int, success bool, message string, data interface{}) Response {
-	meta := Meta{
+func APIResponseSuccess(code int, success bool, data interface{}) ResponseSuccess {
+	response := ResponseSuccess{
 		Code:    code,
 		Success: success,
-		Message: message,
+		Data:    data,
 	}
+	return response
+}
 
-	response := Response{
-		Meta: meta,
-		Data: data,
+func APIResponseFail(code int, success bool, err interface{}) ResponseFail {
+	response := ResponseFail{
+		Code:    code,
+		Success: success,
+		Error:   err,
 	}
 	return response
 }

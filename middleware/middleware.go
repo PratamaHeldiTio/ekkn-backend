@@ -24,7 +24,7 @@ func (auth *AuthMiddleware) AuthMiddleWare() gin.HandlerFunc {
 
 		// check bearer
 		if !strings.Contains(authHeader, "Bearer") {
-			response := helper.APIResponse(http.StatusUnauthorized, false, "Unauthorized", nil)
+			response := helper.APIResponseFail(http.StatusUnauthorized, false, nil)
 			c.AbortWithStatusJSON(http.StatusUnauthorized, response)
 			return
 		}
@@ -39,8 +39,7 @@ func (auth *AuthMiddleware) AuthMiddleWare() gin.HandlerFunc {
 		// validate
 		token, err := auth.JwtManager.ValidateJwt(tokenStr)
 		if err != nil {
-			errorData := gin.H{"error": err.Error()}
-			response := helper.APIResponse(http.StatusUnauthorized, false, "Unauthorized", errorData)
+			response := helper.APIResponseFail(http.StatusUnauthorized, false, err.Error())
 			c.AbortWithStatusJSON(http.StatusUnauthorized, response)
 			return
 		}
@@ -50,7 +49,7 @@ func (auth *AuthMiddleware) AuthMiddleWare() gin.HandlerFunc {
 
 		// check validation token and get payload token
 		if !token.Valid || !ok {
-			response := helper.APIResponse(http.StatusUnauthorized, false, "Unauthorized", nil)
+			response := helper.APIResponseFail(http.StatusUnauthorized, false, nil)
 			c.AbortWithStatusJSON(http.StatusUnauthorized, response)
 			return
 		}
