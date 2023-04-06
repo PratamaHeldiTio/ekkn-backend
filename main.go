@@ -3,6 +3,7 @@ package main
 import (
 	"backend-ekkn/jwt_manager"
 	"backend-ekkn/middleware"
+	"backend-ekkn/migration"
 	"backend-ekkn/modules/student/repository"
 	"backend-ekkn/modules/student/resthandler"
 	"backend-ekkn/modules/student/service"
@@ -28,6 +29,9 @@ func main() {
 	if err != nil {
 		log.Fatal(err.Error())
 	}
+
+	// migration
+	migration.RunMigration(db)
 
 	studentRepository := repository.NewStudentRepository(db)
 	studentService := service.NewStudentService(studentRepository)
