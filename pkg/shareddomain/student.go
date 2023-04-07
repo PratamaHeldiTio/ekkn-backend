@@ -49,20 +49,6 @@ func ToResponseStudent(student domain.Student) CreateStudent {
 
 }
 
-func ToResponseUpdateStudent(student domain.Student) UpdateStudent {
-	studentResponse := UpdateStudent{
-		Nim:        student.Nim,
-		Name:       student.Name,
-		Prodi:      student.Prodi,
-		Fakultas:   student.Fakultas,
-		Gender:     student.Gender,
-		MaduraLang: student.MaduraLang,
-	}
-
-	return studentResponse
-
-}
-
 func ToResponseFindStudentByNim(student domain.Student) FindStudentByNim {
 	studentResponse := FindStudentByNim{
 		Nim:        student.Nim,

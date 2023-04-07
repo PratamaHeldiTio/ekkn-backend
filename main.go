@@ -75,6 +75,7 @@ func main() {
 	// endpoint period
 	api.POST("/periods", authMiddleware.AuthMiddleWare(), periodReshandler.CreatePeriod)
 	api.GET("/periods", authMiddleware.AuthMiddleWare(), periodReshandler.FindAllPeriod)
+	api.GET("/periods/:id", authMiddleware.AuthMiddleWare(), periodReshandler.FindPeriodById)
 
 	router.Run()
 }

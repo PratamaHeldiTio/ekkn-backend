@@ -5,6 +5,7 @@ import (
 	"backend-ekkn/pkg/helper"
 	"backend-ekkn/pkg/shareddomain"
 	"github.com/gin-gonic/gin"
+	"github.com/google/uuid"
 	"net/http"
 )
 
@@ -54,5 +55,30 @@ func (handler *PeriodResthandlerImpl) FindAllPeriod(c *gin.Context) {
 
 	// create response
 	response := helper.APIResponseWithData(http.StatusOK, true, "Periode berhasil didapatkan", periods)
+	c.JSON(http.StatusOK, response)
+}
+
+func (handler *PeriodResthandlerImpl) FindPeriodById(c *gin.Context) {
+	// get id with params url
+	idString := c.Param("id")
+
+	//parse uuid string to uuid
+	id, err := uuid.Parse(idString)
+	if err != nil {
+		response := helper.APIResponseWithError(http.StatusBadRequest, false, "Periode gagal didapatkan", err.Error())
+		c.JSON(http.StatusBadRequest, response)
+		return
+	}
+
+	period, err := handler.service.FindPeriodById(id)
+	if err != nil {
+		// create response
+		response := helper.APIResponseWithError(http.StatusBadRequest, false, "Periode gagal didapatkan", err.Error())
+		c.JSON(http.StatusBadRequest, response)
+		return
+	}
+
+	// create response success
+	response := helper.APIResponseWithData(http.StatusOK, true, "Periode berhasil didapatkan", period)
 	c.JSON(http.StatusOK, response)
 }

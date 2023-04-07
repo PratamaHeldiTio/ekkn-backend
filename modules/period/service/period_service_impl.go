@@ -4,6 +4,8 @@ import (
 	"backend-ekkn/modules/period/domain"
 	"backend-ekkn/modules/period/repository"
 	"backend-ekkn/pkg/shareddomain"
+	"errors"
+	"github.com/google/uuid"
 )
 
 type PeriodServiceImpl struct {
@@ -41,4 +43,18 @@ func (service *PeriodServiceImpl) FindAllPeriod() ([]domain.Period, error) {
 	}
 
 	return periods, nil
+}
+
+func (service *PeriodServiceImpl) FindPeriodById(id uuid.UUID) (domain.Period, error) {
+	// get data
+	period, err := service.repo.FindById(id)
+	if err != nil {
+		return period, err
+	}
+
+	if period.ID.String() == "00000000-0000-0000-0000-000000000000" {
+		return period, errors.New("No student found on that nim")
+	}
+
+	return period, nil
 }

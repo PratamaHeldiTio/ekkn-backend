@@ -2,6 +2,7 @@ package repository
 
 import (
 	"backend-ekkn/modules/period/domain"
+	"github.com/google/uuid"
 	"gorm.io/gorm"
 )
 
@@ -29,4 +30,13 @@ func (repo *PeriodRepositoryImpl) FindAll() ([]domain.Period, error) {
 	}
 
 	return periods, nil
+}
+
+func (repo *PeriodRepositoryImpl) FindById(id uuid.UUID) (domain.Period, error) {
+	var period domain.Period
+	if err := repo.db.Where("id_period = ?", id).Find(&period).Error; err != nil {
+		return period, err
+	}
+
+	return period, nil
 }
