@@ -21,12 +21,12 @@ func (repo *PeriodRepositoryImpl) Create(period domain.Period) error {
 	return nil
 }
 
-//func (repo *PeriodRepositoryImpl) FindAll() ([]domain.Period, error) {
-//	// temp data
-//	var periods []domain.Period
-//	if err := repo.db.Find(&periods).Error; err != nil {
-//		return periods, err
-//	} else {
-//
-//	}
-//}
+func (repo *PeriodRepositoryImpl) FindAll() ([]domain.Period, error) {
+	// temp data
+	var periods []domain.Period
+	if err := repo.db.Find(&periods).Error; err != nil {
+		return periods, err
+	}
+
+	return periods, nil
+}

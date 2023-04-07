@@ -33,3 +33,12 @@ func (service *PeriodServiceImpl) CreatePeriod(request shareddomain.RequestPerio
 		return nil
 	}
 }
+
+func (service *PeriodServiceImpl) FindAllPeriod() ([]domain.Period, error) {
+	periods, err := service.repo.FindAll()
+	if err != nil {
+		return periods, err
+	}
+
+	return periods, nil
+}

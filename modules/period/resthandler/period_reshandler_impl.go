@@ -19,7 +19,7 @@ func NewPeriodResthandler(service service.PeriodService) PeriodResthandler {
 
 // handler create period
 
-func (handler PeriodResthandlerImpl) CreatePeriod(c *gin.Context) {
+func (handler *PeriodResthandlerImpl) CreatePeriod(c *gin.Context) {
 	// validation request
 	var periodRequest shareddomain.RequestPeriod
 	if err := c.ShouldBindJSON(&periodRequest); err != nil {
@@ -41,4 +41,18 @@ func (handler PeriodResthandlerImpl) CreatePeriod(c *gin.Context) {
 	response := helper.APIResponseWithoutData(http.StatusCreated, true)
 	c.JSON(http.StatusCreated, response)
 
+}
+
+func (handler *PeriodResthandlerImpl) FindAllPeriod(c *gin.Context) {
+	periods, err := handler.service.FindAllPeriod()
+	if err != nil {
+		// create response
+		response := helper.APIResponseFail(http.StatusInternalServerError, false, err.Error())
+		c.JSON(http.StatusInternalServerError, response)
+		return
+	}
+
+	// create response
+	response := helper.APIResponseSuccess(http.StatusOK, true, periods)
+	c.JSON(http.StatusOK, response)
 }
