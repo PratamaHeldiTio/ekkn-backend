@@ -1,43 +1,49 @@
 package helper
 
-type ResponseSuccess struct {
+type ResponseWithoutData struct {
+	Code    int    `json:"code"`
+	Success bool   `json:"success"`
+	Message string `json:"message"`
+}
+
+type ResponseWithData struct {
 	Code    int         `json:"code"`
 	Success bool        `json:"success"`
+	Message string      `json:"message"`
 	Data    interface{} `json:"data"`
 }
 
-type ResponseWithoutData struct {
-	Code    int  `json:"code"`
-	Success bool `json:"success"`
-}
-
-type ResponseFail struct {
+type ResponseWithError struct {
 	Code    int         `json:"code"`
 	Success bool        `json:"success"`
+	Message string      `json:"message"`
 	Error   interface{} `json:"error"`
 }
 
-func APIResponseSuccess(code int, success bool, data interface{}) ResponseSuccess {
-	response := ResponseSuccess{
+func APIResponseWithoutData(code int, success bool, message string) ResponseWithoutData {
+	response := ResponseWithoutData{
 		Code:    code,
 		Success: success,
+		Message: message,
+	}
+	return response
+}
+
+func APIResponseWithData(code int, success bool, message string, data interface{}) ResponseWithData {
+	response := ResponseWithData{
+		Code:    code,
+		Success: success,
+		Message: message,
 		Data:    data,
 	}
 	return response
 }
 
-func APIResponseWithoutData(code int, success bool) ResponseWithoutData {
-	response := ResponseWithoutData{
+func APIResponseWithError(code int, success bool, message string, err interface{}) ResponseWithError {
+	response := ResponseWithError{
 		Code:    code,
 		Success: success,
-	}
-	return response
-}
-
-func APIResponseFail(code int, success bool, err interface{}) ResponseFail {
-	response := ResponseFail{
-		Code:    code,
-		Success: success,
+		Message: message,
 		Error:   err,
 	}
 	return response

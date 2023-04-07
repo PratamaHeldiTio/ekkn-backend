@@ -27,7 +27,7 @@ func (handler *StudentResthandlerImpl) CreateStudent(c *gin.Context) {
 	// validation with gin validator playground golang/v10
 	if err := c.ShouldBindJSON(&studentRequest); err != nil {
 		// create response
-		response := helper.APIResponseFail(http.StatusUnprocessableEntity, false, err.Error())
+		response := helper.APIResponseWithError(http.StatusUnprocessableEntity, false, "Mahasiswa gagal ditambahkan", err.Error())
 		c.JSON(http.StatusUnprocessableEntity, response)
 		return
 	}
@@ -36,7 +36,7 @@ func (handler *StudentResthandlerImpl) CreateStudent(c *gin.Context) {
 	student, err := handler.service.CreateStudent(studentRequest)
 	if err != nil {
 		// create response
-		response := helper.APIResponseFail(http.StatusBadRequest, false, err.Error())
+		response := helper.APIResponseWithError(http.StatusBadRequest, false, "Mahasiswa gagal ditambahkan", err.Error())
 		c.JSON(http.StatusBadRequest, response)
 		return
 	}
@@ -45,7 +45,7 @@ func (handler *StudentResthandlerImpl) CreateStudent(c *gin.Context) {
 	responseStudent := shareddomain.ToResponseStudent(student)
 
 	// create response
-	response := helper.APIResponseSuccess(http.StatusCreated, true, responseStudent)
+	response := helper.APIResponseWithData(http.StatusCreated, true, "Mahasiswa berhasil ditambahkan", responseStudent)
 
 	c.JSON(http.StatusCreated, response)
 }
@@ -58,7 +58,7 @@ func (handler *StudentResthandlerImpl) FindStudentByNim(c *gin.Context) {
 	student, err := handler.service.FindStudentByNim(nim)
 	if err != nil {
 		// create response
-		response := helper.APIResponseFail(http.StatusNotFound, false, err.Error())
+		response := helper.APIResponseWithError(http.StatusNotFound, false, "Mahasiswa tidak ditemukan", err.Error())
 
 		c.JSON(http.StatusNotFound, response)
 		return
@@ -68,7 +68,7 @@ func (handler *StudentResthandlerImpl) FindStudentByNim(c *gin.Context) {
 	responseStudent := shareddomain.ToResponseFindStudentByNim(student)
 
 	// create response
-	response := helper.APIResponseSuccess(http.StatusOK, true, responseStudent)
+	response := helper.APIResponseWithData(http.StatusOK, true, "Mahasiswa berhasil didapatkan", responseStudent)
 
 	c.JSON(http.StatusOK, response)
 }
@@ -79,7 +79,7 @@ func (handler *StudentResthandlerImpl) LoginStudent(c *gin.Context) {
 	// validation with gin validator playground golang/v10
 	if err := c.ShouldBindJSON(&studentRequest); err != nil {
 		// create response
-		response := helper.APIResponseFail(http.StatusUnprocessableEntity, false, err.Error())
+		response := helper.APIResponseWithError(http.StatusUnprocessableEntity, false, "Data yang anda masukan salah", err.Error())
 		c.JSON(http.StatusUnprocessableEntity, response)
 		return
 	}
@@ -88,7 +88,7 @@ func (handler *StudentResthandlerImpl) LoginStudent(c *gin.Context) {
 	student, err := handler.service.LoginStudent(studentRequest)
 	if err != nil {
 		// create response
-		response := helper.APIResponseFail(http.StatusBadRequest, false, err.Error())
+		response := helper.APIResponseWithError(http.StatusBadRequest, false, "Data yang anda masukan salah", err.Error())
 		c.JSON(http.StatusBadRequest, response)
 		return
 	}
@@ -97,15 +97,15 @@ func (handler *StudentResthandlerImpl) LoginStudent(c *gin.Context) {
 	token, err := handler.authService.GenerateJwt(student.Nim, "student")
 	if err != nil {
 		// create response
-		response := helper.APIResponseFail(http.StatusBadRequest, false, err.Error())
-		c.JSON(http.StatusBadRequest, response)
+		response := helper.APIResponseWithError(http.StatusInternalServerError, false, "Gagal login silahkan coba lagi", err.Error())
+		c.JSON(http.StatusInternalServerError, response)
 		return
 	}
 
 	//access jwt_manager for response data
 	accessToken := gin.H{"access_token": token}
 	// create response
-	response := helper.APIResponseSuccess(http.StatusOK, true, accessToken)
+	response := helper.APIResponseWithData(http.StatusOK, true, "Mahasiswa berhasil login", accessToken)
 
 	c.JSON(http.StatusOK, response)
 }
@@ -115,7 +115,7 @@ func (handler *StudentResthandlerImpl) FindAllStudent(c *gin.Context) {
 	students, err := handler.service.FindAllStudent()
 	if err != nil {
 		// create response
-		response := helper.APIResponseFail(http.StatusInternalServerError, false, err.Error())
+		response := helper.APIResponseWithError(http.StatusInternalServerError, false, "Mahasiswa gagal didapatkan", err.Error())
 		c.JSON(http.StatusInternalServerError, response)
 		return
 	}
@@ -126,7 +126,7 @@ func (handler *StudentResthandlerImpl) FindAllStudent(c *gin.Context) {
 		responseStudent = append(responseStudent, shareddomain.ToResponseStudent(student))
 	}
 
-	response := helper.APIResponseSuccess(http.StatusOK, true, responseStudent)
+	response := helper.APIResponseWithData(http.StatusOK, true, "Mahasiswa berhasil didapatkan", responseStudent)
 	c.JSON(http.StatusOK, response)
 }
 
@@ -138,7 +138,7 @@ func (handler *StudentResthandlerImpl) UpdateStudent(c *gin.Context) {
 
 	if err := c.ShouldBindJSON(&studentRequest); err != nil {
 		// create response
-		response := helper.APIResponseFail(http.StatusUnprocessableEntity, false, err.Error())
+		response := helper.APIResponseWithError(http.StatusUnprocessableEntity, false, "Mahasiswa gagal diupdate", err.Error())
 		c.JSON(http.StatusUnprocessableEntity, response)
 		return
 	}
@@ -150,14 +150,14 @@ func (handler *StudentResthandlerImpl) UpdateStudent(c *gin.Context) {
 
 	if err != nil {
 		// create response
-		response := helper.APIResponseFail(http.StatusNotFound, false, err.Error())
+		response := helper.APIResponseWithError(http.StatusNotFound, false, "Mahasiswa gagal diupdate", err.Error())
 		c.JSON(http.StatusNotFound, response)
 		return
 	}
 	responseStudent := shareddomain.ToResponseUpdateStudent(student)
 
 	// create response
-	response := helper.APIResponseSuccess(http.StatusOK, true, responseStudent)
+	response := helper.APIResponseWithData(http.StatusOK, true, "Mahasiswa berhasil diupdate", responseStudent)
 
 	c.JSON(http.StatusOK, response)
 
@@ -169,13 +169,13 @@ func (handler *StudentResthandlerImpl) DeleteStudent(c *gin.Context) {
 
 	if err := handler.service.DeleteStudent(nim); err != nil {
 		// create response
-		response := helper.APIResponseFail(http.StatusBadRequest, false, err.Error())
+		response := helper.APIResponseWithError(http.StatusBadRequest, false, "Mahasiswa gagal  dihapus", err.Error())
 		c.JSON(http.StatusBadRequest, response)
 		return
 	}
 
 	// create response
-	response := helper.APIResponseSuccess(http.StatusOK, true, nil)
+	response := helper.APIResponseWithoutData(http.StatusOK, true, "Mahasiswa berhasil dihapus")
 
 	c.JSON(http.StatusOK, response)
 }

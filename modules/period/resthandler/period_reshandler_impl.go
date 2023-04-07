@@ -24,7 +24,7 @@ func (handler *PeriodResthandlerImpl) CreatePeriod(c *gin.Context) {
 	var periodRequest shareddomain.RequestPeriod
 	if err := c.ShouldBindJSON(&periodRequest); err != nil {
 		// create response
-		response := helper.APIResponseFail(http.StatusUnprocessableEntity, false, err.Error())
+		response := helper.APIResponseWithError(http.StatusUnprocessableEntity, false, "Periode gagal ditambahkan", err.Error())
 		c.JSON(http.StatusUnprocessableEntity, response)
 		return
 	}
@@ -32,13 +32,13 @@ func (handler *PeriodResthandlerImpl) CreatePeriod(c *gin.Context) {
 	// send request to service
 	if err := handler.service.CreatePeriod(periodRequest); err != nil {
 		// create response
-		response := helper.APIResponseFail(http.StatusBadRequest, false, err.Error())
+		response := helper.APIResponseWithError(http.StatusBadRequest, false, "Periode gagal ditambahkan", err.Error())
 		c.JSON(http.StatusBadRequest, response)
 		return
 	}
 
 	// response valid
-	response := helper.APIResponseWithoutData(http.StatusCreated, true)
+	response := helper.APIResponseWithoutData(http.StatusCreated, true, "Periode berhasil ditambahkan")
 	c.JSON(http.StatusCreated, response)
 
 }
@@ -47,12 +47,12 @@ func (handler *PeriodResthandlerImpl) FindAllPeriod(c *gin.Context) {
 	periods, err := handler.service.FindAllPeriod()
 	if err != nil {
 		// create response
-		response := helper.APIResponseFail(http.StatusInternalServerError, false, err.Error())
+		response := helper.APIResponseWithError(http.StatusInternalServerError, false, "Periode gagal didapatkan", err.Error())
 		c.JSON(http.StatusInternalServerError, response)
 		return
 	}
 
 	// create response
-	response := helper.APIResponseSuccess(http.StatusOK, true, periods)
+	response := helper.APIResponseWithData(http.StatusOK, true, "Periode berhasil didapatkan", periods)
 	c.JSON(http.StatusOK, response)
 }
