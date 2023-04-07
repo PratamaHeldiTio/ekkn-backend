@@ -4,6 +4,9 @@ import (
 	"backend-ekkn/jwt_manager"
 	"backend-ekkn/middleware"
 	"backend-ekkn/migration"
+	repository2 "backend-ekkn/modules/period/repository"
+	resthandler2 "backend-ekkn/modules/period/resthandler"
+	service2 "backend-ekkn/modules/period/service"
 	"backend-ekkn/modules/student/repository"
 	"backend-ekkn/modules/student/resthandler"
 	"backend-ekkn/modules/student/service"
@@ -18,6 +21,7 @@ import (
 )
 
 func main() {
+	// db connect
 	host := os.Getenv("DB_HOST")
 	user := os.Getenv("DB_USER")
 	password := os.Getenv("USER_PASSWORD")
@@ -33,11 +37,18 @@ func main() {
 	// migration
 	migration.RunMigration(db)
 
+	// module student
 	studentRepository := repository.NewStudentRepository(db)
 	studentService := service.NewStudentService(studentRepository)
 	jwtManager := jwtmanager.NewJwtManager()
 	studentReshandler := resthandler.NewStudentResthandler(studentService, jwtManager)
 
+	// module period
+	periodRepository := repository2.NewPeriodRepository(db)
+	periodService := service2.NewPeriodService(periodRepository)
+	periodReshandler := resthandler2.NewPeriodResthandler(periodService)
+
+	// init router gin
 	router := gin.Default()
 
 	// config cors allow all origin
@@ -47,16 +58,22 @@ func main() {
 	// router.Use(cors.New(config))
 	router.Use(cors.Default())
 
+	// group router
 	api := router.Group("/api/v1")
 
+	// middleware
 	authMiddleware := middleware.NewAtuhMiddleware(jwtManager)
 
+	// endpoint student
 	api.POST("/students", authMiddleware.AuthMiddleWare(), studentReshandler.CreateStudent)
 	api.GET("/students", authMiddleware.AuthMiddleWare(), studentReshandler.FindAllStudent)
 	api.POST("/auth/students/login", studentReshandler.LoginStudent)
 	api.GET("/students/:nim", studentReshandler.FindStudentByNim)
 	api.PUT("/students/:nim", authMiddleware.AuthMiddleWare(), studentReshandler.UpdateStudent)
 	api.DELETE("/students/:nim", authMiddleware.AuthMiddleWare(), studentReshandler.DeleteStudent)
+
+	// endpoint period
+	api.POST("/periods", authMiddleware.AuthMiddleWare(), periodReshandler.CreatePeriod)
 
 	router.Run()
 }

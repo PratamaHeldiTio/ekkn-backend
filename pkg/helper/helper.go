@@ -6,6 +6,11 @@ type ResponseSuccess struct {
 	Data    interface{} `json:"data"`
 }
 
+type ResponseWithoutData struct {
+	Code    int  `json:"code"`
+	Success bool `json:"success"`
+}
+
 type ResponseFail struct {
 	Code    int         `json:"code"`
 	Success bool        `json:"success"`
@@ -17,6 +22,14 @@ func APIResponseSuccess(code int, success bool, data interface{}) ResponseSucces
 		Code:    code,
 		Success: success,
 		Data:    data,
+	}
+	return response
+}
+
+func APIResponseWithoutData(code int, success bool) ResponseWithoutData {
+	response := ResponseWithoutData{
+		Code:    code,
+		Success: success,
 	}
 	return response
 }
