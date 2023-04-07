@@ -24,7 +24,7 @@ func (auth *AuthMiddleware) AuthMiddleWare() gin.HandlerFunc {
 
 		// check bearer
 		if !strings.Contains(authHeader, "Bearer") {
-			response := helper.APIResponseWithError(http.StatusUnauthorized, false, "Anda tidak berhak mengakses ini", nil)
+			response := helper.APIResponseWithoutData(http.StatusUnauthorized, false, "Anda tidak memiliki akses ini")
 			c.AbortWithStatusJSON(http.StatusUnauthorized, response)
 			return
 		}
@@ -39,7 +39,7 @@ func (auth *AuthMiddleware) AuthMiddleWare() gin.HandlerFunc {
 		// validate
 		token, err := auth.JwtManager.ValidateJwt(tokenStr)
 		if err != nil {
-			response := helper.APIResponseWithError(http.StatusUnauthorized, false, "Anda tidak berhak mengakses ini", err.Error())
+			response := helper.APIResponseWithError(http.StatusUnauthorized, false, "Anda tidak memiliki akses ini", err.Error())
 			c.AbortWithStatusJSON(http.StatusUnauthorized, response)
 			return
 		}
@@ -49,7 +49,7 @@ func (auth *AuthMiddleware) AuthMiddleWare() gin.HandlerFunc {
 
 		// check validation token and get payload token
 		if !token.Valid || !ok {
-			response := helper.APIResponseWithError(http.StatusUnauthorized, false, "Anda tidak berhak mengakses ini", nil)
+			response := helper.APIResponseWithoutData(http.StatusUnauthorized, false, "Anda tidak memiliki akses ini")
 			c.AbortWithStatusJSON(http.StatusUnauthorized, response)
 			return
 		}

@@ -33,19 +33,15 @@ func (handler *StudentResthandlerImpl) CreateStudent(c *gin.Context) {
 	}
 
 	// send data to service and get return
-	student, err := handler.service.CreateStudent(studentRequest)
-	if err != nil {
+	if err := handler.service.CreateStudent(studentRequest); err != nil {
 		// create response
 		response := helper.APIResponseWithError(http.StatusBadRequest, false, "Mahasiswa gagal ditambahkan", err.Error())
 		c.JSON(http.StatusBadRequest, response)
 		return
 	}
 
-	//map domain to respon data
-	responseStudent := shareddomain.ToResponseStudent(student)
-
 	// create response
-	response := helper.APIResponseWithData(http.StatusCreated, true, "Mahasiswa berhasil ditambahkan", responseStudent)
+	response := helper.APIResponseWithoutData(http.StatusCreated, true, "Mahasiswa berhasil ditambahkan")
 
 	c.JSON(http.StatusCreated, response)
 }
@@ -146,7 +142,7 @@ func (handler *StudentResthandlerImpl) UpdateStudent(c *gin.Context) {
 	// asign nim to struct
 	studentRequest.Nim = nim
 
-	student, err := handler.service.UpdateStudent(studentRequest)
+	err := handler.service.UpdateStudent(studentRequest)
 
 	if err != nil {
 		// create response
@@ -154,10 +150,8 @@ func (handler *StudentResthandlerImpl) UpdateStudent(c *gin.Context) {
 		c.JSON(http.StatusNotFound, response)
 		return
 	}
-	responseStudent := shareddomain.ToResponseUpdateStudent(student)
-
 	// create response
-	response := helper.APIResponseWithData(http.StatusOK, true, "Mahasiswa berhasil diupdate", responseStudent)
+	response := helper.APIResponseWithoutData(http.StatusOK, true, "Mahasiswa berhasil diupdate")
 
 	c.JSON(http.StatusOK, response)
 

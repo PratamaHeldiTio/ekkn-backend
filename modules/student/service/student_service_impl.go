@@ -16,7 +16,7 @@ func NewStudentService(repo repository.StudentRepository) StudentService {
 	return &StudentServiceImpl{repo}
 }
 
-func (service *StudentServiceImpl) CreateStudent(request shareddomain.CreateStudent) (domain.Student, error) {
+func (service *StudentServiceImpl) CreateStudent(request shareddomain.CreateStudent) error {
 
 	student := domain.Student{
 		Nim:      request.Nim,
@@ -29,16 +29,15 @@ func (service *StudentServiceImpl) CreateStudent(request shareddomain.CreateStud
 	// hashing password
 	passwordHash, err := bcrypt.GenerateFromPassword([]byte(request.Nim), bcrypt.MinCost)
 	if err != nil {
-		return student, err
+		return err
 	}
 
 	student.Password = string(passwordHash)
-	student, err = service.repo.Create(student)
+	err = service.repo.Create(student)
 	if err != nil {
-		return student, err
+		return err
 	}
-
-	return student, nil
+	return nil
 }
 
 func (service *StudentServiceImpl) FindStudentByNim(nim string) (domain.Student, error) {
@@ -71,7 +70,6 @@ func (service *StudentServiceImpl) LoginStudent(request shareddomain.LoginStuden
 	if err != nil {
 		return student, err
 	}
-
 	return student, nil
 }
 
@@ -85,15 +83,15 @@ func (service *StudentServiceImpl) FindAllStudent() ([]domain.Student, error) {
 	return students, nil
 }
 
-func (service *StudentServiceImpl) UpdateStudent(request shareddomain.UpdateStudent) (domain.Student, error) {
+func (service *StudentServiceImpl) UpdateStudent(request shareddomain.UpdateStudent) error {
 	// cek nim isExist
 	student, err := service.repo.FindByNim(request.Nim)
 	if err != nil {
-		return student, err
+		return err
 	}
 
 	if student.Nim == "" {
-		return student, errors.New("No student found on that nim")
+		return errors.New("No student found on that nim")
 	}
 
 	student = domain.Student{
@@ -104,12 +102,12 @@ func (service *StudentServiceImpl) UpdateStudent(request shareddomain.UpdateStud
 		Gender:     request.Gender,
 		MaduraLang: request.MaduraLang,
 	}
-	student, err = service.repo.Update(student)
+	err = service.repo.Update(student)
 	if err != nil {
-		return student, err
+		return err
 	}
 
-	return student, nil
+	return nil
 }
 
 func (service *StudentServiceImpl) DeleteStudent(nim string) error {
