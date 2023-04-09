@@ -52,8 +52,33 @@ func (handler *PeriodResthandlerImpl) FindAllPeriod(c *gin.Context) {
 		return
 	}
 
+	// get role
+	curentRole := c.MustGet("currentRole")
+
+	if curentRole == "student" || curentRole == "lecture" {
+		// init type of response
+		responsePeriods := []shareddomain.ResponsePeriodBasic{}
+
+		// maping data
+		for _, period := range periods {
+			responsePeriods = append(responsePeriods, shareddomain.ToResponsePeriodBasic(period))
+		}
+
+		// create response
+		response := helper.APIResponseWithData(http.StatusOK, true, "Periode berhasil didapatkan", responsePeriods)
+		c.JSON(http.StatusOK, response)
+		return
+	}
+
+	// init type of response
+	responsePeriods := []shareddomain.ResponsePeriod{}
+
+	// maping data
+	for _, period := range periods {
+		responsePeriods = append(responsePeriods, shareddomain.ToResponsePeriod(period))
+	}
 	// create response
-	response := helper.APIResponseWithData(http.StatusOK, true, "Periode berhasil didapatkan", periods)
+	response := helper.APIResponseWithData(http.StatusOK, true, "Periode berhasil didapatkan", responsePeriods)
 	c.JSON(http.StatusOK, response)
 }
 
@@ -77,8 +102,11 @@ func (handler *PeriodResthandlerImpl) FindPeriodById(c *gin.Context) {
 		return
 	}
 
+	// maping data
+	responsePeriod := shareddomain.ToResponsePeriod(period)
+
 	// create response success
-	response := helper.APIResponseWithData(http.StatusOK, true, "Periode berhasil didapatkan", period)
+	response := helper.APIResponseWithData(http.StatusOK, true, "Periode berhasil didapatkan", responsePeriod)
 	c.JSON(http.StatusOK, response)
 }
 

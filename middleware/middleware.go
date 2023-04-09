@@ -56,9 +56,12 @@ func (auth *AuthMiddleware) AuthMiddleWare() gin.HandlerFunc {
 
 		// mapping payload id to var
 		userID := claim["id"].(string)
+		userRole := claim["role"].(string)
 
 		// set with context gin
 		c.Set("currentUser", userID)
 
+		//role
+		c.Set("currentRole", userRole)
 	}
 }
