@@ -59,5 +59,6 @@ func (auth *AuthMiddleware) AuthMiddleWare() gin.HandlerFunc {
 
 		// set with context gin
 		c.Set("currentUser", userID)
+
 	}
 }

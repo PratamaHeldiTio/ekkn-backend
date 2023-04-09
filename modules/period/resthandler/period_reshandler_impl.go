@@ -19,7 +19,6 @@ func NewPeriodResthandler(service service.PeriodService) PeriodResthandler {
 }
 
 // handler create period
-
 func (handler *PeriodResthandlerImpl) CreatePeriod(c *gin.Context) {
 	// validation request
 	var periodRequest shareddomain.RequestPeriod
@@ -81,4 +80,30 @@ func (handler *PeriodResthandlerImpl) FindPeriodById(c *gin.Context) {
 	// create response success
 	response := helper.APIResponseWithData(http.StatusOK, true, "Periode berhasil didapatkan", period)
 	c.JSON(http.StatusOK, response)
+}
+
+// handler update
+
+func (handler *PeriodResthandlerImpl) UpdatePeriod(c *gin.Context) {
+	// validation request
+	var periodRequest shareddomain.RequestPeriod
+	if err := c.ShouldBindJSON(&periodRequest); err != nil {
+		// create response
+		response := helper.APIResponseWithError(http.StatusUnprocessableEntity, false, "Periode gagal diubah", err.Error())
+		c.JSON(http.StatusUnprocessableEntity, response)
+		return
+	}
+
+	// call service update
+	if err := handler.service.UpdatePeriod(periodRequest); err != nil {
+		// create response
+		response := helper.APIResponseWithError(http.StatusBadRequest, false, "Periode gagal diubah", err.Error())
+		c.JSON(http.StatusBadRequest, response)
+		return
+	}
+
+	// response valid
+	response := helper.APIResponseWithoutData(http.StatusOK, true, "Periode berhasil diubah")
+	c.JSON(http.StatusOK, response)
+
 }

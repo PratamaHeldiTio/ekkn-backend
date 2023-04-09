@@ -40,3 +40,11 @@ func (repo *PeriodRepositoryImpl) FindById(id uuid.UUID) (domain.Period, error) 
 
 	return period, nil
 }
+
+func (repo *PeriodRepositoryImpl) Update(period domain.Period) error {
+	if err := repo.db.Model(&period).Updates(period).Error; err != nil {
+		return err
+	}
+
+	return nil
+}

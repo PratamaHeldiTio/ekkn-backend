@@ -58,3 +58,25 @@ func (service *PeriodServiceImpl) FindPeriodById(id uuid.UUID) (domain.Period, e
 
 	return period, nil
 }
+
+// update period
+
+func (service *PeriodServiceImpl) UpdatePeriod(request shareddomain.RequestPeriod) error {
+	period := domain.Period{
+		ID:                    request.ID,
+		Semester:              request.Semester,
+		TahunAjaran:           request.TahunAjaran,
+		StatusRegisterStudent: request.StatusRegisterStudent,
+		StatusRegisterLecture: request.StatusRegisterLecture,
+		StatusRegisterGroup:   request.StatusRegisterGroup,
+		Status:                request.Status,
+		Start:                 request.Start,
+		End:                   request.End,
+	}
+
+	if err := service.repo.Update(period); err != nil {
+		return err
+	}
+
+	return nil
+}

@@ -6,8 +6,8 @@ import (
 
 type Period struct {
 	ID                    uuid.UUID `gorm:"primary_key; unique;type:uuid; column:id_period; default:uuid_generate_v4()" json:"id" json:"semester"`
-	Semester              string    `gorm:"type:varchar(6)" json:"semester"`
-	TahunAjaran           string    `gorm:"type:varchar(10)" json:"tahun_ajaran"`
+	Semester              string    `gorm:"type:varchar(6)"`
+	TahunAjaran           string    `gorm:"type:varchar(10)"`
 	StatusRegisterStudent bool      `json:"status_register_student"`
 	StatusRegisterLecture bool      `json:"status_register_lecture"`
 	StatusRegisterGroup   bool      `json:"status_register_group"`
