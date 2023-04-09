@@ -10,5 +10,5 @@ type PeriodRepository interface {
 	FindAll() ([]domain.Period, error)
 	FindById(id uuid.UUID) (domain.Period, error)
 	Update(period domain.Period) error
-	//Delete(id uuid.UUID)
+	Delete(period domain.Period) error
 }

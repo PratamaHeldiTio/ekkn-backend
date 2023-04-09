@@ -11,4 +11,5 @@ type PeriodService interface {
 	FindAllPeriod() ([]domain.Period, error)
 	FindPeriodById(id uuid.UUID) (domain.Period, error)
 	UpdatePeriod(request shareddomain.RequestPeriod) error
+	DeletePeriodById(id uuid.UUID) error
 }

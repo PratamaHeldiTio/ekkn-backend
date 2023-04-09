@@ -7,4 +7,5 @@ type PeriodResthandler interface {
 	FindAllPeriod(c *gin.Context)
 	FindPeriodById(c *gin.Context)
 	UpdatePeriod(c *gin.Context)
+	DeletePeriodById(c *gin.Context)
 }

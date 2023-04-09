@@ -48,3 +48,11 @@ func (repo *PeriodRepositoryImpl) Update(period domain.Period) error {
 
 	return nil
 }
+
+func (repo *PeriodRepositoryImpl) Delete(period domain.Period) error {
+	if err := repo.db.Delete(&period).Error; err != nil {
+		return err
+	}
+
+	return nil
+}

@@ -80,3 +80,23 @@ func (service *PeriodServiceImpl) UpdatePeriod(request shareddomain.RequestPerio
 
 	return nil
 }
+
+// service delete period
+
+func (service *PeriodServiceImpl) DeletePeriodById(id uuid.UUID) error {
+	// check data isExist
+	period, err := service.repo.FindById(id)
+	if err != nil {
+		return err
+	}
+
+	if period.ID.String() == "00000000-0000-0000-0000-000000000000" {
+		return errors.New("No student found on that nim")
+	}
+
+	if err := service.repo.Delete(period); err != nil {
+		return err
+	}
+
+	return nil
+}

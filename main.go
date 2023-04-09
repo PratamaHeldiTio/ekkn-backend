@@ -77,6 +77,7 @@ func main() {
 	api.PUT("/periods", authMiddleware.AuthMiddleWare(), periodReshandler.UpdatePeriod)
 	api.GET("/periods", authMiddleware.AuthMiddleWare(), periodReshandler.FindAllPeriod)
 	api.GET("/periods/:id", authMiddleware.AuthMiddleWare(), periodReshandler.FindPeriodById)
+	api.DELETE("/periods/:id", authMiddleware.AuthMiddleWare(), periodReshandler.DeletePeriodById)
 
 	router.Run()
 }

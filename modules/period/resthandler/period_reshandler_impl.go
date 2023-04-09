@@ -135,3 +135,28 @@ func (handler *PeriodResthandlerImpl) UpdatePeriod(c *gin.Context) {
 	c.JSON(http.StatusOK, response)
 
 }
+
+// handler delete period
+
+func (handler *PeriodResthandlerImpl) DeletePeriodById(c *gin.Context) {
+	// get id with params url
+	idString := c.Param("id")
+
+	//parse uuid string to uuid
+	id, err := uuid.Parse(idString)
+	if err != nil {
+		response := helper.APIResponseWithError(http.StatusBadRequest, false, "Periode gagal dihapuskan", err.Error())
+		c.JSON(http.StatusBadRequest, response)
+		return
+	}
+
+	if err := handler.service.DeletePeriodById(id); err != nil {
+		// create response
+		response := helper.APIResponseWithError(http.StatusBadRequest, false, "Periode gagal dihapuskan", err.Error())
+		c.JSON(http.StatusBadRequest, response)
+		return
+	}
+
+	response := helper.APIResponseWithoutData(http.StatusOK, true, "Periode berhasil dihapuskan")
+	c.JSON(http.StatusOK, response)
+}
