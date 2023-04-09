@@ -120,10 +120,6 @@ func (service *StudentServiceImpl) DeleteStudent(nim string) error {
 		return errors.New("No student found on that nim")
 	}
 
-	student = domain.Student{
-		Nim: nim,
-	}
-
 	if err := service.repo.Delete(student); err != nil {
 		return err
 	}
