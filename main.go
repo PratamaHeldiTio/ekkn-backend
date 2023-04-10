@@ -10,6 +10,9 @@ import (
 	"backend-ekkn/modules/student/repository"
 	"backend-ekkn/modules/student/resthandler"
 	"backend-ekkn/modules/student/service"
+	repository3 "backend-ekkn/modules/student_registration/repository"
+	"backend-ekkn/modules/student_registration/reshandler"
+	service3 "backend-ekkn/modules/student_registration/service"
 	"fmt"
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
@@ -48,6 +51,11 @@ func main() {
 	periodService := service2.NewPeriodService(periodRepository)
 	periodReshandler := resthandler2.NewPeriodResthandler(periodService)
 
+	// module student registration
+	studentRegistrationRepository := repository3.NewStudentRegistrationRepository(db)
+	studentRegistrationService := service3.NewStudentRegistrationService(studentRegistrationRepository)
+	studentRegistrationResthandler := reshandler.NewStudentRegistrationResthandler(studentRegistrationService)
+
 	// init router gin
 	router := gin.Default()
 
@@ -73,11 +81,14 @@ func main() {
 	api.DELETE("/students/:nim", authMiddleware.AuthMiddleWare(), studentReshandler.DeleteStudent)
 
 	// endpoint period
-	api.POST("/periods", authMiddleware.AuthMiddleWare(), periodReshandler.CreatePeriod)
-	api.PUT("/periods", authMiddleware.AuthMiddleWare(), periodReshandler.UpdatePeriod)
-	api.GET("/periods", authMiddleware.AuthMiddleWare(), periodReshandler.FindAllPeriod)
-	api.GET("/periods/:id", authMiddleware.AuthMiddleWare(), periodReshandler.FindPeriodById)
-	api.DELETE("/periods/:id", authMiddleware.AuthMiddleWare(), periodReshandler.DeletePeriodById)
+	api.POST("/period", authMiddleware.AuthMiddleWare(), periodReshandler.CreatePeriod)
+	api.PUT("/period", authMiddleware.AuthMiddleWare(), periodReshandler.UpdatePeriod)
+	api.GET("/period", authMiddleware.AuthMiddleWare(), periodReshandler.FindAllPeriod)
+	api.GET("/period/:id", authMiddleware.AuthMiddleWare(), periodReshandler.FindPeriodById)
+	api.DELETE("/period/:id", authMiddleware.AuthMiddleWare(), periodReshandler.DeletePeriodById)
+
+	//endpoint student registration
+	api.POST("/student_registration", authMiddleware.AuthMiddleWare(), studentRegistrationResthandler.CreateStudentRegistration)
 
 	router.Run()
 }
