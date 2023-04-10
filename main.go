@@ -44,12 +44,12 @@ func main() {
 	studentRepository := repository.NewStudentRepository(db)
 	studentService := service.NewStudentService(studentRepository)
 	jwtManager := jwtmanager.NewJwtManager()
-	studentReshandler := resthandler.NewStudentResthandler(studentService, jwtManager)
+	studentResthandler := resthandler.NewStudentResthandler(studentService, jwtManager)
 
 	// module period
 	periodRepository := repository2.NewPeriodRepository(db)
 	periodService := service2.NewPeriodService(periodRepository)
-	periodReshandler := resthandler2.NewPeriodResthandler(periodService)
+	periodResthandler := resthandler2.NewPeriodResthandler(periodService)
 
 	// module student registration
 	studentRegistrationRepository := repository3.NewStudentRegistrationRepository(db)
@@ -73,19 +73,19 @@ func main() {
 	authMiddleware := middleware.NewAtuhMiddleware(jwtManager)
 
 	// endpoint student
-	api.POST("/students", authMiddleware.AuthMiddleWare(), studentReshandler.CreateStudent)
-	api.GET("/students", authMiddleware.AuthMiddleWare(), studentReshandler.FindAllStudent)
-	api.POST("/auth/students/login", studentReshandler.LoginStudent)
-	api.GET("/students/:nim", studentReshandler.FindStudentByNim)
-	api.PUT("/students/:nim", authMiddleware.AuthMiddleWare(), studentReshandler.UpdateStudent)
-	api.DELETE("/students/:nim", authMiddleware.AuthMiddleWare(), studentReshandler.DeleteStudent)
+	api.POST("/students", authMiddleware.AuthMiddleWare(), studentResthandler.CreateStudent)
+	api.GET("/students", authMiddleware.AuthMiddleWare(), studentResthandler.FindAllStudent)
+	api.POST("/auth/students/login", studentResthandler.LoginStudent)
+	api.GET("/students/:nim", studentResthandler.FindStudentByNim)
+	api.PUT("/students/:nim", authMiddleware.AuthMiddleWare(), studentResthandler.UpdateStudent)
+	api.DELETE("/students/:nim", authMiddleware.AuthMiddleWare(), studentResthandler.DeleteStudent)
 
 	// endpoint period
-	api.POST("/period", authMiddleware.AuthMiddleWare(), periodReshandler.CreatePeriod)
-	api.PUT("/period", authMiddleware.AuthMiddleWare(), periodReshandler.UpdatePeriod)
-	api.GET("/period", authMiddleware.AuthMiddleWare(), periodReshandler.FindAllPeriod)
-	api.GET("/period/:id", authMiddleware.AuthMiddleWare(), periodReshandler.FindPeriodById)
-	api.DELETE("/period/:id", authMiddleware.AuthMiddleWare(), periodReshandler.DeletePeriodById)
+	api.POST("/period", authMiddleware.AuthMiddleWare(), periodResthandler.CreatePeriod)
+	api.PUT("/period", authMiddleware.AuthMiddleWare(), periodResthandler.UpdatePeriod)
+	api.GET("/period", authMiddleware.AuthMiddleWare(), periodResthandler.FindAllPeriod)
+	api.GET("/period/:id", authMiddleware.AuthMiddleWare(), periodResthandler.FindPeriodById)
+	api.DELETE("/period/:id", authMiddleware.AuthMiddleWare(), periodResthandler.DeletePeriodById)
 
 	//endpoint student registration
 	api.POST("/student_registration", authMiddleware.AuthMiddleWare(), studentRegistrationResthandler.CreateStudentRegistration)
