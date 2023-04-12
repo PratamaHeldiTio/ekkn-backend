@@ -73,12 +73,12 @@ func main() {
 	authMiddleware := middleware.NewAtuhMiddleware(jwtManager)
 
 	// endpoint student
-	api.POST("/students", authMiddleware.AuthMiddleWare(), studentResthandler.CreateStudent)
-	api.GET("/students", authMiddleware.AuthMiddleWare(), studentResthandler.FindAllStudent)
-	api.POST("/auth/students/login", studentResthandler.LoginStudent)
-	api.GET("/students/:nim", studentResthandler.FindStudentByNim)
-	api.PUT("/students/:nim", authMiddleware.AuthMiddleWare(), studentResthandler.UpdateStudent)
-	api.DELETE("/students/:nim", authMiddleware.AuthMiddleWare(), studentResthandler.DeleteStudent)
+	api.POST("/student", authMiddleware.AuthMiddleWare(), studentResthandler.CreateStudent)
+	api.GET("/student", authMiddleware.AuthMiddleWare(), studentResthandler.FindAllStudent)
+	api.POST("/auth/student/login", studentResthandler.LoginStudent)
+	api.GET("/student/:nim", studentResthandler.FindStudentByNim)
+	api.PUT("/student/:nim", authMiddleware.AuthMiddleWare(), studentResthandler.UpdateStudent)
+	api.DELETE("/student/:nim", authMiddleware.AuthMiddleWare(), studentResthandler.DeleteStudent)
 
 	// endpoint period
 	api.POST("/period", authMiddleware.AuthMiddleWare(), periodResthandler.CreatePeriod)
