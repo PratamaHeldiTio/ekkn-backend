@@ -15,7 +15,7 @@ type UpdateStudent struct {
 	Prodi      string `json:"prodi" binding:"max=50"`
 	Fakultas   string `json:"fakultas" binding:"max=50"`
 	Gender     string `json:"gender" binding:"max=9"`
-	MaduraLang int    `json:"madura_lang"`
+	MaduraLang string `json:"madura_lang" binding:"max=5"`
 }
 
 type LoginStudent struct {
@@ -30,7 +30,7 @@ type FindStudentByNim struct {
 	Fakultas   string `json:"fakultas"`
 	Gender     string `json:"gender"`
 	Position   string `json:"position"`
-	MaduraLang int    `json:"madura_lang"`
+	MaduraLang string `json:"madura_lang"`
 	GroupKkn   string `json:"groupKkn"`
 	Grade      string `json:"grade"`
 	CreatedAt  int64  `json:"created_at"`

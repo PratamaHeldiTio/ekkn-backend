@@ -5,13 +5,13 @@ import (
 )
 
 type Period struct {
-	ID                    uuid.UUID `gorm:"primary_key; unique;type:uuid; column:id_period; default:uuid_generate_v4()"`
+	ID                    uuid.UUID `gorm:"primary_key; unique;type:uuid; column:period_id; default:uuid_generate_v4()"`
 	Semester              string    `gorm:"type:varchar(6)"`
 	TahunAjaran           string    `gorm:"type:varchar(10)"`
-	StatusRegisterStudent bool
-	StatusRegisterLecture bool
-	StatusRegisterGroup   bool
-	Status                bool
+	StatusRegisterStudent string    `gorm:"type:varchar(5)"`
+	StatusRegisterLecture string    `gorm:"type:varchar(5)"`
+	StatusRegisterGroup   string    `gorm:"type:varchar(5)"`
+	Status                string    `gorm:"type:varchar(5)"`
 	Start                 int64
 	End                   int64
 	CreatedAt             int64 `gorm:"autoCreateTime"`

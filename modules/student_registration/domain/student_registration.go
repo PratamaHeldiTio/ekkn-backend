@@ -7,7 +7,7 @@ import (
 )
 
 type StudentRegistration struct {
-	ID        uuid.UUID `gorm:"primary_key; unique;type:uuid; column:id_student_registration; default:uuid_generate_v4()"`
+	ID        uuid.UUID `gorm:"primary_key; unique;type:uuid; column:student_registration_id; default:uuid_generate_v4()"`
 	PeriodID  uuid.UUID `gorm:"unique"`
 	Period    periodDomain.Period
 	StudentID string
