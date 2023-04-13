@@ -89,6 +89,7 @@ func main() {
 
 	//endpoint student registration
 	api.POST("/student_registration", authMiddleware.AuthMiddleWare(), studentRegistrationResthandler.CreateStudentRegistration)
+	api.GET("/student_registration/student_id", authMiddleware.AuthMiddleWare(), studentRegistrationResthandler.FindStudentRegistrationByStudentId)
 
 	router.Run()
 }
