@@ -18,7 +18,7 @@ type RequestPeriod struct {
 }
 
 type ResponsePeriod struct {
-	ID                    uuid.UUID `json:"id_period"`
+	ID                    uuid.UUID `json:"period_id"`
 	Semester              string    `json:"semester"`
 	TahunAjaran           string    `json:"tahun_ajaran"`
 	StatusRegisterStudent string    `json:"status_register_student"`
@@ -32,7 +32,7 @@ type ResponsePeriod struct {
 }
 
 type ResponsePeriodBasic struct {
-	ID          uuid.UUID `json:"id_period"`
+	ID          uuid.UUID `json:"period_id"`
 	Semester    string    `json:"semester"`
 	TahunAjaran string    `json:"tahun_ajaran"`
 }

@@ -59,12 +59,12 @@ func main() {
 	// init router gin
 	router := gin.Default()
 
-	// config cors allow all origin
-	// same as
-	// config := cors.DefaultConfig()
-	// config.AllowAllOrigins = true
-	// router.Use(cors.New(config))
-	router.Use(cors.Default())
+	// ini cors middleware
+	config := cors.DefaultConfig()
+	config.AllowAllOrigins = true
+	// add header to allow header config
+	config.AddAllowHeaders("Authorization")
+	router.Use(cors.New(config))
 
 	// group router
 	api := router.Group("/api/v1")
@@ -76,7 +76,7 @@ func main() {
 	api.POST("/student", authMiddleware.AuthMiddleWare(), studentResthandler.CreateStudent)
 	api.GET("/student", authMiddleware.AuthMiddleWare(), studentResthandler.FindAllStudent)
 	api.POST("/auth/student/login", studentResthandler.LoginStudent)
-	api.GET("/student/:nim", studentResthandler.FindStudentByNim)
+	api.GET("/student/:nim", authMiddleware.AuthMiddleWare(), studentResthandler.FindStudentByNim)
 	api.PUT("/student/:nim", authMiddleware.AuthMiddleWare(), studentResthandler.UpdateStudent)
 	api.DELETE("/student/:nim", authMiddleware.AuthMiddleWare(), studentResthandler.DeleteStudent)
 
