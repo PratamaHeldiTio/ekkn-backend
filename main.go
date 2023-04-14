@@ -84,6 +84,7 @@ func main() {
 	api.POST("/period", authMiddleware.AuthMiddleWare(), periodResthandler.CreatePeriod)
 	api.PUT("/period", authMiddleware.AuthMiddleWare(), periodResthandler.UpdatePeriod)
 	api.GET("/period", authMiddleware.AuthMiddleWare(), periodResthandler.FindAllPeriod)
+	api.GET("/period/student", authMiddleware.AuthMiddleWare(), periodResthandler.FindAllPeriodByStudent)
 	api.GET("/period/:id", authMiddleware.AuthMiddleWare(), periodResthandler.FindPeriodById)
 	api.DELETE("/period/:id", authMiddleware.AuthMiddleWare(), periodResthandler.DeletePeriodById)
 

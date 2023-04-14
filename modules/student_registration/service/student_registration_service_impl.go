@@ -33,7 +33,6 @@ func (service *StudentRegistrationServiceImpl) CreateStudentRegistration(request
 	studentRegistration := domain.StudentRegistration{
 		PeriodID:  request.PeriodID,
 		StudentID: request.Nim,
-		Status:    "Belum validasi",
 	}
 
 	if err := service.repo.Create(studentRegistration); err != nil {

@@ -12,6 +12,6 @@ type StudentRegistration struct {
 	Period    periodDomain.Period
 	StudentID string
 	Student   studentDomain.Student
-	Status    string `gorm:"type:varchar(14)"`
+	Status    string `gorm:"type:varchar(5); default:false"`
 	CreatedAt int64  `gorm:"autoCreateTime"`
 }
