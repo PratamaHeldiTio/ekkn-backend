@@ -23,7 +23,6 @@ func (service *StudentServiceImpl) CreateStudent(request shareddomain.CreateStud
 		Name:     request.Name,
 		Prodi:    request.Prodi,
 		Fakultas: request.Fakultas,
-		Position: "none",
 	}
 
 	// hashing password

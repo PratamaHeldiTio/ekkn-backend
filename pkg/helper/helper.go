@@ -1,5 +1,7 @@
 package helper
 
+import "math/rand"
+
 type ResponseWithoutData struct {
 	Code    int    `json:"code"`
 	Success bool   `json:"success"`
@@ -47,4 +49,17 @@ func APIResponseWithError(code int, success bool, message string, err interface{
 		Error:   err,
 	}
 	return response
+}
+
+// define the given charset, char only
+var charset = []byte("ABCDEFGHIJKLMNOPQRSTUVWXYZ")
+
+// n is the length of random string we want to generate
+func RandomString(n int) string {
+	b := make([]byte, n)
+	for i := range b {
+		// randomly select 1 character from given charset
+		b[i] = charset[rand.Intn(len(charset))]
+	}
+	return string(b)
 }

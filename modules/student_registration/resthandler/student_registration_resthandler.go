@@ -1,4 +1,4 @@
-package reshandler
+package resthandler
 
 import "github.com/gin-gonic/gin"
 

@@ -1,4 +1,4 @@
-package reshandler
+package resthandler
 
 import (
 	"backend-ekkn/modules/student_registration/service"

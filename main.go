@@ -4,6 +4,9 @@ import (
 	"backend-ekkn/jwt_manager"
 	"backend-ekkn/middleware"
 	"backend-ekkn/migration"
+	repository4 "backend-ekkn/modules/group/repository"
+	resthandler4 "backend-ekkn/modules/group/resthandler"
+	service4 "backend-ekkn/modules/group/service"
 	repository2 "backend-ekkn/modules/period/repository"
 	resthandler2 "backend-ekkn/modules/period/resthandler"
 	service2 "backend-ekkn/modules/period/service"
@@ -11,7 +14,7 @@ import (
 	"backend-ekkn/modules/student/resthandler"
 	"backend-ekkn/modules/student/service"
 	repository3 "backend-ekkn/modules/student_registration/repository"
-	"backend-ekkn/modules/student_registration/reshandler"
+	resthandler3 "backend-ekkn/modules/student_registration/resthandler"
 	service3 "backend-ekkn/modules/student_registration/service"
 	"fmt"
 	"github.com/gin-contrib/cors"
@@ -54,7 +57,12 @@ func main() {
 	// module student registration
 	studentRegistrationRepository := repository3.NewStudentRegistrationRepository(db)
 	studentRegistrationService := service3.NewStudentRegistrationService(studentRegistrationRepository)
-	studentRegistrationResthandler := reshandler.NewStudentRegistrationResthandler(studentRegistrationService)
+	studentRegistrationResthandler := resthandler3.NewStudentRegistrationResthandler(studentRegistrationService)
+
+	//module group
+	groupRepository := repository4.NewGroupRepository(db)
+	groupService := service4.NewGroupServiceImpl(groupRepository)
+	groupResthandler := resthandler4.NewGroupReshandler(groupService)
 
 	// init router gin
 	router := gin.Default()
@@ -91,6 +99,11 @@ func main() {
 	//endpoint student registration
 	api.POST("/student_registration", authMiddleware.AuthMiddleWare(), studentRegistrationResthandler.CreateStudentRegistration)
 	api.GET("/student_registration/student_id", authMiddleware.AuthMiddleWare(), studentRegistrationResthandler.FindStudentRegistrationByStudentId)
+
+	//endpoint group
+	api.POST("/group/:periodID", authMiddleware.AuthMiddleWare(), groupResthandler.CrateGroup)
+	api.GET("/group/:periodID", authMiddleware.AuthMiddleWare(), groupResthandler.FindGroupByStudentPeriodID)
+	api.POST("/group/join/:periodID", authMiddleware.AuthMiddleWare(), groupResthandler.JoinGroup)
 
 	router.Run()
 }
