@@ -58,7 +58,7 @@ func (handler *StudentRegistrationResthandlerImpl) FindStudentRegistrationByStud
 	}
 
 	// map data to response format
-	responseRegisteredUsers := []shareddomain.ResponseRegisteredStudent{}
+	responseRegisteredUsers := []shareddomain.ResponseStudentRegistrationByNim{}
 	for _, registeredUser := range registeredUsers {
 		responseRegisteredUsers = append(responseRegisteredUsers, shareddomain.ToResponRegiteredStudent(registeredUser))
 	}
@@ -66,4 +66,34 @@ func (handler *StudentRegistrationResthandlerImpl) FindStudentRegistrationByStud
 	// create response
 	response := helper.APIResponseWithData(http.StatusOK, true, "Riwayat pendaftaran berhasil didapatkan", responseRegisteredUsers)
 	c.JSON(http.StatusOK, response)
+}
+
+func (handler *StudentRegistrationResthandlerImpl) FindStudentRegistrationRegistered(c *gin.Context) {
+	// get nim from middleware
+	nim := c.MustGet("currentUser").(string)
+
+	// call service
+	registeredUsers, err := handler.service.FindStudentRegistrationByStudentID(nim)
+	if err != nil {
+		// create response
+		response := helper.APIResponseWithError(http.StatusInternalServerError, false, "Riwayat pendaftaran gagal didapatkan", err.Error())
+		c.JSON(http.StatusInternalServerError, response)
+		return
+	}
+
+	// map data to response format
+	responseRegisteredUsers := []shareddomain.ResponseRegisteredStudents{}
+	for _, registeredUser := range registeredUsers {
+		if registeredUser.Status == "true" {
+			responseRegisteredUsers = append(responseRegisteredUsers, shareddomain.ToResponseRegisteredStudents(registeredUser))
+		}
+	}
+
+	// create response
+	response := helper.APIResponseWithData(http.StatusOK, true, "Riwayat pendaftaran berhasil didapatkan", responseRegisteredUsers)
+	c.JSON(http.StatusOK, response)
+}
+
+func (handler *StudentRegistrationResthandlerImpl) FindStudentRegistrationByStudentPeriodID(c *gin.Context) {
+	// bagaimana mencari groupid by period id on table student registration
 }

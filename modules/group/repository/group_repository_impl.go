@@ -43,7 +43,8 @@ func (repo *GroupRepositoryImpl) FindByStudentPeriodID(studentID, periodID strin
 	var group domain.Group
 
 	if err := repo.db.Preload("Students").
-		Where("leader = ? and period_id = ?", studentID, periodID).
+		Preload("Periods").
+		Where("Periods.student_id = ? and period_id = ?", studentID, periodID).
 		Find(&group).
 		Error; err != nil {
 		return group, err

@@ -97,8 +97,10 @@ func main() {
 	api.DELETE("/period/:id", authMiddleware.AuthMiddleWare(), periodResthandler.DeletePeriodById)
 
 	//endpoint student registration
-	api.POST("/student_registration", authMiddleware.AuthMiddleWare(), studentRegistrationResthandler.CreateStudentRegistration)
-	api.GET("/student_registration/student_id", authMiddleware.AuthMiddleWare(), studentRegistrationResthandler.FindStudentRegistrationByStudentId)
+	api.POST("/student/registration", authMiddleware.AuthMiddleWare(), studentRegistrationResthandler.CreateStudentRegistration)
+	api.GET("/student/registration/nim", authMiddleware.AuthMiddleWare(), studentRegistrationResthandler.FindStudentRegistrationByStudentId)
+	api.GET("/student/registered", authMiddleware.AuthMiddleWare(), studentRegistrationResthandler.FindStudentRegistrationRegistered)
+	api.GET("/student/registration/nim/:periodID", authMiddleware.AuthMiddleWare(), studentRegistrationResthandler.FindStudentRegistrationByStudentPeriodID)
 
 	//endpoint group
 	api.POST("/group/:periodID", authMiddleware.AuthMiddleWare(), groupResthandler.CrateGroup)

@@ -12,7 +12,7 @@ type RequestStudentRegistration struct {
 	Status   string    `json:"status" binding:"max=14"`
 }
 
-type ResponseRegisteredStudent struct {
+type ResponseStudentRegistrationByNim struct {
 	ID          uuid.UUID `json:"student_registration_id"`
 	PeriodID    uuid.UUID `json:"period_id"`
 	Semester    string    `json:"semester"`
@@ -25,8 +25,14 @@ type ResponseRegisteredStudent struct {
 	CreatedAt   int64     `json:"created_at"`
 }
 
-func ToResponRegiteredStudent(registration domain.StudentRegistration) ResponseRegisteredStudent {
-	studentRegistered := ResponseRegisteredStudent{
+type ResponseRegisteredStudents struct {
+	PeriodID    uuid.UUID `json:"period_id"`
+	Semester    string    `json:"semester"`
+	TahunAjaran string    `json:"tahun_ajaran"`
+}
+
+func ToResponRegiteredStudent(registration domain.StudentRegistration) ResponseStudentRegistrationByNim {
+	studentRegistered := ResponseStudentRegistrationByNim{
 		ID:          registration.ID,
 		PeriodID:    registration.PeriodID,
 		Semester:    registration.Period.Semester,
@@ -40,4 +46,14 @@ func ToResponRegiteredStudent(registration domain.StudentRegistration) ResponseR
 	}
 
 	return studentRegistered
+}
+
+func ToResponseRegisteredStudents(registration domain.StudentRegistration) ResponseRegisteredStudents {
+	registeredStudents := ResponseRegisteredStudents{
+		PeriodID:    registration.PeriodID,
+		Semester:    registration.Period.Semester,
+		TahunAjaran: registration.Period.TahunAjaran,
+	}
+
+	return registeredStudents
 }

@@ -55,6 +55,13 @@ func (handler *GroupResthandlerImpl) FindGroupByStudentPeriodID(c *gin.Context) 
 		return
 	}
 
+	if group.ID == "" {
+		// create response
+		response := helper.APIResponseWithError(http.StatusNotFound, false, "Kelompok tidak dapat ditemukan", err.Error())
+		c.JSON(http.StatusNotFound, response)
+		return
+	}
+
 	// create response
 	responseGroup := shareddomain.ToResponseGroupByStudentPeriodID(group)
 	response := helper.APIResponseWithData(http.StatusOK, true, "Berhasil membuat kelompok", responseGroup)
