@@ -2,7 +2,6 @@ package repository
 
 import (
 	"backend-ekkn/modules/student_registration/domain"
-	"github.com/google/uuid"
 	"gorm.io/gorm"
 )
 
@@ -38,13 +37,12 @@ func (repo *StudentRegistrationRepositoryImpl) FindByStudentId(id string) ([]dom
 	return registeredUser, nil
 }
 
-func (repo *StudentRegistrationRepositoryImpl) FindByStudentIdPeriodId(studentId string, periodId uuid.UUID) (domain.StudentRegistration, error) {
+func (repo *StudentRegistrationRepositoryImpl) FindByNimPeriodId(nim string, periodId string) (domain.StudentRegistration, error) {
 	var registeredUser domain.StudentRegistration
 
 	if err := repo.db.Preload("Period").
 		Preload("Student").
-		Where("student_id = ?", studentId).
-		Where("period_id = ?", periodId).
+		Where("student_id = ? and period_id = ?", nim, periodId).
 		Find(&registeredUser).
 		Error; err != nil {
 		return registeredUser, err

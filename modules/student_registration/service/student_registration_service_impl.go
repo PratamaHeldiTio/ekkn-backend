@@ -19,13 +19,12 @@ func NewStudentRegistrationService(repo repository.StudentRegistrationRepository
 
 func (service *StudentRegistrationServiceImpl) CreateStudentRegistration(request shareddomain.RequestStudentRegistration) error {
 	// get register by student id and period id
-	registeredStudent, err := service.repo.FindByStudentIdPeriodId(request.Nim, request.PeriodID)
+	registeredStudent, err := service.FindStudentRegistrationByNimPeriodID(request.Nim, request.PeriodID)
 	if err != nil {
 		return err
 	}
-
 	// cek isExist
-	if registeredStudent.ID.String() != "00000000-0000-0000-0000-000000000000" {
+	if registeredStudent.ID != "" {
 		return errors.New("Pendaftaran gagal anda telah terdaftar")
 	}
 
@@ -48,4 +47,14 @@ func (service *StudentRegistrationServiceImpl) FindStudentRegistrationByStudentI
 		return registeredUser, err
 	}
 	return registeredUser, err
+}
+
+func (service *StudentRegistrationServiceImpl) FindStudentRegistrationByNimPeriodID(nim, periodID string) (domain.StudentRegistration, error) {
+	// get register by student id and period id
+	registeredStudent, err := service.repo.FindByNimPeriodId(nim, periodID)
+	if err != nil {
+		return registeredStudent, err
+	}
+
+	return registeredStudent, nil
 }

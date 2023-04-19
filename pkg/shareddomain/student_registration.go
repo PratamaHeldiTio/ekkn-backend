@@ -7,28 +7,33 @@ import (
 
 type RequestStudentRegistration struct {
 	ID       uuid.UUID `json:"student_registration_id"`
-	PeriodID uuid.UUID `json:"period_id" binding:"required"`
+	PeriodID string    `json:"period_id" binding:"required"`
 	Nim      string    `binding:"max=14"`
 	Status   string    `json:"status" binding:"max=14"`
 }
 
 type ResponseStudentRegistrationByNim struct {
-	ID          uuid.UUID `json:"student_registration_id"`
-	PeriodID    uuid.UUID `json:"period_id"`
-	Semester    string    `json:"semester"`
-	TahunAjaran string    `json:"tahun_ajaran"`
-	StudentID   string    `json:"nim"`
-	Name        string    `json:"name"`
-	Prodi       string    `json:"prodi"`
-	Fakultas    string    `json:"fakultas"`
-	Status      string    `json:"status"`
-	CreatedAt   int64     `json:"created_at"`
+	ID          string `json:"student_registration_id"`
+	PeriodID    string `json:"period_id"`
+	Semester    string `json:"semester"`
+	TahunAjaran string `json:"tahun_ajaran"`
+	StudentID   string `json:"nim"`
+	Name        string `json:"name"`
+	Prodi       string `json:"prodi"`
+	Fakultas    string `json:"fakultas"`
+	Status      string `json:"status"`
+	CreatedAt   int64  `json:"created_at"`
+}
+
+type ResponseStudentRegistrationByNimPeriodID struct {
+	Status string `json:"status"`
+	Group  string `json:"group"`
 }
 
 type ResponseRegisteredStudents struct {
-	PeriodID    uuid.UUID `json:"period_id"`
-	Semester    string    `json:"semester"`
-	TahunAjaran string    `json:"tahun_ajaran"`
+	PeriodID    string `json:"period_id"`
+	Semester    string `json:"semester"`
+	TahunAjaran string `json:"tahun_ajaran"`
 }
 
 func ToResponRegiteredStudent(registration domain.StudentRegistration) ResponseStudentRegistrationByNim {
@@ -55,5 +60,13 @@ func ToResponseRegisteredStudents(registration domain.StudentRegistration) Respo
 		TahunAjaran: registration.Period.TahunAjaran,
 	}
 
+	return registeredStudents
+}
+
+func ToResponseStudentRegistrationByNimPeriodID(registration domain.StudentRegistration) ResponseStudentRegistrationByNimPeriodID {
+	registeredStudents := ResponseStudentRegistrationByNimPeriodID{
+		Status: registration.Status,
+		Group:  registration.Group,
+	}
 	return registeredStudents
 }

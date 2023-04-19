@@ -6,5 +6,5 @@ type StudentRegistrationReshandler interface {
 	CreateStudentRegistration(c *gin.Context)
 	FindStudentRegistrationByStudentId(c *gin.Context)
 	FindStudentRegistrationRegistered(c *gin.Context)
-	FindStudentRegistrationByStudentPeriodID(c *gin.Context)
+	FindStudentRegistrationByNimPeriodID(c *gin.Context)
 }

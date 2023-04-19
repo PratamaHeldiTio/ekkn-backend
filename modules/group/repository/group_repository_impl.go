@@ -39,20 +39,6 @@ func (repo *GroupRepositoryImpl) Create(group domain.Group) error {
 	return nil
 }
 
-func (repo *GroupRepositoryImpl) FindByStudentPeriodID(studentID, periodID string) (domain.Group, error) {
-	var group domain.Group
-
-	if err := repo.db.Preload("Students").
-		Preload("Periods").
-		Where("Periods.student_id = ? and period_id = ?", studentID, periodID).
-		Find(&group).
-		Error; err != nil {
-		return group, err
-	}
-
-	return group, nil
-}
-
 func (repo *GroupRepositoryImpl) FindByReferal(referral string) (domain.Group, error) {
 	var group domain.Group
 	if err := repo.db.Preload("Students").

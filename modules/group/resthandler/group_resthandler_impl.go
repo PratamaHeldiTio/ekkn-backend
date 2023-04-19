@@ -42,32 +42,6 @@ func (handler *GroupResthandlerImpl) CrateGroup(c *gin.Context) {
 	c.JSON(http.StatusCreated, response)
 }
 
-func (handler *GroupResthandlerImpl) FindGroupByStudentPeriodID(c *gin.Context) {
-	// get student id from context and period id from param
-	PeriodID := c.Param("periodID")
-	StudentID := c.MustGet("currentUser").(string)
-
-	group, err := handler.service.FindGroupByStudentPeriodID(StudentID, PeriodID)
-	if err != nil {
-		// create response
-		response := helper.APIResponseWithError(http.StatusBadRequest, false, "gagal mendapatkan kelompok", err.Error())
-		c.JSON(http.StatusBadRequest, response)
-		return
-	}
-
-	if group.ID == "" {
-		// create response
-		response := helper.APIResponseWithError(http.StatusNotFound, false, "Kelompok tidak dapat ditemukan", err.Error())
-		c.JSON(http.StatusNotFound, response)
-		return
-	}
-
-	// create response
-	responseGroup := shareddomain.ToResponseGroupByStudentPeriodID(group)
-	response := helper.APIResponseWithData(http.StatusOK, true, "Berhasil membuat kelompok", responseGroup)
-	c.JSON(http.StatusOK, response)
-}
-
 func (handler *GroupResthandlerImpl) JoinGroup(c *gin.Context) {
 	// get student id from context and period id from param
 	PeriodID := c.Param("periodID")

@@ -61,7 +61,7 @@ func main() {
 
 	//module group
 	groupRepository := repository4.NewGroupRepository(db)
-	groupService := service4.NewGroupServiceImpl(groupRepository)
+	groupService := service4.NewGroupServiceImpl(groupRepository, studentRegistrationService)
 	groupResthandler := resthandler4.NewGroupReshandler(groupService)
 
 	// init router gin
@@ -98,13 +98,12 @@ func main() {
 
 	//endpoint student registration
 	api.POST("/student/registration", authMiddleware.AuthMiddleWare(), studentRegistrationResthandler.CreateStudentRegistration)
-	api.GET("/student/registration/", authMiddleware.AuthMiddleWare(), studentRegistrationResthandler.FindStudentRegistrationByStudentId)
+	api.GET("/student/registration", authMiddleware.AuthMiddleWare(), studentRegistrationResthandler.FindStudentRegistrationByStudentId)
 	api.GET("/student/registered", authMiddleware.AuthMiddleWare(), studentRegistrationResthandler.FindStudentRegistrationRegistered)
-	api.GET("/student/registration/:periodID", authMiddleware.AuthMiddleWare(), studentRegistrationResthandler.FindStudentRegistrationByStudentPeriodID)
+	api.GET("/student/registration/:periodID", authMiddleware.AuthMiddleWare(), studentRegistrationResthandler.FindStudentRegistrationByNimPeriodID)
 
 	//endpoint group
 	api.POST("/group/:periodID", authMiddleware.AuthMiddleWare(), groupResthandler.CrateGroup)
-	api.GET("/group/:periodID", authMiddleware.AuthMiddleWare(), groupResthandler.FindGroupByStudentPeriodID)
 	api.POST("/group/join/:periodID", authMiddleware.AuthMiddleWare(), groupResthandler.JoinGroup)
 
 	router.Run()
