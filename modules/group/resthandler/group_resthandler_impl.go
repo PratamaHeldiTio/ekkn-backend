@@ -45,7 +45,7 @@ func (handler *GroupResthandlerImpl) CrateGroup(c *gin.Context) {
 func (handler *GroupResthandlerImpl) JoinGroup(c *gin.Context) {
 	// get student id from context and period id from param
 	PeriodID := c.Param("periodID")
-	StudentID := c.MustGet("currentUser").(string)
+	Nim := c.MustGet("currentUser").(string)
 
 	var referral shareddomain.RequestJoin
 	// validation with gin validator playground golang/v10
@@ -56,7 +56,7 @@ func (handler *GroupResthandlerImpl) JoinGroup(c *gin.Context) {
 		return
 	}
 
-	if err := handler.service.JoinGroup(StudentID, PeriodID, referral.Referral); err != nil {
+	if err := handler.service.JoinGroup(Nim, PeriodID, referral.Referral); err != nil {
 		// create response
 		response := helper.APIResponseWithError(http.StatusBadRequest, false, "gagal bergabung dengan kelompok", err.Error())
 		c.JSON(http.StatusBadRequest, response)
@@ -64,5 +64,20 @@ func (handler *GroupResthandlerImpl) JoinGroup(c *gin.Context) {
 	}
 
 	response := helper.APIResponseWithoutData(http.StatusOK, true, "berhasil bergabung dengan group")
+	c.JSON(http.StatusOK, response)
+}
+
+func (handler *GroupResthandlerImpl) FindGroupByID(c *gin.Context) {
+	ID := c.Param("id")
+	group, err := handler.service.FindGroupID(ID)
+	if err != nil {
+		// create response
+		response := helper.APIResponseWithError(http.StatusBadRequest, false, "gagal mendapatkan kelompok", err.Error())
+		c.JSON(http.StatusBadRequest, response)
+		return
+	}
+
+	responseData := shareddomain.ToResponseGroupByID(group)
+	response := helper.APIResponseWithData(http.StatusOK, true, "berhasil mendapatkan kelompok", responseData)
 	c.JSON(http.StatusOK, response)
 }

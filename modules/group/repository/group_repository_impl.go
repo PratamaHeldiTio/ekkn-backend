@@ -39,11 +39,10 @@ func (repo *GroupRepositoryImpl) Create(group domain.Group) error {
 	return nil
 }
 
-func (repo *GroupRepositoryImpl) FindByReferal(referral string) (domain.Group, error) {
+func (repo *GroupRepositoryImpl) FindByReferal(referral, periodID string) (domain.Group, error) {
 	var group domain.Group
 	if err := repo.db.Preload("Students").
-		Preload("Period").
-		Where("referral = ?", referral).
+		Where("referral = ? and period_id = ?", referral, periodID).
 		Find(&group).Error; err != nil {
 		return group, err
 	}
@@ -69,4 +68,13 @@ func (repo *GroupRepositoryImpl) Join(studentID, PeriodID, groupID string) error
 	}
 
 	return nil
+}
+
+func (repo *GroupRepositoryImpl) FindByID(ID string) (domain.Group, error) {
+	var group domain.Group
+	if err := repo.db.Preload("Students").Where("group_id = ?", ID).Find(&group).Error; err != nil {
+		return group, err
+	}
+
+	return group, nil
 }

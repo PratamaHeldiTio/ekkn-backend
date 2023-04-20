@@ -19,20 +19,15 @@ func NewGroupServiceImpl(repo repository.GroupRepository, studentRegistrationSer
 }
 
 func (service *GroupServiceImpl) CreateGroup(request shareddomain.RequestGroup) error {
-	// get group by student id and period id
+	// get student registration for validation status true and haven't group
 	studentRegistration, err := service.studentRegistrationService.FindStudentRegistrationByNimPeriodID(request.Leader, request.PeriodID)
 	if err != nil {
 		return err
 	}
 
-	// cek student registration is valid
-	if studentRegistration.ID == "" {
-		return errors.New("gagal membuat kelompok, data tidak valid")
-	}
-
-	// cek isExist
-	if studentRegistration.Group != "" {
-		return errors.New("gagal membuat kelompok, anda telah memiliki kelompok")
+	// cek student registration is valid and status true and have group
+	if studentRegistration.ID == "" || studentRegistration.Status == "false" || studentRegistration.Group != "" {
+		return errors.New("gagal membuat kelompok")
 	}
 
 	group := domain.Group{
@@ -47,24 +42,35 @@ func (service *GroupServiceImpl) CreateGroup(request shareddomain.RequestGroup) 
 	return nil
 }
 
-//func (service *GroupServiceImpl) FindGroupByStudentPeriodID(studentID, periodID string) (domain.Group, error) {
-//	// get group by student id and period id
-//	group, err := service.repo.FindByStudentPeriodID(studentID, periodID)
-//	if err != nil {
-//		return group, nil
-//	}
-//
-//	// cek isExist
-//	if group.ID == "" {
-//		return group, errors.New("kelompok tidak dapat ditemukan")
-//	}
-//
-//	return group, nil
-//}
+func (service *GroupServiceImpl) FindGroupID(ID string) (domain.Group, error) {
+	// get group by student id and period id
+	group, err := service.repo.FindByID(ID)
+	if err != nil {
+		return group, nil
+	}
+
+	// cek isExist
+	if group.ID == "" {
+		return group, errors.New("kelompok tidak dapat ditemukan")
+	}
+
+	return group, nil
+}
 
 func (service *GroupServiceImpl) JoinGroup(studentID, periodID, referral string) error {
+	// get student registration for validation status true and haven't group
+	studentRegistration, err := service.studentRegistrationService.FindStudentRegistrationByNimPeriodID(studentID, periodID)
+	if err != nil {
+		return err
+	}
+
+	// cek student registration is valid and status true and have group
+	if studentRegistration.ID == "" || studentRegistration.Status == "false" || studentRegistration.Group != "" {
+		return errors.New("gagal bergabung dengan kelompok")
+	}
+
 	// get group by referral
-	group, err := service.repo.FindByReferal(referral)
+	group, err := service.repo.FindByReferal(referral, periodID)
 	if err != nil {
 		return err
 	}
