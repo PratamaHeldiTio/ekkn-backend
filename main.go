@@ -106,6 +106,7 @@ func main() {
 	api.POST("/group/:periodID", authMiddleware.AuthMiddleWare(), groupResthandler.CrateGroup)
 	api.GET("/group/:id", authMiddleware.AuthMiddleWare(), groupResthandler.FindGroupByID)
 	api.POST("/group/join/:periodID", authMiddleware.AuthMiddleWare(), groupResthandler.JoinGroup)
+	api.PUT("/group/register/:id", authMiddleware.AuthMiddleWare(), groupResthandler.RegisterGroup)
 
 	router.Run()
 }

@@ -6,4 +6,5 @@ type GroupReshandler interface {
 	CrateGroup(c *gin.Context)
 	JoinGroup(c *gin.Context)
 	FindGroupByID(c *gin.Context)
+	RegisterGroup(c *gin.Context)
 }

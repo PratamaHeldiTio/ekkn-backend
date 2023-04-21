@@ -9,4 +9,5 @@ type GroupRepository interface {
 	FindByReferal(referral, periodID string) (domain.Group, error)
 	Join(studentID, groupID, referral string) error
 	FindByID(ID string) (domain.Group, error)
+	Update(group domain.Group) error
 }

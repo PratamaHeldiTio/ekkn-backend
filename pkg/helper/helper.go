@@ -63,3 +63,19 @@ func RandomString(n int) string {
 	}
 	return string(b)
 }
+
+// func to get unique slice
+
+func UniqueSlice(input []string) []string {
+	unique := make([]string, 0, len(input))
+	mapBool := make(map[string]bool)
+
+	for _, val := range input {
+		if _, ok := mapBool[val]; !ok {
+			mapBool[val] = true
+			unique = append(unique, val)
+		}
+	}
+
+	return unique
+}

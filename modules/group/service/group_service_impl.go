@@ -7,6 +7,7 @@ import (
 	"backend-ekkn/pkg/helper"
 	"backend-ekkn/pkg/shareddomain"
 	"errors"
+	"fmt"
 )
 
 type GroupServiceImpl struct {
@@ -90,4 +91,42 @@ func (service *GroupServiceImpl) JoinGroup(studentID, periodID, referral string)
 	}
 
 	return nil
+}
+
+func (service *GroupServiceImpl) RegisterGroup(ID, Nim string) error {
+	//find group
+	group, err := service.FindGroupID(ID)
+	if err != nil {
+		return err
+	}
+	fmt.Println(group)
+
+	//status group registration must be true register only leader and min member 12
+	// minimal can madura lang 1 and min 3 prodi
+	maduraMember := 0
+	var prodiStudents []string
+	for _, student := range group.Students {
+		if student.MaduraLang == "true" {
+			maduraMember += 1
+		}
+		prodiStudents = append(prodiStudents, student.Prodi)
+	}
+	IdenticProdi := len(helper.UniqueSlice(prodiStudents))
+
+	if group.Period.StatusRegisterGroup == "false" || group.Leader != Nim ||
+		len(group.Students) < 12 || maduraMember < 1 || IdenticProdi < 3 {
+		return errors.New("gagal mendaftarkan kelompok")
+	}
+
+	updateGroup := domain.Group{
+		ID:     ID,
+		Status: "true",
+	}
+
+	if err := service.repo.Update(updateGroup); err != nil {
+		return err
+	}
+
+	return nil
+
 }

@@ -81,3 +81,19 @@ func (handler *GroupResthandlerImpl) FindGroupByID(c *gin.Context) {
 	response := helper.APIResponseWithData(http.StatusOK, true, "berhasil mendapatkan kelompok", responseData)
 	c.JSON(http.StatusOK, response)
 }
+
+func (handler *GroupResthandlerImpl) RegisterGroup(c *gin.Context) {
+	// get id group param
+	ID := c.Param("id")
+	Nim := c.MustGet("currentUser").(string)
+
+	if err := handler.service.RegisterGroup(ID, Nim); err != nil {
+		// create response
+		response := helper.APIResponseWithError(http.StatusBadRequest, false, "gagal mendaftarkan kelompok", err.Error())
+		c.JSON(http.StatusBadRequest, response)
+		return
+	}
+
+	response := helper.APIResponseWithoutData(http.StatusOK, true, "berhasil mendaftarkan kelompok")
+	c.JSON(http.StatusOK, response)
+}
