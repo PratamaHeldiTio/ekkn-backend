@@ -5,6 +5,7 @@ import (
 	period "backend-ekkn/modules/period/domain"
 	student "backend-ekkn/modules/student/domain"
 	studentRegistration "backend-ekkn/modules/student_registration/domain"
+	village "backend-ekkn/modules/village/domain"
 	"fmt"
 	"gorm.io/gorm"
 	"log"
@@ -16,6 +17,7 @@ func RunMigration(db *gorm.DB) {
 		&student.Student{},
 		&studentRegistration.StudentRegistration{},
 		&group.Group{},
+		&village.Village{},
 	)
 	if err != nil {
 		log.Println(err)

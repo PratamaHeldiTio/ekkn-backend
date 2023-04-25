@@ -8,6 +8,12 @@ type RequestGroup struct {
 	Leader   string `json:"leader"`
 }
 
+type RequestGroupUpdate struct {
+	ID      string
+	Village string `json:"village"`
+	Nim     string
+}
+
 type Student struct {
 	Nim        string `json:"nim"`
 	Name       string `json:"name"`
@@ -28,6 +34,12 @@ type ResponseGroupByID struct {
 
 type RequestJoin struct {
 	Referral string `json:"referral" binding:"required,max=6"`
+}
+
+type AddVillage struct {
+	ID      string
+	Nim     string
+	Village string `json:"village"`
 }
 
 func ToResponseGroupByID(group domain.Group) ResponseGroupByID {

@@ -16,6 +16,9 @@ import (
 	repository3 "backend-ekkn/modules/student_registration/repository"
 	resthandler3 "backend-ekkn/modules/student_registration/resthandler"
 	service3 "backend-ekkn/modules/student_registration/service"
+	repository5 "backend-ekkn/modules/village/repository"
+	resthandler5 "backend-ekkn/modules/village/resthandler"
+	service5 "backend-ekkn/modules/village/service"
 	"fmt"
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
@@ -59,9 +62,14 @@ func main() {
 	studentRegistrationService := service3.NewStudentRegistrationService(studentRegistrationRepository)
 	studentRegistrationResthandler := resthandler3.NewStudentRegistrationResthandler(studentRegistrationService)
 
+	// module villge
+	villageRepository := repository5.NeWVillageRepository(db)
+	villageService := service5.NewVillageService(villageRepository)
+	villageResthandler := resthandler5.NewVillageResthandler(villageService)
+
 	//module group
 	groupRepository := repository4.NewGroupRepository(db)
-	groupService := service4.NewGroupServiceImpl(groupRepository, studentRegistrationService)
+	groupService := service4.NewGroupServiceImpl(groupRepository, studentRegistrationService, villageService)
 	groupResthandler := resthandler4.NewGroupReshandler(groupService)
 
 	// init router gin
@@ -107,6 +115,12 @@ func main() {
 	api.GET("/group/:id", authMiddleware.AuthMiddleWare(), groupResthandler.FindGroupByID)
 	api.POST("/group/join/:periodID", authMiddleware.AuthMiddleWare(), groupResthandler.JoinGroup)
 	api.PUT("/group/register/:id", authMiddleware.AuthMiddleWare(), groupResthandler.RegisterGroup)
+	api.POST("/group/village/:id", authMiddleware.AuthMiddleWare(), groupResthandler.AddVillage)
+	//api.PUT("/group/:id", authMiddleware.AuthMiddleWare(), groupResthandler.UpdateGroup)
+
+	// endpoint village
+	api.POST("/village", authMiddleware.AuthMiddleWare(), villageResthandler.CreateVillage)
+	api.GET("/village", authMiddleware.AuthMiddleWare(), villageResthandler.FindAllVillage)
 
 	router.Run()
 }

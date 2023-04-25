@@ -97,3 +97,57 @@ func (handler *GroupResthandlerImpl) RegisterGroup(c *gin.Context) {
 	response := helper.APIResponseWithoutData(http.StatusOK, true, "berhasil mendaftarkan kelompok")
 	c.JSON(http.StatusOK, response)
 }
+
+func (handler *GroupResthandlerImpl) UpdateGroup(c *gin.Context) {
+	// get id group param
+	ID := c.Param("id")
+	Nim := c.MustGet("currentUser").(string)
+	request := shareddomain.RequestGroupUpdate{
+		ID:  ID,
+		Nim: Nim,
+	}
+
+	if err := c.ShouldBindJSON(&request); err != nil {
+		// create response
+		response := helper.APIResponseWithError(http.StatusUnprocessableEntity, false, "gagal memperbaharui kelompok", err.Error())
+		c.JSON(http.StatusUnprocessableEntity, response)
+		return
+	}
+
+	if err := handler.service.UpdateGroup(request); err != nil {
+		// create response
+		response := helper.APIResponseWithError(http.StatusBadRequest, false, "gagal memperbaharui kelompok", err.Error())
+		c.JSON(http.StatusBadRequest, response)
+		return
+	}
+
+	response := helper.APIResponseWithoutData(http.StatusOK, true, "berhasil memperbaharui kelompok")
+	c.JSON(http.StatusOK, response)
+}
+
+func (handler *GroupResthandlerImpl) AddVillage(c *gin.Context) {
+	// get id group param
+	ID := c.Param("id")
+	Nim := c.MustGet("currentUser").(string)
+	request := shareddomain.AddVillage{
+		ID:  ID,
+		Nim: Nim,
+	}
+
+	if err := c.ShouldBindJSON(&request); err != nil {
+		// create response
+		response := helper.APIResponseWithError(http.StatusUnprocessableEntity, false, "gagal menambahkan desa", err.Error())
+		c.JSON(http.StatusUnprocessableEntity, response)
+		return
+	}
+
+	if err := handler.service.AddVillage(request); err != nil {
+		// create response
+		response := helper.APIResponseWithError(http.StatusBadRequest, false, "gagal menambahkan desa", err.Error())
+		c.JSON(http.StatusBadRequest, response)
+		return
+	}
+
+	response := helper.APIResponseWithoutData(http.StatusOK, true, "berhasil menambahkan desa")
+	c.JSON(http.StatusOK, response)
+}

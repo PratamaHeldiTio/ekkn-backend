@@ -4,19 +4,26 @@ import (
 	"backend-ekkn/modules/group/domain"
 	"backend-ekkn/modules/group/repository"
 	"backend-ekkn/modules/student_registration/service"
+	service2 "backend-ekkn/modules/village/service"
 	"backend-ekkn/pkg/helper"
 	"backend-ekkn/pkg/shareddomain"
 	"errors"
-	"fmt"
 )
 
 type GroupServiceImpl struct {
 	repo                       repository.GroupRepository
 	studentRegistrationService service.StudentRegistrationService
+	villageService             service2.VillageService
 }
 
-func NewGroupServiceImpl(repo repository.GroupRepository, studentRegistrationService service.StudentRegistrationService) GroupService {
-	return &GroupServiceImpl{repo, studentRegistrationService}
+func NewGroupServiceImpl(
+	repo repository.GroupRepository,
+	studentRegistrationService service.StudentRegistrationService,
+	villageService service2.VillageService) GroupService {
+	return &GroupServiceImpl{
+		repo,
+		studentRegistrationService,
+		villageService}
 }
 
 func (service *GroupServiceImpl) CreateGroup(request shareddomain.RequestGroup) error {
@@ -99,7 +106,6 @@ func (service *GroupServiceImpl) RegisterGroup(ID, Nim string) error {
 	if err != nil {
 		return err
 	}
-	fmt.Println(group)
 
 	//status group registration must be true register only leader and min member 12
 	// minimal can madura lang 1 and min 3 prodi
@@ -129,4 +135,65 @@ func (service *GroupServiceImpl) RegisterGroup(ID, Nim string) error {
 
 	return nil
 
+}
+
+func (service *GroupServiceImpl) UpdateGroup(request shareddomain.RequestGroupUpdate) error {
+	//find group
+	group, err := service.FindGroupID(request.ID)
+	if err != nil {
+		return err
+	}
+
+	if group.Leader != request.Nim {
+		return errors.New("gagal memperbaharui kelompok")
+	}
+
+	updateGroup := domain.Group{
+		ID: request.ID,
+	}
+
+	if err := service.repo.Update(updateGroup); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (service *GroupServiceImpl) AddVillage(request shareddomain.AddVillage) error {
+	//find group
+	group, err := service.FindGroupID(request.ID)
+	if err != nil {
+		return err
+	}
+
+	if group.Leader != request.Nim || group.Status != "true" {
+		return errors.New("gagal menambahkan desa")
+	}
+
+	// get villa check status
+	village, err := service.villageService.FindVillageById(request.Village)
+	if err != nil {
+		return err
+	}
+
+	if village.Status == "true" {
+		return errors.New("gagal menambahkan desa")
+	}
+
+	// update group add village id
+	group.VillageID = request.Village
+	if err := service.repo.Update(group); err != nil {
+		return err
+	}
+
+	// update status village
+	requestVillage := shareddomain.RequestVillage{
+		ID:     request.Village,
+		Status: "true",
+	}
+	if err := service.villageService.UpdateVillage(requestVillage); err != nil {
+		return err
+	}
+
+	return nil
 }

@@ -3,6 +3,7 @@ package domain
 import (
 	"backend-ekkn/modules/period/domain"
 	student "backend-ekkn/modules/student/domain"
+	village "backend-ekkn/modules/village/domain"
 )
 
 type Group struct {
@@ -11,6 +12,8 @@ type Group struct {
 	Students  []student.Student `gorm:"many2many:student_groups;"`
 	PeriodID  string
 	Period    domain.Period
+	Village   village.Village
+	VillageID string
 	Leader    string `gorm:"type:varchar(12)"`
 	Referral  string `gorm:"type:varchar(6); unique; not null"`
 	Status    string `gorm:"type:varchar(5); default:false"`

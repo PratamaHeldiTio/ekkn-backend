@@ -7,4 +7,6 @@ type GroupReshandler interface {
 	JoinGroup(c *gin.Context)
 	FindGroupByID(c *gin.Context)
 	RegisterGroup(c *gin.Context)
+	UpdateGroup(c *gin.Context)
+	AddVillage(c *gin.Context)
 }
