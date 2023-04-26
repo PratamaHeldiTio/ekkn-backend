@@ -116,6 +116,8 @@ func main() {
 	api.POST("/group/join/:periodID", authMiddleware.AuthMiddleWare(), groupResthandler.JoinGroup)
 	api.PUT("/group/register/:id", authMiddleware.AuthMiddleWare(), groupResthandler.RegisterGroup)
 	api.POST("/group/village/:id", authMiddleware.AuthMiddleWare(), groupResthandler.AddVillage)
+	api.POST("/group/proposal/:id", authMiddleware.AuthMiddleWare(), groupResthandler.UploadProposal)
+	api.POST("/group/report/:id", authMiddleware.AuthMiddleWare(), groupResthandler.UploadReport)
 	//api.PUT("/group/:id", authMiddleware.AuthMiddleWare(), groupResthandler.UpdateGroup)
 
 	// endpoint village

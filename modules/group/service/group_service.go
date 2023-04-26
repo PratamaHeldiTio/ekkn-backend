@@ -10,6 +10,6 @@ type GroupService interface {
 	FindGroupID(ID string) (domain.Group, error)
 	JoinGroup(studentID, periodID, refferal string) error
 	RegisterGroup(ID, Nim string) error
-	UpdateGroup(request shareddomain.RequestGroupUpdate) error
+	UpdateGroup(request shareddomain.GroupUpdateRequest) error
 	AddVillage(request shareddomain.AddVillage) error
 }

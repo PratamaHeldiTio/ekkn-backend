@@ -1,6 +1,8 @@
 package shareddomain
 
-import "backend-ekkn/modules/village/domain"
+import (
+	"backend-ekkn/modules/village/domain"
+)
 
 type RequestVillage struct {
 	ID        string

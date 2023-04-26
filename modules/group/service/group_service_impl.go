@@ -137,7 +137,7 @@ func (service *GroupServiceImpl) RegisterGroup(ID, Nim string) error {
 
 }
 
-func (service *GroupServiceImpl) UpdateGroup(request shareddomain.RequestGroupUpdate) error {
+func (service *GroupServiceImpl) UpdateGroup(request shareddomain.GroupUpdateRequest) error {
 	//find group
 	group, err := service.FindGroupID(request.ID)
 	if err != nil {
@@ -148,11 +148,12 @@ func (service *GroupServiceImpl) UpdateGroup(request shareddomain.RequestGroupUp
 		return errors.New("gagal memperbaharui kelompok")
 	}
 
-	updateGroup := domain.Group{
-		ID: request.ID,
-	}
+	// change new value update
+	group.Proposal = request.Proposal
+	group.VillageID = request.Village
+	group.Report = request.Report
 
-	if err := service.repo.Update(updateGroup); err != nil {
+	if err := service.repo.Update(group); err != nil {
 		return err
 	}
 
@@ -166,7 +167,7 @@ func (service *GroupServiceImpl) AddVillage(request shareddomain.AddVillage) err
 		return err
 	}
 
-	if group.Leader != request.Nim || group.Status != "true" {
+	if group.Leader != request.Nim || group.Status != "true" || group.VillageID != "" {
 		return errors.New("gagal menambahkan desa")
 	}
 

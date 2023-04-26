@@ -1,6 +1,8 @@
 package shareddomain
 
-import "backend-ekkn/modules/group/domain"
+import (
+	"backend-ekkn/modules/group/domain"
+)
 
 type RequestGroup struct {
 	Name     string `json:"name" binding:"required,max=50"`
@@ -8,10 +10,12 @@ type RequestGroup struct {
 	Leader   string `json:"leader"`
 }
 
-type RequestGroupUpdate struct {
-	ID      string
-	Village string `json:"village"`
-	Nim     string
+type GroupUpdateRequest struct {
+	ID       string
+	Village  string `json:"village"`
+	Nim      string
+	Proposal string
+	Report   string
 }
 
 type Student struct {

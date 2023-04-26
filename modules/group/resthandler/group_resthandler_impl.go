@@ -6,6 +6,8 @@ import (
 	"backend-ekkn/pkg/shareddomain"
 	"github.com/gin-gonic/gin"
 	"net/http"
+	"strconv"
+	"time"
 )
 
 type GroupResthandlerImpl struct {
@@ -102,7 +104,7 @@ func (handler *GroupResthandlerImpl) UpdateGroup(c *gin.Context) {
 	// get id group param
 	ID := c.Param("id")
 	Nim := c.MustGet("currentUser").(string)
-	request := shareddomain.RequestGroupUpdate{
+	request := shareddomain.GroupUpdateRequest{
 		ID:  ID,
 		Nim: Nim,
 	}
@@ -150,4 +152,104 @@ func (handler *GroupResthandlerImpl) AddVillage(c *gin.Context) {
 
 	response := helper.APIResponseWithoutData(http.StatusOK, true, "berhasil menambahkan desa")
 	c.JSON(http.StatusOK, response)
+}
+
+func (handler *GroupResthandlerImpl) UploadProposal(c *gin.Context) {
+	file, err := c.FormFile("proposal")
+	if err != nil {
+		// create response
+		response := helper.APIResponseWithError(http.StatusBadRequest, false, "gagal upload proposal", err.Error())
+		c.JSON(http.StatusBadRequest, response)
+		return
+	}
+
+	if file.Size > 10485760 {
+		// create response
+		response := helper.APIResponseWithError(http.StatusBadRequest, false, "gagal upload proposal", "file terlalu besar")
+		c.JSON(http.StatusBadRequest, response)
+		return
+	}
+
+	if file.Header.Values("Content-Type")[0] != "application/pdf" {
+		// create response
+		response := helper.APIResponseWithError(http.StatusBadRequest, false, "gagal upload proposal", "format file salah")
+		c.JSON(http.StatusBadRequest, response)
+		return
+	}
+
+	// save file to directory
+	path := "public/proposal/" + strconv.FormatInt(time.Now().UnixMilli(), 10) + "_" + file.Filename
+	if err := c.SaveUploadedFile(file, path); err != nil {
+		// create response
+		response := helper.APIResponseWithError(http.StatusBadRequest, false, "gagal upload proposal", err.Error())
+		c.JSON(http.StatusBadRequest, response)
+		return
+	}
+
+	// save path to db
+	groupUpdateRequest := shareddomain.GroupUpdateRequest{
+		ID:       c.Param("id"),
+		Proposal: path,
+		Nim:      c.MustGet("currentUser").(string),
+	}
+	if err := handler.service.UpdateGroup(groupUpdateRequest); err != nil {
+		// create response
+		response := helper.APIResponseWithError(http.StatusBadRequest, false, "gagal upload proposal", err.Error())
+		c.JSON(http.StatusBadRequest, response)
+		return
+	}
+
+	response := helper.APIResponseWithoutData(http.StatusOK, true, "berhasil upload proposal")
+	c.JSON(http.StatusOK, response)
+
+}
+
+func (handler *GroupResthandlerImpl) UploadReport(c *gin.Context) {
+	file, err := c.FormFile("report")
+	if err != nil {
+		// create response
+		response := helper.APIResponseWithError(http.StatusBadRequest, false, "gagal upload laporan", err.Error())
+		c.JSON(http.StatusBadRequest, response)
+		return
+	}
+
+	if file.Size > 10485760 {
+		// create response
+		response := helper.APIResponseWithError(http.StatusBadRequest, false, "gagal upload laporan", "file terlalu besar")
+		c.JSON(http.StatusBadRequest, response)
+		return
+	}
+
+	if file.Header.Values("Content-Type")[0] != "application/pdf" {
+		// create response
+		response := helper.APIResponseWithError(http.StatusBadRequest, false, "gagal upload laporan", "format file salah")
+		c.JSON(http.StatusBadRequest, response)
+		return
+	}
+
+	// save file to directory
+	path := "public/report/" + strconv.FormatInt(time.Now().UnixMilli(), 10) + "_" + file.Filename
+	if err := c.SaveUploadedFile(file, path); err != nil {
+		// create response
+		response := helper.APIResponseWithError(http.StatusBadRequest, false, "gagal upload laporan", err.Error())
+		c.JSON(http.StatusBadRequest, response)
+		return
+	}
+
+	// save path to db
+	groupUpdateRequest := shareddomain.GroupUpdateRequest{
+		ID:     c.Param("id"),
+		Report: path,
+		Nim:    c.MustGet("currentUser").(string),
+	}
+	if err := handler.service.UpdateGroup(groupUpdateRequest); err != nil {
+		// create response
+		response := helper.APIResponseWithError(http.StatusBadRequest, false, "gagal upload proposal", err.Error())
+		c.JSON(http.StatusBadRequest, response)
+		return
+	}
+
+	response := helper.APIResponseWithoutData(http.StatusOK, true, "berhasil upload proposal")
+	c.JSON(http.StatusOK, response)
+
 }

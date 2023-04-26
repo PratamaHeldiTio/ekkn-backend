@@ -13,10 +13,12 @@ type Group struct {
 	PeriodID  string
 	Period    domain.Period
 	Village   village.Village
-	VillageID string
+	VillageID string `gorm:"default:null"`
 	Leader    string `gorm:"type:varchar(12)"`
 	Referral  string `gorm:"type:varchar(6); unique; not null"`
 	Status    string `gorm:"type:varchar(5); default:false"`
+	Proposal  string `gorm:"type:varchar(255)"`
+	Report    string `gorm:"type:varchar(255)"`
 	CreatedAt int64  `gorm:"autoCreateTime"`
 	UpdateAt  int64  `gorm:"autoUpdateTime"`
 }
