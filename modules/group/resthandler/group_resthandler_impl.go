@@ -6,8 +6,6 @@ import (
 	"backend-ekkn/pkg/shareddomain"
 	"github.com/gin-gonic/gin"
 	"net/http"
-	"strconv"
-	"time"
 )
 
 type GroupResthandlerImpl struct {
@@ -155,31 +153,8 @@ func (handler *GroupResthandlerImpl) AddVillage(c *gin.Context) {
 }
 
 func (handler *GroupResthandlerImpl) UploadProposal(c *gin.Context) {
-	file, err := c.FormFile("proposal")
+	filename, err := helper.SavePDF(c, "proposal")
 	if err != nil {
-		// create response
-		response := helper.APIResponseWithError(http.StatusBadRequest, false, "gagal upload proposal", err.Error())
-		c.JSON(http.StatusBadRequest, response)
-		return
-	}
-
-	if file.Size > 10485760 {
-		// create response
-		response := helper.APIResponseWithError(http.StatusBadRequest, false, "gagal upload proposal", "file terlalu besar")
-		c.JSON(http.StatusBadRequest, response)
-		return
-	}
-
-	if file.Header.Values("Content-Type")[0] != "application/pdf" {
-		// create response
-		response := helper.APIResponseWithError(http.StatusBadRequest, false, "gagal upload proposal", "format file salah")
-		c.JSON(http.StatusBadRequest, response)
-		return
-	}
-
-	// save file to directory
-	path := "public/proposal/" + strconv.FormatInt(time.Now().UnixMilli(), 10) + "_" + file.Filename
-	if err := c.SaveUploadedFile(file, path); err != nil {
 		// create response
 		response := helper.APIResponseWithError(http.StatusBadRequest, false, "gagal upload proposal", err.Error())
 		c.JSON(http.StatusBadRequest, response)
@@ -189,7 +164,7 @@ func (handler *GroupResthandlerImpl) UploadProposal(c *gin.Context) {
 	// save path to db
 	groupUpdateRequest := shareddomain.GroupUpdateRequest{
 		ID:       c.Param("id"),
-		Proposal: path,
+		Proposal: filename,
 		Nim:      c.MustGet("currentUser").(string),
 	}
 	if err := handler.service.UpdateGroup(groupUpdateRequest); err != nil {
@@ -205,33 +180,10 @@ func (handler *GroupResthandlerImpl) UploadProposal(c *gin.Context) {
 }
 
 func (handler *GroupResthandlerImpl) UploadReport(c *gin.Context) {
-	file, err := c.FormFile("report")
+	filename, err := helper.SavePDF(c, "report")
 	if err != nil {
 		// create response
-		response := helper.APIResponseWithError(http.StatusBadRequest, false, "gagal upload laporan", err.Error())
-		c.JSON(http.StatusBadRequest, response)
-		return
-	}
-
-	if file.Size > 10485760 {
-		// create response
-		response := helper.APIResponseWithError(http.StatusBadRequest, false, "gagal upload laporan", "file terlalu besar")
-		c.JSON(http.StatusBadRequest, response)
-		return
-	}
-
-	if file.Header.Values("Content-Type")[0] != "application/pdf" {
-		// create response
-		response := helper.APIResponseWithError(http.StatusBadRequest, false, "gagal upload laporan", "format file salah")
-		c.JSON(http.StatusBadRequest, response)
-		return
-	}
-
-	// save file to directory
-	path := "public/report/" + strconv.FormatInt(time.Now().UnixMilli(), 10) + "_" + file.Filename
-	if err := c.SaveUploadedFile(file, path); err != nil {
-		// create response
-		response := helper.APIResponseWithError(http.StatusBadRequest, false, "gagal upload laporan", err.Error())
+		response := helper.APIResponseWithError(http.StatusBadRequest, false, "gagal upload proposal", err.Error())
 		c.JSON(http.StatusBadRequest, response)
 		return
 	}
@@ -239,7 +191,7 @@ func (handler *GroupResthandlerImpl) UploadReport(c *gin.Context) {
 	// save path to db
 	groupUpdateRequest := shareddomain.GroupUpdateRequest{
 		ID:     c.Param("id"),
-		Report: path,
+		Report: filename,
 		Nim:    c.MustGet("currentUser").(string),
 	}
 	if err := handler.service.UpdateGroup(groupUpdateRequest); err != nil {
@@ -252,4 +204,22 @@ func (handler *GroupResthandlerImpl) UploadReport(c *gin.Context) {
 	response := helper.APIResponseWithoutData(http.StatusOK, true, "berhasil upload proposal")
 	c.JSON(http.StatusOK, response)
 
+}
+
+func (handler *GroupResthandlerImpl) FindByGroupByPeriodLeader(c *gin.Context) {
+	// get id group param
+	PeriodId := c.Param("periodID")
+	Leader := c.MustGet("currentUser").(string)
+
+	group, err := handler.service.FindGroupByPeriodLeader(PeriodId, Leader)
+	if err != nil {
+		// create response
+		response := helper.APIResponseWithError(http.StatusBadRequest, false, "gagal mendapatkan kelompok", err.Error())
+		c.JSON(http.StatusBadRequest, response)
+		return
+	}
+
+	responseData := shareddomain.ToGroupByPeriodLeaderResponse(group)
+	response := helper.APIResponseWithData(http.StatusOK, true, "berhasil mendapatkan kelompok", responseData)
+	c.JSON(http.StatusOK, response)
 }

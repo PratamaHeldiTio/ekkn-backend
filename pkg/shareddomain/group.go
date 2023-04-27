@@ -31,6 +31,7 @@ type ResponseGroupByID struct {
 	Students  []Student `json:"students"`
 	Leader    string    `json:"leader"`
 	Referral  string    `json:"referral"`
+	Village   Village   `json:"village"`
 	Status    string    `json:"status"`
 	CreatedAt int64     `json:"created_at"`
 	UpdatedAt int64     `json:"updated_at"`
@@ -46,6 +47,13 @@ type AddVillage struct {
 	Village string `json:"village"`
 }
 
+type Village struct {
+	ID        string `json:"id"`
+	Name      string `json:"name"`
+	Kecamatan string `json:"kecamatan"`
+	Kabupaten string `json:"kabupaten"`
+}
+
 func ToResponseGroupByID(group domain.Group) ResponseGroupByID {
 	// maping students
 	var students []Student
@@ -58,6 +66,13 @@ func ToResponseGroupByID(group domain.Group) ResponseGroupByID {
 		})
 	}
 
+	// village
+	village := Village{
+		Name:      group.Village.Name,
+		Kecamatan: group.Village.Kecamatan,
+		Kabupaten: group.Village.Kabupaten,
+	}
+
 	// result response
 	responseGroup := ResponseGroupByID{
 		ID:        group.ID,
@@ -66,8 +81,43 @@ func ToResponseGroupByID(group domain.Group) ResponseGroupByID {
 		Leader:    group.Leader,
 		Referral:  group.Referral,
 		Status:    group.Status,
+		Village:   village,
 		CreatedAt: group.CreatedAt,
 		UpdatedAt: group.UpdateAt,
+	}
+
+	return responseGroup
+}
+
+type GroupByPeriodLeaderResponse struct {
+	ID        string    `json:"id"`
+	Name      string    `json:"name"`
+	Students  []Student `json:"students"`
+	Leader    string    `json:"leader"`
+	Referral  string    `json:"referral"`
+	Status    string    `json:"status"`
+	Proposal  string    `json:"proposal"`
+	Report    string    `json:"report"`
+	Village   Village   `json:"village"`
+	CreatedAt int64     `json:"created_at"`
+	UpdatedAt int64     `json:"updated_at"`
+}
+
+func ToGroupByPeriodLeaderResponse(group domain.Group) GroupByPeriodLeaderResponse {
+	// village
+	village := Village{
+		ID:        group.Village.ID,
+		Name:      group.Village.Name,
+		Kecamatan: group.Village.Kecamatan,
+		Kabupaten: group.Village.Kabupaten,
+	}
+
+	// result response
+	responseGroup := GroupByPeriodLeaderResponse{
+		ID:       group.ID,
+		Proposal: group.Proposal,
+		Report:   group.Report,
+		Village:  village,
 	}
 
 	return responseGroup

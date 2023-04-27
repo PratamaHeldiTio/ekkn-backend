@@ -72,7 +72,11 @@ func (repo *GroupRepositoryImpl) Join(studentID, PeriodID, groupID string) error
 
 func (repo *GroupRepositoryImpl) FindByID(ID string) (domain.Group, error) {
 	var group domain.Group
-	if err := repo.db.Preload("Students").Preload("Period").Where("group_id = ?", ID).Find(&group).Error; err != nil {
+	if err := repo.db.Preload("Students").
+		Preload("Period").
+		Preload("Village").
+		Where("group_id = ?", ID).
+		Find(&group).Error; err != nil {
 		return group, err
 	}
 
@@ -85,4 +89,14 @@ func (repo *GroupRepositoryImpl) Update(group domain.Group) error {
 	}
 
 	return nil
+}
+
+func (repo *GroupRepositoryImpl) FindByPeriodLeader(periodID, leader string) (domain.Group, error) {
+	var group domain.Group
+	if err := repo.db.Preload("Village").Where("period_id = ? and leader = ?", periodID, leader).Find(&group).
+		Error; err != nil {
+		return group, err
+	}
+
+	return group, nil
 }

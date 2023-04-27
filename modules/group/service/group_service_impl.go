@@ -198,3 +198,18 @@ func (service *GroupServiceImpl) AddVillage(request shareddomain.AddVillage) err
 
 	return nil
 }
+
+func (service *GroupServiceImpl) FindGroupByPeriodLeader(periodID, leader string) (domain.Group, error) {
+	// get group by student id and period id
+	group, err := service.repo.FindByPeriodLeader(periodID, leader)
+	if err != nil {
+		return group, nil
+	}
+
+	// cek isExist
+	if group.ID == "" {
+		return group, errors.New("kelompok tidak dapat ditemukan")
+	}
+
+	return group, nil
+}

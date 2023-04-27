@@ -1,6 +1,12 @@
 package helper
 
-import "math/rand"
+import (
+	"errors"
+	"github.com/gin-gonic/gin"
+	"math/rand"
+	"strconv"
+	"time"
+)
 
 type ResponseWithoutData struct {
 	Code    int    `json:"code"`
@@ -78,4 +84,28 @@ func UniqueSlice(input []string) []string {
 	}
 
 	return unique
+}
+
+func SavePDF(c *gin.Context, name string) (string, error) {
+	file, err := c.FormFile(name)
+	if err != nil {
+		return "", err
+	}
+
+	if file.Size > 10485760 {
+		return "", errors.New("file terlalu besar")
+	}
+
+	if file.Header.Values("Content-Type")[0] != "application/pdf" {
+		return "", errors.New("format file salah")
+	}
+
+	// save file to directory
+	filename := strconv.FormatInt(time.Now().UnixMilli(), 10) + "_" + file.Filename
+	path := "public/" + name + "/" + filename
+	if err := c.SaveUploadedFile(file, path); err != nil {
+		return "", err
+	}
+
+	return filename, nil
 }

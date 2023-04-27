@@ -12,4 +12,5 @@ type GroupService interface {
 	RegisterGroup(ID, Nim string) error
 	UpdateGroup(request shareddomain.GroupUpdateRequest) error
 	AddVillage(request shareddomain.AddVillage) error
+	FindGroupByPeriodLeader(periodID, leader string) (domain.Group, error)
 }
