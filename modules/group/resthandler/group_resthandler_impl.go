@@ -156,7 +156,7 @@ func (handler *GroupResthandlerImpl) UploadProposal(c *gin.Context) {
 	filename, err := helper.SavePDF(c, "proposal")
 	if err != nil {
 		// create response
-		response := helper.APIResponseWithError(http.StatusBadRequest, false, "gagal upload proposal", err.Error())
+		response := helper.APIResponseWithError(http.StatusBadRequest, false, "Gagal upload proposal", err.Error())
 		c.JSON(http.StatusBadRequest, response)
 		return
 	}
@@ -169,12 +169,12 @@ func (handler *GroupResthandlerImpl) UploadProposal(c *gin.Context) {
 	}
 	if err := handler.service.UpdateGroup(groupUpdateRequest); err != nil {
 		// create response
-		response := helper.APIResponseWithError(http.StatusBadRequest, false, "gagal upload proposal", err.Error())
+		response := helper.APIResponseWithError(http.StatusBadRequest, false, "Gagal upload proposal", err.Error())
 		c.JSON(http.StatusBadRequest, response)
 		return
 	}
 
-	response := helper.APIResponseWithoutData(http.StatusOK, true, "berhasil upload proposal")
+	response := helper.APIResponseWithoutData(http.StatusOK, true, "Berhasil upload proposal")
 	c.JSON(http.StatusOK, response)
 
 }
@@ -183,7 +183,7 @@ func (handler *GroupResthandlerImpl) UploadReport(c *gin.Context) {
 	filename, err := helper.SavePDF(c, "report")
 	if err != nil {
 		// create response
-		response := helper.APIResponseWithError(http.StatusBadRequest, false, "gagal upload proposal", err.Error())
+		response := helper.APIResponseWithError(http.StatusBadRequest, false, "Gagal upload laporan", err.Error())
 		c.JSON(http.StatusBadRequest, response)
 		return
 	}
@@ -196,12 +196,12 @@ func (handler *GroupResthandlerImpl) UploadReport(c *gin.Context) {
 	}
 	if err := handler.service.UpdateGroup(groupUpdateRequest); err != nil {
 		// create response
-		response := helper.APIResponseWithError(http.StatusBadRequest, false, "gagal upload proposal", err.Error())
+		response := helper.APIResponseWithError(http.StatusBadRequest, false, "Gagal upload laporan", err.Error())
 		c.JSON(http.StatusBadRequest, response)
 		return
 	}
 
-	response := helper.APIResponseWithoutData(http.StatusOK, true, "berhasil upload proposal")
+	response := helper.APIResponseWithoutData(http.StatusOK, true, "Berhasil upload laporan")
 	c.JSON(http.StatusOK, response)
 
 }
@@ -214,12 +214,38 @@ func (handler *GroupResthandlerImpl) FindByGroupByPeriodLeader(c *gin.Context) {
 	group, err := handler.service.FindGroupByPeriodLeader(PeriodId, Leader)
 	if err != nil {
 		// create response
-		response := helper.APIResponseWithError(http.StatusBadRequest, false, "gagal mendapatkan kelompok", err.Error())
+		response := helper.APIResponseWithError(http.StatusBadRequest, false, "Gagal mendapatkan kelompok", err.Error())
 		c.JSON(http.StatusBadRequest, response)
 		return
 	}
 
 	responseData := shareddomain.ToGroupByPeriodLeaderResponse(group)
-	response := helper.APIResponseWithData(http.StatusOK, true, "berhasil mendapatkan kelompok", responseData)
+	response := helper.APIResponseWithData(http.StatusOK, true, "Berhasil mendapatkan kelompok", responseData)
+	c.JSON(http.StatusOK, response)
+}
+
+func (handler *GroupResthandlerImpl) UploadPotentialVillage(c *gin.Context) {
+	filename, err := helper.SavePDF(c, "potential")
+	if err != nil {
+		// create response
+		response := helper.APIResponseWithError(http.StatusBadRequest, false, "Gagal upload potensi desa", err.Error())
+		c.JSON(http.StatusBadRequest, response)
+		return
+	}
+
+	// save path to db
+	groupUpdateRequest := shareddomain.GroupUpdateRequest{
+		ID:        c.Param("id"),
+		Potential: filename,
+		Nim:       c.MustGet("currentUser").(string),
+	}
+	if err := handler.service.UpdateGroup(groupUpdateRequest); err != nil {
+		// create response
+		response := helper.APIResponseWithError(http.StatusBadRequest, false, "Gagal upload potensi desa", err.Error())
+		c.JSON(http.StatusBadRequest, response)
+		return
+	}
+
+	response := helper.APIResponseWithoutData(http.StatusOK, true, "Berhasil upload potensi desa")
 	c.JSON(http.StatusOK, response)
 }

@@ -119,6 +119,7 @@ func main() {
 	api.POST("/group/village/:id", authMiddleware.AuthMiddleWare(), groupResthandler.AddVillage)
 	api.POST("/group/proposal/:id", authMiddleware.AuthMiddleWare(), groupResthandler.UploadProposal)
 	api.POST("/group/report/:id", authMiddleware.AuthMiddleWare(), groupResthandler.UploadReport)
+	api.POST("/group/potential/:id", authMiddleware.AuthMiddleWare(), groupResthandler.UploadPotentialVillage)
 	api.GET("/group/leader/:periodID", authMiddleware.AuthMiddleWare(), groupResthandler.FindByGroupByPeriodLeader)
 
 	//api.PUT("/group/:id", authMiddleware.AuthMiddleWare(), groupResthandler.UpdateGroup)

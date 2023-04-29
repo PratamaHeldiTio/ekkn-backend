@@ -152,6 +152,7 @@ func (service *GroupServiceImpl) UpdateGroup(request shareddomain.GroupUpdateReq
 	group.Proposal = request.Proposal
 	group.VillageID = request.Village
 	group.Report = request.Report
+	group.Potential = request.Potential
 
 	if err := service.repo.Update(group); err != nil {
 		return err

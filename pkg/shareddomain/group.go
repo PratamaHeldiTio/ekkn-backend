@@ -11,11 +11,12 @@ type RequestGroup struct {
 }
 
 type GroupUpdateRequest struct {
-	ID       string
-	Village  string `json:"village"`
-	Nim      string
-	Proposal string
-	Report   string
+	ID        string
+	Village   string `json:"village"`
+	Nim       string
+	Proposal  string
+	Report    string
+	Potential string
 }
 
 type Student struct {
@@ -98,6 +99,7 @@ type GroupByPeriodLeaderResponse struct {
 	Status    string    `json:"status"`
 	Proposal  string    `json:"proposal"`
 	Report    string    `json:"report"`
+	Potential string    `json:"potential"`
 	Village   Village   `json:"village"`
 	CreatedAt int64     `json:"created_at"`
 	UpdatedAt int64     `json:"updated_at"`
@@ -114,10 +116,11 @@ func ToGroupByPeriodLeaderResponse(group domain.Group) GroupByPeriodLeaderRespon
 
 	// result response
 	responseGroup := GroupByPeriodLeaderResponse{
-		ID:       group.ID,
-		Proposal: group.Proposal,
-		Report:   group.Report,
-		Village:  village,
+		ID:        group.ID,
+		Proposal:  group.Proposal,
+		Report:    group.Report,
+		Potential: group.Potential,
+		Village:   village,
 	}
 
 	return responseGroup

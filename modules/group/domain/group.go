@@ -18,6 +18,7 @@ type Group struct {
 	Referral  string `gorm:"type:varchar(6); unique; not null"`
 	Status    string `gorm:"type:varchar(5); default:false"`
 	Proposal  string `gorm:"type:varchar(255)"`
+	Potential string `gorm:"type:varchar(255)"` // mean potential village doc
 	Report    string `gorm:"type:varchar(255)"`
 	CreatedAt int64  `gorm:"autoCreateTime"`
 	UpdateAt  int64  `gorm:"autoUpdateTime"`
