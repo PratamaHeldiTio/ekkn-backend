@@ -29,7 +29,6 @@ type FindStudentByNim struct {
 	Prodi      string `json:"prodi"`
 	Fakultas   string `json:"fakultas"`
 	Gender     string `json:"gender"`
-	Position   string `json:"position"`
 	MaduraLang string `json:"madura_lang"`
 	GroupKkn   string `json:"groupKkn"`
 	Grade      string `json:"grade"`
@@ -63,4 +62,11 @@ func ToResponseFindStudentByNim(student domain.Student) FindStudentByNim {
 	}
 
 	return studentResponse
+}
+
+type ChangePasswordRequest struct {
+	Nim               string
+	OldPassword       string `json:"old_password" binding:"required"`
+	NewPassword       string `json:"new_password" binding:"required"`
+	RepeatNewPassword string `json:"repeat_new_password" binding:"required"`
 }

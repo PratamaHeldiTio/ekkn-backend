@@ -125,3 +125,35 @@ func (service *StudentServiceImpl) DeleteStudent(nim string) error {
 
 	return nil
 }
+
+func (service *StudentServiceImpl) ChangePassword(request shareddomain.ChangePasswordRequest) error {
+	student, err := service.FindStudentByNim(request.Nim)
+	if err != nil {
+		return err
+	}
+
+	// old password match with password db
+	// check password is match
+	if err := bcrypt.CompareHashAndPassword([]byte(student.Password), []byte(request.OldPassword)); err != nil {
+		return err
+	}
+
+	// check repeat password match with new password
+	if request.NewPassword != request.RepeatNewPassword {
+		return errors.New("password baru tidak match dengan ulangi password")
+	}
+
+	// hashing new password
+	newPasswordHash, err := bcrypt.GenerateFromPassword([]byte(request.NewPassword), bcrypt.MinCost)
+	if err != nil {
+		return err
+	}
+
+	// update table student
+	student.Password = string(newPasswordHash)
+	if err := service.repo.Update(student); err != nil {
+		return err
+	}
+
+	return nil
+}

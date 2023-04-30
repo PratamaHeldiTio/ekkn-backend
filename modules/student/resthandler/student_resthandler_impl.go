@@ -47,8 +47,8 @@ func (handler *StudentResthandlerImpl) CreateStudent(c *gin.Context) {
 }
 
 func (handler *StudentResthandlerImpl) FindStudentByNim(c *gin.Context) {
-	// get params from url path
-	nim := c.Param("nim")
+	// get nim from jwt
+	nim := c.MustGet("currentUser").(string)
 
 	// send data and get return from service
 	student, err := handler.service.FindStudentByNim(nim)
@@ -130,7 +130,7 @@ func (handler *StudentResthandlerImpl) UpdateStudent(c *gin.Context) {
 	var studentRequest shareddomain.UpdateStudent
 
 	// get id from url
-	nim := c.Param("nim")
+	nim := c.MustGet("currentUser").(string)
 
 	if err := c.ShouldBindJSON(&studentRequest); err != nil {
 		// create response
@@ -172,4 +172,29 @@ func (handler *StudentResthandlerImpl) DeleteStudent(c *gin.Context) {
 	response := helper.APIResponseWithoutData(http.StatusOK, true, "Mahasiswa berhasil dihapus")
 
 	c.JSON(http.StatusOK, response)
+}
+
+func (handler *StudentResthandlerImpl) ChangePassword(c *gin.Context) {
+	var request shareddomain.ChangePasswordRequest
+	Nim := c.MustGet("currentUser").(string)
+	request.Nim = Nim
+
+	if err := c.ShouldBindJSON(&request); err != nil {
+		// create response
+		response := helper.APIResponseWithError(http.StatusUnprocessableEntity, false, "Gagal ubah password", err.Error())
+		c.JSON(http.StatusUnprocessableEntity, response)
+		return
+	}
+
+	if err := handler.service.ChangePassword(request); err != nil {
+		// create response
+		response := helper.APIResponseWithError(http.StatusBadRequest, false, "Gagal ubah password", err.Error())
+		c.JSON(http.StatusBadRequest, response)
+		return
+	}
+
+	// create response
+	response := helper.APIResponseWithoutData(http.StatusOK, true, "Berhasil ubah password")
+	c.JSON(http.StatusOK, response)
+
 }

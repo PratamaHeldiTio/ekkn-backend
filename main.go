@@ -91,11 +91,12 @@ func main() {
 
 	// endpoint student
 	api.POST("/student", authMiddleware.AuthMiddleWare(), studentResthandler.CreateStudent)
-	api.GET("/student", authMiddleware.AuthMiddleWare(), studentResthandler.FindAllStudent)
+	api.GET("/students", authMiddleware.AuthMiddleWare(), studentResthandler.FindAllStudent)
 	api.POST("/auth/student/login", studentResthandler.LoginStudent)
-	api.GET("/student/:nim", authMiddleware.AuthMiddleWare(), studentResthandler.FindStudentByNim)
-	api.PUT("/student/:nim", authMiddleware.AuthMiddleWare(), studentResthandler.UpdateStudent)
+	api.GET("/student", authMiddleware.AuthMiddleWare(), studentResthandler.FindStudentByNim)
+	api.PUT("/student", authMiddleware.AuthMiddleWare(), studentResthandler.UpdateStudent)
 	api.DELETE("/student/:nim", authMiddleware.AuthMiddleWare(), studentResthandler.DeleteStudent)
+	api.PUT("/student/change_password", authMiddleware.AuthMiddleWare(), studentResthandler.ChangePassword)
 
 	// endpoint period
 	api.POST("/period", authMiddleware.AuthMiddleWare(), periodResthandler.CreatePeriod)
