@@ -152,33 +152,6 @@ func (handler *GroupResthandlerImpl) AddVillage(c *gin.Context) {
 	c.JSON(http.StatusOK, response)
 }
 
-func (handler *GroupResthandlerImpl) UploadProposal(c *gin.Context) {
-	filename, err := helper.SavePDF(c, "proposal")
-	if err != nil {
-		// create response
-		response := helper.APIResponseWithError(http.StatusBadRequest, false, "Gagal upload proposal", err.Error())
-		c.JSON(http.StatusBadRequest, response)
-		return
-	}
-
-	// save path to db
-	groupUpdateRequest := shareddomain.GroupUpdateRequest{
-		ID:       c.Param("id"),
-		Proposal: filename,
-		Nim:      c.MustGet("currentUser").(string),
-	}
-	if err := handler.service.UpdateGroup(groupUpdateRequest); err != nil {
-		// create response
-		response := helper.APIResponseWithError(http.StatusBadRequest, false, "Gagal upload proposal", err.Error())
-		c.JSON(http.StatusBadRequest, response)
-		return
-	}
-
-	response := helper.APIResponseWithoutData(http.StatusOK, true, "Berhasil upload proposal")
-	c.JSON(http.StatusOK, response)
-
-}
-
 func (handler *GroupResthandlerImpl) UploadReport(c *gin.Context) {
 	filename, err := helper.SavePDF(c, "report")
 	if err != nil {

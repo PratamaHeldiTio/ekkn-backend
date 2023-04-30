@@ -8,6 +8,6 @@ import (
 type VillageService interface {
 	CreateVillage(request shareddomain.RequestVillage) error
 	FindAllVillage() ([]domain.Village, error)
-	UpdateVillage(request shareddomain.RequestVillage) error
+	UpdateVillage(request shareddomain.UpdateVillageRequest) error
 	FindVillageById(ID string) (domain.Village, error)
 }

@@ -14,7 +14,6 @@ type GroupUpdateRequest struct {
 	ID        string
 	Village   string `json:"village"`
 	Nim       string
-	Proposal  string
 	Report    string
 	Potential string
 }
@@ -49,10 +48,14 @@ type AddVillage struct {
 }
 
 type Village struct {
-	ID        string `json:"id"`
-	Name      string `json:"name"`
-	Kecamatan string `json:"kecamatan"`
-	Kabupaten string `json:"kabupaten"`
+	ID           string `json:"id"`
+	Name         string `json:"name"`
+	Kecamatan    string `json:"kecamatan"`
+	Kabupaten    string `json:"kabupaten"`
+	Strength     string `json:"strength"`
+	Weakness     string `json:"weakness"`
+	Oportunities string `json:"oportunities"`
+	Threats      string `json:"threats"`
 }
 
 func ToResponseGroupByID(group domain.Group) ResponseGroupByID {
@@ -91,33 +94,28 @@ func ToResponseGroupByID(group domain.Group) ResponseGroupByID {
 }
 
 type GroupByPeriodLeaderResponse struct {
-	ID        string    `json:"id"`
-	Name      string    `json:"name"`
-	Students  []Student `json:"students"`
-	Leader    string    `json:"leader"`
-	Referral  string    `json:"referral"`
-	Status    string    `json:"status"`
-	Proposal  string    `json:"proposal"`
-	Report    string    `json:"report"`
-	Potential string    `json:"potential"`
-	Village   Village   `json:"village"`
-	CreatedAt int64     `json:"created_at"`
-	UpdatedAt int64     `json:"updated_at"`
+	ID        string  `json:"id,omitempty"`
+	Report    string  `json:"report"`
+	Potential string  `json:"potential"`
+	Village   Village `json:"village"`
 }
 
 func ToGroupByPeriodLeaderResponse(group domain.Group) GroupByPeriodLeaderResponse {
 	// village
 	village := Village{
-		ID:        group.Village.ID,
-		Name:      group.Village.Name,
-		Kecamatan: group.Village.Kecamatan,
-		Kabupaten: group.Village.Kabupaten,
+		ID:           group.Village.ID,
+		Name:         group.Village.Name,
+		Kecamatan:    group.Village.Kecamatan,
+		Kabupaten:    group.Village.Kabupaten,
+		Strength:     group.Village.Strength,
+		Weakness:     group.Village.Weakness,
+		Oportunities: group.Village.Oportunities,
+		Threats:      group.Village.Threats,
 	}
 
 	// result response
 	responseGroup := GroupByPeriodLeaderResponse{
 		ID:        group.ID,
-		Proposal:  group.Proposal,
 		Report:    group.Report,
 		Potential: group.Potential,
 		Village:   village,

@@ -9,7 +9,6 @@ type GroupReshandler interface {
 	RegisterGroup(c *gin.Context)
 	UpdateGroup(c *gin.Context)
 	AddVillage(c *gin.Context)
-	UploadProposal(c *gin.Context)
 	UploadReport(c *gin.Context)
 	UploadPotentialVillage(c *gin.Context)
 	FindByGroupByPeriodLeader(c *gin.Context)

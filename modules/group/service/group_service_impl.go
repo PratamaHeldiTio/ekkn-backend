@@ -149,7 +149,6 @@ func (service *GroupServiceImpl) UpdateGroup(request shareddomain.GroupUpdateReq
 	}
 
 	// change new value update
-	group.Proposal = request.Proposal
 	group.VillageID = request.Village
 	group.Report = request.Report
 	group.Potential = request.Potential
@@ -189,7 +188,7 @@ func (service *GroupServiceImpl) AddVillage(request shareddomain.AddVillage) err
 	}
 
 	// update status village
-	requestVillage := shareddomain.RequestVillage{
+	requestVillage := shareddomain.UpdateVillageRequest{
 		ID:     request.Village,
 		Status: "true",
 	}

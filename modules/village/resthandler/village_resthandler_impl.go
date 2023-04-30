@@ -58,3 +58,28 @@ func (handler *VillageResthandlerImpl) FindAllVillage(c *gin.Context) {
 	response := helper.APIResponseWithData(http.StatusOK, true, "desa berhasil didapatkan", villageResponses)
 	c.JSON(http.StatusOK, response)
 }
+
+func (handler *VillageResthandlerImpl) UpdateVillage(c *gin.Context) {
+	var request shareddomain.UpdateVillageRequest
+	ID := c.Param("id")
+	request.ID = ID
+
+	if err := c.ShouldBindJSON(&request); err != nil {
+		// create response
+		response := helper.APIResponseWithError(http.StatusUnprocessableEntity, false, "desa gagal diubah", err.Error())
+		c.JSON(http.StatusUnprocessableEntity, response)
+		return
+	}
+
+	// call service update
+	if err := handler.service.UpdateVillage(request); err != nil {
+		// create response
+		response := helper.APIResponseWithError(http.StatusBadRequest, false, "desa gagal diubah", err.Error())
+		c.JSON(http.StatusBadRequest, response)
+		return
+	}
+
+	// response valid
+	response := helper.APIResponseWithoutData(http.StatusCreated, true, "desa berhasil diubah")
+	c.JSON(http.StatusCreated, response)
+}

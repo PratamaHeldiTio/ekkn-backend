@@ -117,7 +117,6 @@ func main() {
 	api.POST("/group/join/:periodID", authMiddleware.AuthMiddleWare(), groupResthandler.JoinGroup)
 	api.PUT("/group/register/:id", authMiddleware.AuthMiddleWare(), groupResthandler.RegisterGroup)
 	api.POST("/group/village/:id", authMiddleware.AuthMiddleWare(), groupResthandler.AddVillage)
-	api.POST("/group/proposal/:id", authMiddleware.AuthMiddleWare(), groupResthandler.UploadProposal)
 	api.POST("/group/report/:id", authMiddleware.AuthMiddleWare(), groupResthandler.UploadReport)
 	api.POST("/group/potential/:id", authMiddleware.AuthMiddleWare(), groupResthandler.UploadPotentialVillage)
 	api.GET("/group/leader/:periodID", authMiddleware.AuthMiddleWare(), groupResthandler.FindByGroupByPeriodLeader)
@@ -127,6 +126,7 @@ func main() {
 	// endpoint village
 	api.POST("/village", authMiddleware.AuthMiddleWare(), villageResthandler.CreateVillage)
 	api.GET("/village", authMiddleware.AuthMiddleWare(), villageResthandler.FindAllVillage)
+	api.PUT("/village/:id", authMiddleware.AuthMiddleWare(), villageResthandler.UpdateVillage)
 
 	router.Run()
 }

@@ -39,13 +39,18 @@ func (service *VillageServiceImpl) FindAllVillage() ([]domain.Village, error) {
 	return villages, err
 }
 
-func (service *VillageServiceImpl) UpdateVillage(request shareddomain.RequestVillage) error {
+func (service *VillageServiceImpl) UpdateVillage(request shareddomain.UpdateVillageRequest) error {
 	village, err := service.repo.FindById(request.ID)
 	if err != nil {
 		return err
 	}
 
 	village.Status = request.Status
+	village.Strength = request.Strength
+	village.Weakness = request.Weakness
+	village.Oportunities = request.Oportunities
+	village.Threats = request.Threats
+
 	if err := service.repo.Update(village); err != nil {
 		return err
 	}
