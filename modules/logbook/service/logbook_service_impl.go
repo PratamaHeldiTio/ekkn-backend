@@ -6,7 +6,6 @@ import (
 	"backend-ekkn/modules/period/service"
 	"backend-ekkn/pkg/helper"
 	"backend-ekkn/pkg/shareddomain"
-	"time"
 )
 
 type LogbookServiceImpl struct {
@@ -28,10 +27,10 @@ func (service *LogbookServiceImpl) CreateLogbook(request shareddomain.LogbookReq
 	//period, err := service.servicePeriod.FindPeriodById(periodID)
 
 	// submitted
-	submitted := time.Now().Unix()
-	date := time.Date(2023, 5, 2, 0, 0, 0, 0, time.Local).Unix()
-
-	// check submitted > period start and submitted < period end  date < time.now
+	//submitted := time.Now().Unix()
+	//date := time.Date(2023, 5, 2, 0, 0, 0, 0, time.Local).Unix()
+	//
+	//// check submitted > period start and submitted < period end  date < time.now
 	//if submitted < period.Start || submitted > period.End || submitted < date {
 	//	return errors.New("logbook gagal ditambahkan")
 	//}
@@ -54,8 +53,8 @@ func (service *LogbookServiceImpl) CreateLogbook(request shareddomain.LogbookReq
 		Activity:  request.Activity,
 		Image:     request.Image,
 		Radius:    radius,
-		Date:      date,
-		Submitted: submitted,
+		//Date:      date,
+		//Submitted: submitted,
 	}
 
 	if err := service.repo.Create(logbook); err != nil {

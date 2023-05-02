@@ -129,8 +129,8 @@ func DistanceHarversine(origin, destination Coordinate) float64 {
 	destination.Longitude = degreToRadian(destination.Longitude)
 
 	// create different 2 coordinate
-	differentLatitude := destination.Latitude - origin.Latitude
-	differentLongitude := destination.Longitude - origin.Longitude
+	differentLatitude := origin.Latitude - destination.Latitude
+	differentLongitude := origin.Longitude - destination.Longitude
 
 	innerBlock := math.Pow(math.Sin(differentLatitude/2), 2) + math.Cos(origin.Latitude)*math.Cos(destination.Latitude)*math.Pow(math.Sin(differentLongitude/2), 2)
 
