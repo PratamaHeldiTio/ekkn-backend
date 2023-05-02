@@ -37,16 +37,16 @@ func (service *LogbookServiceImpl) CreateLogbook(request shareddomain.LogbookReq
 	//}
 
 	// definition struct coordinat
-	bby := helper.Coordinate{
-		Latitude:  -7.1268396,
-		Longitude: 112.7212142,
+	origin := helper.Coordinate{
+		Latitude:  2.990353,
+		Longitude: 101.533913,
 	}
-	aku := helper.Coordinate{
-		Latitude:  -6.896640,
-		Longitude: 107.811375,
+	destination := helper.Coordinate{
+		Latitude:  2.960148,
+		Longitude: 101.577888,
 	}
 
-	radius := helper.DistanceHarversine(bby, aku)
+	radius := helper.DistanceHarversine(origin, destination)
 
 	logbook := domain.Logbook{
 		PeriodID:  request.PeriodID,
