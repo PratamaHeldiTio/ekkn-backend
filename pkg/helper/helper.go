@@ -2,7 +2,9 @@ package helper
 
 import (
 	"errors"
+	"fmt"
 	"github.com/gin-gonic/gin"
+	"math"
 	"math/rand"
 	"strconv"
 	"time"
@@ -108,4 +110,31 @@ func SavePDF(c *gin.Context, name string) (string, error) {
 	}
 
 	return filename, nil
+}
+
+func degreToRadian(degre float64) float64 {
+	return degre * math.Pi / 180
+}
+
+type Coordinate struct {
+	Latitude  float64
+	Longitude float64
+}
+
+func DistanceHarversine(origin, destination Coordinate) float64 {
+	// convert degre to radian for trigono
+	origin.Latitude = degreToRadian(origin.Latitude)
+	origin.Longitude = degreToRadian(origin.Longitude)
+	destination.Latitude = degreToRadian(destination.Latitude)
+	destination.Longitude = degreToRadian(destination.Longitude)
+
+	// create different 2 coordinate
+	differentLatitude := destination.Latitude - origin.Latitude
+	differentLongitude := destination.Longitude - origin.Longitude
+
+	innerBlock := math.Pow(math.Sin(differentLatitude/2), 2) + math.Cos(origin.Latitude)*math.Cos(destination.Latitude)*math.Pow(math.Sin(differentLongitude/2), 2)
+
+	result := 2 * 6371 * math.Asin(math.Sqrt(innerBlock))
+	fmt.Println(result)
+	return result
 }

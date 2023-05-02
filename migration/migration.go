@@ -2,6 +2,7 @@ package migration
 
 import (
 	group "backend-ekkn/modules/group/domain"
+	logbook "backend-ekkn/modules/logbook/domain"
 	period "backend-ekkn/modules/period/domain"
 	student "backend-ekkn/modules/student/domain"
 	studentRegistration "backend-ekkn/modules/student_registration/domain"
@@ -18,6 +19,7 @@ func RunMigration(db *gorm.DB) {
 		&studentRegistration.StudentRegistration{},
 		&group.Group{},
 		&village.Village{},
+		&logbook.Logbook{},
 	)
 	if err != nil {
 		log.Println(err)

@@ -7,6 +7,9 @@ import (
 	repository4 "backend-ekkn/modules/group/repository"
 	resthandler4 "backend-ekkn/modules/group/resthandler"
 	service4 "backend-ekkn/modules/group/service"
+	repository6 "backend-ekkn/modules/logbook/repository"
+	resthandler6 "backend-ekkn/modules/logbook/resthandler"
+	service6 "backend-ekkn/modules/logbook/service"
 	repository2 "backend-ekkn/modules/period/repository"
 	resthandler2 "backend-ekkn/modules/period/resthandler"
 	service2 "backend-ekkn/modules/period/service"
@@ -72,6 +75,11 @@ func main() {
 	groupService := service4.NewGroupServiceImpl(groupRepository, studentRegistrationService, villageService)
 	groupResthandler := resthandler4.NewGroupReshandler(groupService)
 
+	//module logbook
+	logbookRepository := repository6.NewLogbookRepository(db)
+	logbookService := service6.NewLogbookService(logbookRepository, periodService)
+	logbookRestHandler := resthandler6.NewLogbookResthandler(logbookService)
+
 	// init router gin
 	router := gin.Default()
 
@@ -128,6 +136,9 @@ func main() {
 	api.POST("/village", authMiddleware.AuthMiddleWare(), villageResthandler.CreateVillage)
 	api.GET("/village", authMiddleware.AuthMiddleWare(), villageResthandler.FindAllVillage)
 	api.PUT("/village/:id", authMiddleware.AuthMiddleWare(), villageResthandler.UpdateVillage)
+
+	// logbook
+	api.POST("/logbook", authMiddleware.AuthMiddleWare(), logbookRestHandler.CreateLogbook)
 
 	router.Run()
 }
