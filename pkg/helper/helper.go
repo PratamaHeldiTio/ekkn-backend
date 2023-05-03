@@ -2,11 +2,12 @@ package helper
 
 import (
 	"errors"
-	"fmt"
 	"github.com/gin-gonic/gin"
 	"math"
 	"math/rand"
+	"mime/multipart"
 	"strconv"
+	"strings"
 	"time"
 )
 
@@ -121,7 +122,7 @@ type Coordinate struct {
 	Longitude float64
 }
 
-func DistanceHarversine(origin, destination Coordinate) float64 {
+func DistanceHarversine(origin, destination Coordinate) int {
 	// convert degre to radian for trigono
 	origin.Latitude = degreToRadian(origin.Latitude)
 	origin.Longitude = degreToRadian(origin.Longitude)
@@ -134,7 +135,25 @@ func DistanceHarversine(origin, destination Coordinate) float64 {
 
 	innerBlock := math.Pow(math.Sin(differentLatitude/2), 2) + math.Cos(origin.Latitude)*math.Cos(destination.Latitude)*math.Pow(math.Sin(differentLongitude/2), 2)
 
-	result := 2 * 6371 * math.Asin(math.Sqrt(innerBlock))
-	fmt.Println(result)
-	return result
+	result := 2 * 6371 * math.Asin(math.Sqrt(innerBlock)) * 1000
+	return int(result) // its meter value integer
+}
+
+func SaveImage(c *gin.Context, image *multipart.FileHeader, destination string) (string, error) {
+	if image.Size > 5242880 {
+		return "", errors.New("file terlalu besar")
+	}
+
+	if !strings.Contains(image.Header.Values("Content-Type")[0], "image") {
+		return "", errors.New("format file salah")
+	}
+
+	// save file to directory
+	filename := strconv.FormatInt(time.Now().UnixMilli(), 10) + "_" + image.Filename
+	path := "public/" + destination + "/" + filename
+	if err := c.SaveUploadedFile(image, path); err != nil {
+		return "", err
+	}
+
+	return filename, nil
 }

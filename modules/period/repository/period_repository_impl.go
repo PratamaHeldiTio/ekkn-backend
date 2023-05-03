@@ -34,7 +34,7 @@ func (repo *PeriodRepositoryImpl) FindAll() ([]domain.Period, error) {
 
 func (repo *PeriodRepositoryImpl) FindById(id uuid.UUID) (domain.Period, error) {
 	var period domain.Period
-	if err := repo.db.Where("id_period = ?", id).Find(&period).Error; err != nil {
+	if err := repo.db.Where("period_id = ?", id).Find(&period).Error; err != nil {
 		return period, err
 	}
 

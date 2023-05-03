@@ -77,7 +77,7 @@ func main() {
 
 	//module logbook
 	logbookRepository := repository6.NewLogbookRepository(db)
-	logbookService := service6.NewLogbookService(logbookRepository, periodService)
+	logbookService := service6.NewLogbookService(logbookRepository, periodService, groupService)
 	logbookRestHandler := resthandler6.NewLogbookResthandler(logbookService)
 
 	// init router gin

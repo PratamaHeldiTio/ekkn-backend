@@ -19,12 +19,25 @@ func NewLogbookResthandler(service service.LogbookService) LogbookRestHandler {
 func (handler *LogbookRestHandlerImpl) CreateLogbook(c *gin.Context) {
 	// bind request
 	var request shareddomain.LogbookRequest
-	//if err := c.ShouldBindJSON(&request); err != nil {
-	//	// create response
-	//	response := helper.APIResponseWithError(http.StatusUnprocessableEntity, false, "Logbook gagal ditambahkan", err.Error())
-	//	c.JSON(http.StatusUnprocessableEntity, response)
-	//	return
-	//}
+	request.StudentID = c.MustGet("currentUser").(string)
+	if err := c.ShouldBind(&request); err != nil {
+		// create response
+		response := helper.APIResponseWithError(http.StatusUnprocessableEntity, false, "Logbook gagal ditambahkan", err.Error())
+		c.JSON(http.StatusUnprocessableEntity, response)
+		return
+	}
+
+	// save image
+	filename, err := helper.SaveImage(c, request.FileImage, "logbook")
+	if err != nil {
+		// create response
+		response := helper.APIResponseWithError(http.StatusBadRequest, false, "Logbook gagal ditambahkan", err.Error())
+		c.JSON(http.StatusBadRequest, response)
+		return
+	}
+
+	// add filename to request image for save db
+	request.Image = filename
 
 	// call service create logbook
 	if err := handler.service.CreateLogbook(request); err != nil {
@@ -35,7 +48,7 @@ func (handler *LogbookRestHandlerImpl) CreateLogbook(c *gin.Context) {
 	}
 
 	// valid
-	response := helper.APIResponseWithoutData(http.StatusCreated, true, "Logbook gagal ditambahkan")
+	response := helper.APIResponseWithoutData(http.StatusCreated, true, "Logbook berhasil ditambahkan")
 	c.JSON(http.StatusCreated, response)
 }
 

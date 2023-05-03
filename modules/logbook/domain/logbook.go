@@ -12,8 +12,8 @@ type Logbook struct {
 	StudentID string
 	Student   student.Student
 	Activity  string
-	Image     string  `gorm:"type:varchar(255)"`
-	Radius    float64 // in database save with sakala meter from save to center village
+	Image     string `gorm:"type:varchar(255)"`
+	Radius    int    // in database save with scale meter from save to center village
 	Date      int64
 	Submitted int64
 }

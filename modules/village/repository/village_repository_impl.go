@@ -40,7 +40,7 @@ func (repo *VillageRepositoryImpl) Update(village domain.Village) error {
 
 func (repo *VillageRepositoryImpl) FindById(ID string) (domain.Village, error) {
 	var village domain.Village
-	if err := repo.db.Where("village_id = ?", ID).Find(&village).Error; err != nil {
+	if err := repo.db.Where("id = ?", ID).Find(&village).Error; err != nil {
 		return village, err
 	}
 

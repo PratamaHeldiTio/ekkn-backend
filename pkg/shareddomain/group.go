@@ -72,6 +72,7 @@ func ToResponseGroupByID(group domain.Group) ResponseGroupByID {
 
 	// village
 	village := Village{
+		ID:        group.Village.ID,
 		Name:      group.Village.Name,
 		Kecamatan: group.Village.Kecamatan,
 		Kabupaten: group.Village.Kabupaten,
