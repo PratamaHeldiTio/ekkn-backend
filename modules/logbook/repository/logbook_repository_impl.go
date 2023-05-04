@@ -23,10 +23,20 @@ func (repo *LogbookRespositoryImpl) Create(logbook domain.Logbook) error {
 
 func (repo *LogbookRespositoryImpl) FindAllByStudentPeriod(studentID, periodID string) ([]domain.Logbook, error) {
 	var logbooks []domain.Logbook
-	if err := repo.db.Where("student_id = ? and period_id = ?", studentID, periodID).
+	if err := repo.db.Order("date desc").Where("student_id = ? and period_id = ?", studentID, periodID).
 		Find(&logbooks).Error; err != nil {
 		return logbooks, err
 	}
 
 	return logbooks, nil
+}
+
+func (repo *LogbookRespositoryImpl) FindAllByStudentDate(studentID string, date int64) (domain.Logbook, error) {
+	var logbook domain.Logbook
+	if err := repo.db.Where("student_id = ? and date = ?", studentID, date).
+		Find(&logbook).Error; err != nil {
+		return logbook, err
+	}
+
+	return logbook, nil
 }

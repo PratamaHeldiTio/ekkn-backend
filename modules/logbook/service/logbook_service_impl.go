@@ -50,6 +50,16 @@ func (service *LogbookServiceImpl) CreateLogbook(request shareddomain.LogbookReq
 	}
 	date := time.Date(arrayDate[0], time.Month(arrayDate[1]), arrayDate[2], 0, 0, 0, 0, time.Local).Unix()
 
+	// check if student submit logbook on same date
+	logbookByDate, err := service.repo.FindAllByStudentDate(request.StudentID, date)
+	if err != nil {
+		return err
+	}
+
+	if logbookByDate.ID != "" {
+		return errors.New("anda telah mengisi logbook pada tanggal ini")
+	}
+
 	// check submitted > period start and submitted < period end  date < time.now
 	if submitted < period.Start || submitted > period.End || submitted < date || date < period.Start {
 		return errors.New("tanggal tidak sesuai")
