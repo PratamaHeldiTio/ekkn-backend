@@ -4,6 +4,9 @@ import (
 	"backend-ekkn/jwt_manager"
 	"backend-ekkn/middleware"
 	"backend-ekkn/migration"
+	repository7 "backend-ekkn/modules/admin/repository"
+	resthandler7 "backend-ekkn/modules/admin/resthandler"
+	service7 "backend-ekkn/modules/admin/service"
 	repository4 "backend-ekkn/modules/group/repository"
 	resthandler4 "backend-ekkn/modules/group/resthandler"
 	service4 "backend-ekkn/modules/group/service"
@@ -80,6 +83,11 @@ func main() {
 	logbookService := service6.NewLogbookService(logbookRepository, periodService, groupService)
 	logbookRestHandler := resthandler6.NewLogbookResthandler(logbookService)
 
+	// module admin
+	adminRespository := repository7.NewAdminRepository(db)
+	adminService := service7.NewAdminRepository(adminRespository)
+	adminRestHandler := resthandler7.NewAdminRestHandler(adminService, jwtManager)
+
 	// init router gin
 	router := gin.Default()
 
@@ -140,6 +148,10 @@ func main() {
 	// logbook
 	api.POST("/logbook", authMiddleware.AuthMiddleWare(), logbookRestHandler.CreateLogbook)
 	api.GET("/logbooks/:periodID", authMiddleware.AuthMiddleWare(), logbookRestHandler.FindLogbookByStudentPeriod)
+
+	// admin
+	api.POST("/admin", authMiddleware.AuthMiddleWare(), adminRestHandler.CreateAdmin)
+	api.POST("/auth/admin/login", adminRestHandler.LoginAdmin)
 
 	router.Run()
 }

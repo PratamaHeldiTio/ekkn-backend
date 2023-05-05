@@ -13,10 +13,19 @@ func NewAdminRepository(db *gorm.DB) AdminRepository {
 	return &AdminRepositoryImpl{db}
 }
 
-func (repo *AdminRepositoryImpl) Save(admin domain.Admin) (domain.Admin, error) {
+func (repo *AdminRepositoryImpl) Create(admin domain.Admin) error {
 	if err := repo.db.Create(&admin).Error; err != nil {
-		return admin, err
-	} else {
-		return admin, nil
+		return err
 	}
+
+	return nil
+}
+
+func (repo *AdminRepositoryImpl) FindByUsername(username string) (domain.Admin, error) {
+	var admin domain.Admin
+	if err := repo.db.Where("username = ?", username).Find(&admin).Error; err != nil {
+		return admin, err
+	}
+
+	return admin, nil
 }

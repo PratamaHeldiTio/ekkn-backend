@@ -5,5 +5,6 @@ import (
 )
 
 type AdminRepository interface {
-	Save(admin domain.Admin) (domain.Admin, error)
+	Create(admin domain.Admin) error
+	FindByUsername(username string) (domain.Admin, error)
 }

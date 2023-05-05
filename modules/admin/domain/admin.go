@@ -1,7 +1,6 @@
 package domain
 
 type Admin struct {
-	ID       string
-	Username string
-	Password string
+	Username string `gorm:"type:varchar(50);primaryKey"`
+	Password string `gorm:"type:varchar(255)"`
 }
