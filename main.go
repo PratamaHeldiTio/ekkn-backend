@@ -110,9 +110,12 @@ func main() {
 	api.GET("/students", authMiddleware.AuthMiddleWare(), studentResthandler.FindAllStudent)
 	api.POST("/auth/student/login", studentResthandler.LoginStudent)
 	api.GET("/student", authMiddleware.AuthMiddleWare(), studentResthandler.FindStudentByNim)
+	api.GET("/student/:studentID", authMiddleware.AuthMiddleWare(), studentResthandler.FindStudentByNimParam)
 	api.PUT("/student", authMiddleware.AuthMiddleWare(), studentResthandler.UpdateStudent)
+	api.PUT("/student/:studentID", authMiddleware.AuthMiddleWare(), studentResthandler.UpdateStudentIDParam)
 	api.DELETE("/student/:nim", authMiddleware.AuthMiddleWare(), studentResthandler.DeleteStudent)
 	api.PUT("/student/change_password", authMiddleware.AuthMiddleWare(), studentResthandler.ChangePassword)
+	api.PUT("/student/reset_password/:studentID", authMiddleware.AuthMiddleWare(), studentResthandler.ResetPassword)
 
 	// endpoint period
 	api.POST("/period", authMiddleware.AuthMiddleWare(), periodResthandler.CreatePeriod)

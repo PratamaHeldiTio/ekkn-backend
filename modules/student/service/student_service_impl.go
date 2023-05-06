@@ -157,3 +157,24 @@ func (service *StudentServiceImpl) ChangePassword(request shareddomain.ChangePas
 
 	return nil
 }
+
+func (service *StudentServiceImpl) ResetPassword(studentID string) error {
+	student, err := service.FindStudentByNim(studentID)
+	if err != nil {
+		return err
+	}
+
+	// hashing password
+	passwordHash, err := bcrypt.GenerateFromPassword([]byte(studentID), bcrypt.MinCost)
+	if err != nil {
+		return err
+	}
+
+	// update password
+	student.Password = string(passwordHash)
+	if err := service.repo.Update(student); err != nil {
+		return err
+	}
+
+	return nil
+}

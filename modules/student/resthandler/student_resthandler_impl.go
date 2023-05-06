@@ -198,3 +198,70 @@ func (handler *StudentResthandlerImpl) ChangePassword(c *gin.Context) {
 	c.JSON(http.StatusOK, response)
 
 }
+
+func (handler *StudentResthandlerImpl) ResetPassword(c *gin.Context) {
+	studentID := c.Param("studentID")
+	if err := handler.service.ResetPassword(studentID); err != nil {
+		// create response
+		response := helper.APIResponseWithError(http.StatusBadRequest, false, "Gagal reset password", err.Error())
+		c.JSON(http.StatusBadRequest, response)
+		return
+	}
+
+	// create response
+	response := helper.APIResponseWithoutData(http.StatusOK, true, "Berhasil reset password")
+	c.JSON(http.StatusOK, response)
+
+}
+
+func (handler *StudentResthandlerImpl) FindStudentByNimParam(c *gin.Context) {
+	// get nim from jwt
+	StudentID := c.Param("studentID")
+	// send data and get return from service
+	student, err := handler.service.FindStudentByNim(StudentID)
+	if err != nil {
+		// create response
+		response := helper.APIResponseWithError(http.StatusNotFound, false, "Mahasiswa tidak ditemukan", err.Error())
+
+		c.JSON(http.StatusNotFound, response)
+		return
+	}
+
+	// map data domain to response data
+	responseStudent := shareddomain.ToResponseFindStudentByNim(student)
+
+	// create response
+	response := helper.APIResponseWithData(http.StatusOK, true, "Mahasiswa berhasil didapatkan", responseStudent)
+
+	c.JSON(http.StatusOK, response)
+}
+
+func (handler *StudentResthandlerImpl) UpdateStudentIDParam(c *gin.Context) {
+	var studentRequest shareddomain.UpdateStudent
+
+	// get id from url
+	nim := c.Param("studentID")
+
+	if err := c.ShouldBindJSON(&studentRequest); err != nil {
+		// create response
+		response := helper.APIResponseWithError(http.StatusUnprocessableEntity, false, "Mahasiswa gagal diupdate", err.Error())
+		c.JSON(http.StatusUnprocessableEntity, response)
+		return
+	}
+
+	// asign nim to struct
+	studentRequest.Nim = nim
+
+	err := handler.service.UpdateStudent(studentRequest)
+
+	if err != nil {
+		// create response
+		response := helper.APIResponseWithError(http.StatusNotFound, false, "Mahasiswa gagal diupdate", err.Error())
+		c.JSON(http.StatusNotFound, response)
+		return
+	}
+	// create response
+	response := helper.APIResponseWithoutData(http.StatusOK, true, "Mahasiswa berhasil diupdate")
+
+	c.JSON(http.StatusOK, response)
+}

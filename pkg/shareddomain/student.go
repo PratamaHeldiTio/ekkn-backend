@@ -7,6 +7,7 @@ type CreateStudent struct {
 	Name     string `json:"name" binding:"required,max=100"`
 	Prodi    string `json:"prodi" binding:"max=50"`
 	Fakultas string `json:"fakultas" binding:"max=50"`
+	Grade    string `json:"grade"`
 }
 
 type UpdateStudent struct {
@@ -42,6 +43,7 @@ func ToResponseStudent(student domain.Student) CreateStudent {
 		Name:     student.Name,
 		Prodi:    student.Prodi,
 		Fakultas: student.Fakultas,
+		Grade:    student.Grade,
 	}
 
 	return studentResponse
