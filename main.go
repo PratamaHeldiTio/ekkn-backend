@@ -130,6 +130,8 @@ func main() {
 	api.GET("/student/registration", authMiddleware.AuthMiddleWare(), studentRegistrationResthandler.FindStudentRegistrationByStudentId)
 	api.GET("/student/registered", authMiddleware.AuthMiddleWare(), studentRegistrationResthandler.FindStudentRegistrationRegistered)
 	api.GET("/student/registration/:periodID", authMiddleware.AuthMiddleWare(), studentRegistrationResthandler.FindStudentRegistrationByNimPeriodID)
+	api.GET("/student/registrations/:periodID", authMiddleware.AuthMiddleWare(), studentRegistrationResthandler.FindStudentRegistrationByPeriod)
+	api.PUT("/student/registration/:ID", authMiddleware.AuthMiddleWare(), studentRegistrationResthandler.UpdateStudentRegistration)
 
 	//endpoint group
 	api.POST("/group/:periodID", authMiddleware.AuthMiddleWare(), groupResthandler.CrateGroup)
@@ -140,8 +142,6 @@ func main() {
 	api.POST("/group/report/:id", authMiddleware.AuthMiddleWare(), groupResthandler.UploadReport)
 	api.POST("/group/potential/:id", authMiddleware.AuthMiddleWare(), groupResthandler.UploadPotentialVillage)
 	api.GET("/group/leader/:periodID", authMiddleware.AuthMiddleWare(), groupResthandler.FindByGroupByPeriodLeader)
-
-	//api.PUT("/group/:id", authMiddleware.AuthMiddleWare(), groupResthandler.UpdateGroup)
 
 	// endpoint village
 	api.POST("/village", authMiddleware.AuthMiddleWare(), villageResthandler.CreateVillage)

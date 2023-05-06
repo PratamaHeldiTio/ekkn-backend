@@ -46,7 +46,7 @@ func (service *StudentRegistrationServiceImpl) FindStudentRegistrationByStudentI
 	if err != nil {
 		return registeredUser, err
 	}
-	return registeredUser, err
+	return registeredUser, nil
 }
 
 func (service *StudentRegistrationServiceImpl) FindStudentRegistrationByNimPeriodID(nim, periodID string) (domain.StudentRegistration, error) {
@@ -57,4 +57,30 @@ func (service *StudentRegistrationServiceImpl) FindStudentRegistrationByNimPerio
 	}
 
 	return registeredStudent, nil
+}
+
+func (service *StudentRegistrationServiceImpl) FindStudentRegistrationByPeriod(periodID string) ([]domain.StudentRegistration, error) {
+	studentRegistation, err := service.repo.FindByPeriod(periodID)
+	if err != nil {
+		return studentRegistation, err
+	}
+	return studentRegistation, nil
+}
+
+func (service *StudentRegistrationServiceImpl) UpdateStudentRegistration(request shareddomain.UpdateStudentRegistrationRequest) error {
+	// cek registration isExist
+	registration, err := service.repo.FindByID(request.ID)
+	if err != nil {
+		return err
+	}
+
+	if registration.ID == "" {
+		return errors.New("data tidak ditemukan")
+	}
+
+	registration.Status = request.Status
+	if err := service.repo.Update(registration); err != nil {
+		return err
+	}
+	return nil
 }

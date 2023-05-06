@@ -36,6 +36,19 @@ type ResponseRegisteredStudents struct {
 	TahunAjaran string `json:"tahun_ajaran"`
 }
 
+type UpdateStudentRegistrationRequest struct {
+	ID     string
+	Status string `json:"status"`
+}
+
+type StudentRegistrationPeriodResponse struct {
+	ID        string `json:"id"`
+	StudentID string `json:"nim"`
+	Name      string `json:"name"`
+	Prodi     string `json:"prodi"`
+	Status    string `json:"status"`
+}
+
 func ToResponRegiteredStudent(registration domain.StudentRegistration) ResponseStudentRegistrationByNim {
 	studentRegistered := ResponseStudentRegistrationByNim{
 		ID:          registration.ID,
@@ -67,6 +80,17 @@ func ToResponseStudentRegistrationByNimPeriodID(registration domain.StudentRegis
 	registeredStudents := ResponseStudentRegistrationByNimPeriodID{
 		Status: registration.Status,
 		Group:  registration.Group,
+	}
+	return registeredStudents
+}
+
+func ToStudentRegistrationPeriod(registration domain.StudentRegistration) StudentRegistrationPeriodResponse {
+	registeredStudents := StudentRegistrationPeriodResponse{
+		ID:        registration.ID,
+		StudentID: registration.StudentID,
+		Name:      registration.Student.Name,
+		Prodi:     registration.Student.Prodi,
+		Status:    registration.Status,
 	}
 	return registeredStudents
 }

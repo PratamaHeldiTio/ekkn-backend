@@ -120,3 +120,49 @@ func (handler *StudentRegistrationResthandlerImpl) FindStudentRegistrationByNimP
 	response := helper.APIResponseWithData(http.StatusOK, true, "Riwayat pendaftaran berhasil didapatkan", responseData)
 	c.JSON(http.StatusOK, response)
 }
+
+func (handler *StudentRegistrationResthandlerImpl) FindStudentRegistrationByPeriod(c *gin.Context) {
+	// get period from param
+	periodID := c.Param("periodID")
+
+	// call service
+	studentRegistration, err := handler.service.FindStudentRegistrationByPeriod(periodID)
+	if err != nil {
+		// create response
+		response := helper.APIResponseWithError(http.StatusBadRequest, false, "Pendaftaran mahasiswa gagal didapatkan", err.Error())
+		c.JSON(http.StatusBadRequest, response)
+		return
+	}
+
+	responseData := []shareddomain.StudentRegistrationPeriodResponse{}
+	for _, data := range studentRegistration {
+		responseData = append(responseData, shareddomain.ToStudentRegistrationPeriod(data))
+	}
+	// create response
+	response := helper.APIResponseWithData(http.StatusOK, true, "Riwayat pendaftaran berhasil didapatkan", responseData)
+	c.JSON(http.StatusOK, response)
+}
+
+func (handler *StudentRegistrationResthandlerImpl) UpdateStudentRegistration(c *gin.Context) {
+	//get id in param
+	var request shareddomain.UpdateStudentRegistrationRequest
+	request.ID = c.Param("ID")
+
+	if err := c.ShouldBindJSON(&request); err != nil {
+		// create response
+		response := helper.APIResponseWithError(http.StatusUnprocessableEntity, false, "Validasi gagal dilakukan", err.Error())
+		c.JSON(http.StatusUnprocessableEntity, response)
+		return
+	}
+
+	if err := handler.service.UpdateStudentRegistration(request); err != nil {
+		// create response
+		response := helper.APIResponseWithError(http.StatusBadRequest, false, "Validasi gagal dilakukan", err.Error())
+		c.JSON(http.StatusBadRequest, response)
+		return
+	}
+
+	// create response
+	response := helper.APIResponseWithoutData(http.StatusCreated, true, "Validasi berhasil dilakukan")
+	c.JSON(http.StatusCreated, response)
+}
