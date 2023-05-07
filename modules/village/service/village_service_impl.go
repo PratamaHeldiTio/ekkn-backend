@@ -19,6 +19,7 @@ func (service *VillageServiceImpl) CreateVillage(request shareddomain.RequestVil
 	// type requesst to domain
 	village := domain.Village{
 		Name:      request.Name,
+		PeriodID:  request.PeriodID,
 		Kecamatan: request.Kecamatan,
 		Kabupaten: request.Kabupaten,
 	}
@@ -30,8 +31,8 @@ func (service *VillageServiceImpl) CreateVillage(request shareddomain.RequestVil
 	return nil
 }
 
-func (service *VillageServiceImpl) FindAllVillage() ([]domain.Village, error) {
-	villages, err := service.repo.FindAll()
+func (service *VillageServiceImpl) FindVillageByPeriod(periodID string) ([]domain.Village, error) {
+	villages, err := service.repo.FindByPeriod(periodID)
 	if err != nil {
 		return villages, err
 	}
@@ -45,7 +46,26 @@ func (service *VillageServiceImpl) UpdateVillage(request shareddomain.UpdateVill
 		return err
 	}
 
+	village.Name = request.Name
+	village.Kecamatan = request.Kecamatan
+	village.Kabupaten = request.Kabupaten
+	village.Latitude = request.Latitude
+	village.Longitude = request.Longitude
 	village.Status = request.Status
+
+	if err := service.repo.Update(village); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (service *VillageServiceImpl) AddDescVillage(request shareddomain.AddDescVillage) error {
+	village, err := service.repo.FindById(request.ID)
+	if err != nil {
+		return err
+	}
+
 	village.Strength = request.Strength
 	village.Weakness = request.Weakness
 	village.Oportunities = request.Oportunities
@@ -71,4 +91,17 @@ func (service *VillageServiceImpl) FindVillageById(ID string) (domain.Village, e
 	}
 
 	return village, nil
+}
+
+func (service *VillageServiceImpl) DeleteVillage(ID string) error {
+	village, err := service.FindVillageById(ID)
+	if err != nil {
+		return err
+	}
+
+	if err := service.repo.Delete(village); err != nil {
+		return err
+	}
+
+	return nil
 }

@@ -38,9 +38,10 @@ func (handler *VillageResthandlerImpl) CreateVillage(c *gin.Context) {
 	c.JSON(http.StatusCreated, response)
 }
 
-func (handler *VillageResthandlerImpl) FindAllVillage(c *gin.Context) {
+func (handler *VillageResthandlerImpl) FindByPeriod(c *gin.Context) {
+	periodID := c.Param("periodID")
 	// call service
-	villages, err := handler.service.FindAllVillage()
+	villages, err := handler.service.FindVillageByPeriod(periodID)
 	if err != nil {
 		// create response
 		response := helper.APIResponseWithError(http.StatusBadRequest, false, "desa gagal didapatkan", err.Error())
@@ -80,6 +81,63 @@ func (handler *VillageResthandlerImpl) UpdateVillage(c *gin.Context) {
 	}
 
 	// response valid
-	response := helper.APIResponseWithoutData(http.StatusCreated, true, "desa berhasil diubah")
-	c.JSON(http.StatusCreated, response)
+	response := helper.APIResponseWithoutData(http.StatusOK, true, "desa berhasil diubah")
+	c.JSON(http.StatusOK, response)
+}
+
+func (handler *VillageResthandlerImpl) DeleteVillage(c *gin.Context) {
+	ID := c.Param("id")
+
+	if err := handler.service.DeleteVillage(ID); err != nil {
+		// create response
+		response := helper.APIResponseWithError(http.StatusBadRequest, false, "desa gagal dihapus", err.Error())
+		c.JSON(http.StatusBadRequest, response)
+		return
+	}
+
+	// response valid
+	response := helper.APIResponseWithoutData(http.StatusOK, true, "desa berhasil dihapus")
+	c.JSON(http.StatusOK, response)
+}
+
+func (handler *VillageResthandlerImpl) FindByID(c *gin.Context) {
+	ID := c.Param("id")
+	// call service
+	village, err := handler.service.FindVillageById(ID)
+	if err != nil {
+		// create response
+		response := helper.APIResponseWithError(http.StatusBadRequest, false, "desa gagal didapatkan", err.Error())
+		c.JSON(http.StatusBadRequest, response)
+		return
+	}
+
+	// create response
+	responseData := shareddomain.ToVillageResponse(village)
+	response := helper.APIResponseWithData(http.StatusOK, true, "desa berhasil didapatkan", responseData)
+	c.JSON(http.StatusOK, response)
+}
+
+func (handler *VillageResthandlerImpl) AddDescVillage(c *gin.Context) {
+	var request shareddomain.AddDescVillage
+	ID := c.Param("id")
+	request.ID = ID
+
+	if err := c.ShouldBindJSON(&request); err != nil {
+		// create response
+		response := helper.APIResponseWithError(http.StatusUnprocessableEntity, false, "gagal menambahkan deskripsi", err.Error())
+		c.JSON(http.StatusUnprocessableEntity, response)
+		return
+	}
+
+	// call service update
+	if err := handler.service.AddDescVillage(request); err != nil {
+		// create response
+		response := helper.APIResponseWithError(http.StatusBadRequest, false, "gagal menambahkan deskripsi", err.Error())
+		c.JSON(http.StatusBadRequest, response)
+		return
+	}
+
+	// response valid
+	response := helper.APIResponseWithoutData(http.StatusOK, true, "berhasil menambahkan deskripsi")
+	c.JSON(http.StatusOK, response)
 }

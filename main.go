@@ -145,8 +145,11 @@ func main() {
 
 	// endpoint village
 	api.POST("/village", authMiddleware.AuthMiddleWare(), villageResthandler.CreateVillage)
-	api.GET("/village", authMiddleware.AuthMiddleWare(), villageResthandler.FindAllVillage)
+	api.GET("/village/period/:periodID", authMiddleware.AuthMiddleWare(), villageResthandler.FindByPeriod)
+	api.GET("/village/:id", authMiddleware.AuthMiddleWare(), villageResthandler.FindByID)
 	api.PUT("/village/:id", authMiddleware.AuthMiddleWare(), villageResthandler.UpdateVillage)
+	api.PUT("/village/add_desc/:id", authMiddleware.AuthMiddleWare(), villageResthandler.AddDescVillage)
+	api.DELETE("/village/:id", authMiddleware.AuthMiddleWare(), villageResthandler.DeleteVillage)
 
 	// logbook
 	api.POST("/logbook", authMiddleware.AuthMiddleWare(), logbookRestHandler.CreateLogbook)

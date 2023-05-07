@@ -38,7 +38,7 @@ type ResponseRegisteredStudents struct {
 
 type UpdateStudentRegistrationRequest struct {
 	ID     string
-	Status string `json:"status"`
+	Status string `json:"status" binding:"required"`
 }
 
 type StudentRegistrationPeriodResponse struct {
