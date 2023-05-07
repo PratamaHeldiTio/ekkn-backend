@@ -2,7 +2,6 @@ package repository
 
 import (
 	"backend-ekkn/modules/period/domain"
-	"github.com/google/uuid"
 	"gorm.io/gorm"
 )
 
@@ -25,16 +24,16 @@ func (repo *PeriodRepositoryImpl) Create(period domain.Period) error {
 func (repo *PeriodRepositoryImpl) FindAll() ([]domain.Period, error) {
 	// temp data
 	var periods []domain.Period
-	if err := repo.db.Find(&periods).Error; err != nil {
+	if err := repo.db.Order("updated_at desc").Find(&periods).Error; err != nil {
 		return periods, err
 	}
 
 	return periods, nil
 }
 
-func (repo *PeriodRepositoryImpl) FindById(id uuid.UUID) (domain.Period, error) {
+func (repo *PeriodRepositoryImpl) FindById(id string) (domain.Period, error) {
 	var period domain.Period
-	if err := repo.db.Where("period_id = ?", id).Find(&period).Error; err != nil {
+	if err := repo.db.Where("id = ?", id).Find(&period).Error; err != nil {
 		return period, err
 	}
 

@@ -16,9 +16,14 @@ func NewJwtManager() JwtManager {
 // func for generate jwt_manager jwt
 func (manager *JwtManagerImpl) GenerateJwt(nim, role string) (string, error) {
 	// create peyload jwt_manager
+	exp := 60 * time.Minute
+	if role == "admin" {
+		exp = 6 * time.Hour
+	}
+
 	claim := jwt.MapClaims{
 		"id":   nim,
-		"exp":  time.Now().Add(60 * time.Minute).Unix(),
+		"exp":  time.Now().Add(exp).Unix(),
 		"role": role,
 	}
 

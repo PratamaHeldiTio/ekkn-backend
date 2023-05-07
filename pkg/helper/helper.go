@@ -157,3 +157,23 @@ func SaveImage(c *gin.Context, image *multipart.FileHeader, destination string) 
 
 	return filename, nil
 }
+
+func StringDateToArray(date string, day string) (int64, error) {
+	var arrayDate []int
+	var unixDate int64
+	for _, date := range strings.Split(date, "-") {
+		value, err := strconv.Atoi(date)
+		if err != nil {
+			return unixDate, err
+		}
+		arrayDate = append(arrayDate, value)
+	}
+
+	if day == "start" {
+		unixDate = time.Date(arrayDate[0], time.Month(arrayDate[1]), arrayDate[2], 0, 0, 0, 0, time.Local).Unix()
+	} else if day == "end" {
+		unixDate = time.Date(arrayDate[0], time.Month(arrayDate[1]), arrayDate[2], 23, 59, 59, 0, time.Local).Unix()
+	}
+
+	return unixDate, nil
+}

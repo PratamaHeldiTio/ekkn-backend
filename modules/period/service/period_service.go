@@ -3,13 +3,12 @@ package service
 import (
 	"backend-ekkn/modules/period/domain"
 	"backend-ekkn/pkg/shareddomain"
-	"github.com/google/uuid"
 )
 
 type PeriodService interface {
 	CreatePeriod(request shareddomain.RequestPeriod) error
 	FindAllPeriod() ([]domain.Period, error)
-	FindPeriodById(id uuid.UUID) (domain.Period, error)
+	FindPeriodById(id string) (domain.Period, error)
 	UpdatePeriod(request shareddomain.RequestPeriod) error
-	DeletePeriodById(id uuid.UUID) error
+	DeletePeriodById(id string) error
 }

@@ -8,7 +8,6 @@ import (
 	"backend-ekkn/pkg/helper"
 	"backend-ekkn/pkg/shareddomain"
 	"errors"
-	"github.com/google/uuid"
 	"strconv"
 	"strings"
 	"time"
@@ -26,13 +25,7 @@ func NewLogbookService(repo repository.LogbookRepository, servicePeriod service.
 
 func (service *LogbookServiceImpl) CreateLogbook(request shareddomain.LogbookRequest) error {
 	// find period
-	//parse uuid string to uuid
-	periodID, err := uuid.Parse(request.PeriodID)
-	if err != nil {
-		return err
-	}
-
-	period, err := service.servicePeriod.FindPeriodById(periodID)
+	period, err := service.servicePeriod.FindPeriodById(request.PeriodID)
 	if err != nil {
 		return err
 	}

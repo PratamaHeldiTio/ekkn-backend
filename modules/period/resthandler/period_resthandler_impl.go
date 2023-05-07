@@ -5,7 +5,6 @@ import (
 	"backend-ekkn/pkg/helper"
 	"backend-ekkn/pkg/shareddomain"
 	"github.com/gin-gonic/gin"
-	"github.com/google/uuid"
 	"net/http"
 )
 
@@ -92,17 +91,9 @@ func (handler *PeriodResthandlerImpl) FindAllPeriodByStudent(c *gin.Context) {
 
 func (handler *PeriodResthandlerImpl) FindPeriodById(c *gin.Context) {
 	// get id with params url
-	idString := c.Param("id")
+	ID := c.Param("id")
 
-	//parse uuid string to uuid
-	id, err := uuid.Parse(idString)
-	if err != nil {
-		response := helper.APIResponseWithError(http.StatusBadRequest, false, "Periode gagal didapatkan", err.Error())
-		c.JSON(http.StatusBadRequest, response)
-		return
-	}
-
-	period, err := handler.service.FindPeriodById(id)
+	period, err := handler.service.FindPeriodById(ID)
 	if err != nil {
 		// create response
 		response := helper.APIResponseWithError(http.StatusBadRequest, false, "Periode gagal didapatkan", err.Error())
@@ -122,24 +113,26 @@ func (handler *PeriodResthandlerImpl) FindPeriodById(c *gin.Context) {
 
 func (handler *PeriodResthandlerImpl) UpdatePeriod(c *gin.Context) {
 	// validation request
-	var periodRequest shareddomain.RequestPeriod
-	if err := c.ShouldBindJSON(&periodRequest); err != nil {
+	ID := c.Param("id")
+	var request shareddomain.RequestPeriod
+	request.ID = ID
+	if err := c.ShouldBindJSON(&request); err != nil {
 		// create response
-		response := helper.APIResponseWithError(http.StatusUnprocessableEntity, false, "Periode gagal diubah", err.Error())
+		response := helper.APIResponseWithError(http.StatusUnprocessableEntity, false, "Periode gagal diedit", err.Error())
 		c.JSON(http.StatusUnprocessableEntity, response)
 		return
 	}
 
 	// call service update
-	if err := handler.service.UpdatePeriod(periodRequest); err != nil {
+	if err := handler.service.UpdatePeriod(request); err != nil {
 		// create response
-		response := helper.APIResponseWithError(http.StatusBadRequest, false, "Periode gagal diubah", err.Error())
+		response := helper.APIResponseWithError(http.StatusBadRequest, false, "Periode gagal diedit", err.Error())
 		c.JSON(http.StatusBadRequest, response)
 		return
 	}
 
 	// response valid
-	response := helper.APIResponseWithoutData(http.StatusOK, true, "Periode berhasil diubah")
+	response := helper.APIResponseWithoutData(http.StatusOK, true, "Periode berhasil diedit")
 	c.JSON(http.StatusOK, response)
 
 }
@@ -148,17 +141,9 @@ func (handler *PeriodResthandlerImpl) UpdatePeriod(c *gin.Context) {
 
 func (handler *PeriodResthandlerImpl) DeletePeriodById(c *gin.Context) {
 	// get id with params url
-	idString := c.Param("id")
+	ID := c.Param("id")
 
-	//parse uuid string to uuid
-	id, err := uuid.Parse(idString)
-	if err != nil {
-		response := helper.APIResponseWithError(http.StatusBadRequest, false, "Periode gagal dihapuskan", err.Error())
-		c.JSON(http.StatusBadRequest, response)
-		return
-	}
-
-	if err := handler.service.DeletePeriodById(id); err != nil {
+	if err := handler.service.DeletePeriodById(ID); err != nil {
 		// create response
 		response := helper.APIResponseWithError(http.StatusBadRequest, false, "Periode gagal dihapuskan", err.Error())
 		c.JSON(http.StatusBadRequest, response)

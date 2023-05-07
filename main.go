@@ -119,7 +119,7 @@ func main() {
 
 	// endpoint period
 	api.POST("/period", authMiddleware.AuthMiddleWare(), periodResthandler.CreatePeriod)
-	api.PUT("/period", authMiddleware.AuthMiddleWare(), periodResthandler.UpdatePeriod)
+	api.PUT("/period/:id", authMiddleware.AuthMiddleWare(), periodResthandler.UpdatePeriod)
 	api.GET("/period", authMiddleware.AuthMiddleWare(), periodResthandler.FindAllPeriod)
 	api.GET("/period/student", authMiddleware.AuthMiddleWare(), periodResthandler.FindAllPeriodByStudent)
 	api.GET("/period/:id", authMiddleware.AuthMiddleWare(), periodResthandler.FindPeriodById)
