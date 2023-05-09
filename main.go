@@ -106,24 +106,24 @@ func main() {
 	authMiddleware := middleware.NewAtuhMiddleware(jwtManager)
 
 	// endpoint student
-	api.POST("/student", authMiddleware.AuthMiddleWare(), studentResthandler.CreateStudent)
-	api.GET("/students", authMiddleware.AuthMiddleWare(), studentResthandler.FindAllStudent)
+	api.POST("/student", authMiddleware.AuthMiddleWareAdmin(), studentResthandler.CreateStudent)
+	api.GET("/students", authMiddleware.AuthMiddleWareAdmin(), studentResthandler.FindAllStudent)
 	api.POST("/auth/student/login", studentResthandler.LoginStudent)
 	api.GET("/student", authMiddleware.AuthMiddleWare(), studentResthandler.FindStudentByNim)
 	api.GET("/student/:studentID", authMiddleware.AuthMiddleWare(), studentResthandler.FindStudentByNimParam)
 	api.PUT("/student", authMiddleware.AuthMiddleWare(), studentResthandler.UpdateStudent)
-	api.PUT("/student/:studentID", authMiddleware.AuthMiddleWare(), studentResthandler.UpdateStudentIDParam)
-	api.DELETE("/student/:nim", authMiddleware.AuthMiddleWare(), studentResthandler.DeleteStudent)
+	api.PUT("/student/:studentID", authMiddleware.AuthMiddleWareAdmin(), studentResthandler.UpdateStudentIDParam)
+	api.DELETE("/student/:nim", authMiddleware.AuthMiddleWareAdmin(), studentResthandler.DeleteStudent)
 	api.PUT("/student/change_password", authMiddleware.AuthMiddleWare(), studentResthandler.ChangePassword)
-	api.PUT("/student/reset_password/:studentID", authMiddleware.AuthMiddleWare(), studentResthandler.ResetPassword)
+	api.PUT("/student/reset_password/:studentID", authMiddleware.AuthMiddleWareAdmin(), studentResthandler.ResetPassword)
 
 	// endpoint period
-	api.POST("/period", authMiddleware.AuthMiddleWare(), periodResthandler.CreatePeriod)
-	api.PUT("/period/:id", authMiddleware.AuthMiddleWare(), periodResthandler.UpdatePeriod)
+	api.POST("/period", authMiddleware.AuthMiddleWareAdmin(), periodResthandler.CreatePeriod)
+	api.PUT("/period/:id", authMiddleware.AuthMiddleWareAdmin(), periodResthandler.UpdatePeriod)
 	api.GET("/period", authMiddleware.AuthMiddleWare(), periodResthandler.FindAllPeriod)
 	api.GET("/period/student", authMiddleware.AuthMiddleWare(), periodResthandler.FindAllPeriodByStudent)
 	api.GET("/period/:id", authMiddleware.AuthMiddleWare(), periodResthandler.FindPeriodById)
-	api.DELETE("/period/:id", authMiddleware.AuthMiddleWare(), periodResthandler.DeletePeriodById)
+	api.DELETE("/period/:id", authMiddleware.AuthMiddleWareAdmin(), periodResthandler.DeletePeriodById)
 
 	//endpoint student registration
 	api.POST("/student/registration", authMiddleware.AuthMiddleWare(), studentRegistrationResthandler.CreateStudentRegistration)
@@ -132,7 +132,7 @@ func main() {
 	api.GET("/student/registration/:periodID", authMiddleware.AuthMiddleWare(), studentRegistrationResthandler.FindStudentRegistrationByNimPeriodID)
 	api.GET("/student/registration/:periodID/:studentID", authMiddleware.AuthMiddleWare(), studentRegistrationResthandler.FindStudentRegistrationByNimPeriodIDParams)
 	api.GET("/student/registrations/:periodID", authMiddleware.AuthMiddleWare(), studentRegistrationResthandler.FindStudentRegistrationByPeriod)
-	api.PUT("/student/registration/:ID", authMiddleware.AuthMiddleWare(), studentRegistrationResthandler.UpdateStudentRegistration)
+	api.PUT("/student/registration/:ID", authMiddleware.AuthMiddleWareAdmin(), studentRegistrationResthandler.UpdateStudentRegistration)
 
 	//endpoint group
 	api.POST("/group/:periodID", authMiddleware.AuthMiddleWare(), groupResthandler.CrateGroup)
@@ -145,12 +145,12 @@ func main() {
 	api.GET("/group/leader/:periodID", authMiddleware.AuthMiddleWare(), groupResthandler.FindByGroupByPeriodLeader)
 
 	// endpoint village
-	api.POST("/village", authMiddleware.AuthMiddleWare(), villageResthandler.CreateVillage)
+	api.POST("/village", authMiddleware.AuthMiddleWareAdmin(), villageResthandler.CreateVillage)
 	api.GET("/village/period/:periodID", authMiddleware.AuthMiddleWare(), villageResthandler.FindByPeriod)
 	api.GET("/village/:id", authMiddleware.AuthMiddleWare(), villageResthandler.FindByID)
-	api.PUT("/village/:id", authMiddleware.AuthMiddleWare(), villageResthandler.UpdateVillage)
+	api.PUT("/village/:id", authMiddleware.AuthMiddleWareAdmin(), villageResthandler.UpdateVillage)
 	api.PUT("/village/add_desc/:id", authMiddleware.AuthMiddleWare(), villageResthandler.AddDescVillage)
-	api.DELETE("/village/:id", authMiddleware.AuthMiddleWare(), villageResthandler.DeleteVillage)
+	api.DELETE("/village/:id", authMiddleware.AuthMiddleWareAdmin(), villageResthandler.DeleteVillage)
 
 	// logbook
 	api.POST("/logbook", authMiddleware.AuthMiddleWare(), logbookRestHandler.CreateLogbook)
@@ -158,7 +158,7 @@ func main() {
 	api.GET("/logbook/:periodID/:studentID", authMiddleware.AuthMiddleWare(), logbookRestHandler.FindLogbookByStudentPeriodParam)
 
 	// admin
-	api.POST("/admin", authMiddleware.AuthMiddleWare(), adminRestHandler.CreateAdmin)
+	api.POST("/admin", authMiddleware.AuthMiddleWareAdmin(), adminRestHandler.CreateAdmin)
 	api.POST("/auth/admin/login", adminRestHandler.LoginAdmin)
 
 	router.Run()
