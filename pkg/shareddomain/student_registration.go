@@ -12,6 +12,11 @@ type RequestStudentRegistration struct {
 	Status   string    `json:"status" binding:"max=14"`
 }
 
+type StudentRegistrationURI struct {
+	PeriodID  string `uri:"periodID" binding:"required"`
+	StudentID string `uri:"studentID" binding:"required"`
+}
+
 type ResponseStudentRegistrationByNim struct {
 	ID          string `json:"student_registration_id"`
 	PeriodID    string `json:"period_id"`

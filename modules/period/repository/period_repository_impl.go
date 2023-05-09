@@ -24,7 +24,7 @@ func (repo *PeriodRepositoryImpl) Create(period domain.Period) error {
 func (repo *PeriodRepositoryImpl) FindAll() ([]domain.Period, error) {
 	// temp data
 	var periods []domain.Period
-	if err := repo.db.Order("updated_at desc").Find(&periods).Error; err != nil {
+	if err := repo.db.Order("created_at desc").Find(&periods).Error; err != nil {
 		return periods, err
 	}
 

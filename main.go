@@ -130,6 +130,7 @@ func main() {
 	api.GET("/student/registration", authMiddleware.AuthMiddleWare(), studentRegistrationResthandler.FindStudentRegistrationByStudentId)
 	api.GET("/student/registered", authMiddleware.AuthMiddleWare(), studentRegistrationResthandler.FindStudentRegistrationRegistered)
 	api.GET("/student/registration/:periodID", authMiddleware.AuthMiddleWare(), studentRegistrationResthandler.FindStudentRegistrationByNimPeriodID)
+	api.GET("/student/registration/:periodID/:studentID", authMiddleware.AuthMiddleWare(), studentRegistrationResthandler.FindStudentRegistrationByNimPeriodIDParams)
 	api.GET("/student/registrations/:periodID", authMiddleware.AuthMiddleWare(), studentRegistrationResthandler.FindStudentRegistrationByPeriod)
 	api.PUT("/student/registration/:ID", authMiddleware.AuthMiddleWare(), studentRegistrationResthandler.UpdateStudentRegistration)
 
@@ -154,6 +155,7 @@ func main() {
 	// logbook
 	api.POST("/logbook", authMiddleware.AuthMiddleWare(), logbookRestHandler.CreateLogbook)
 	api.GET("/logbooks/:periodID", authMiddleware.AuthMiddleWare(), logbookRestHandler.FindLogbookByStudentPeriod)
+	api.GET("/logbook/:periodID/:studentID", authMiddleware.AuthMiddleWare(), logbookRestHandler.FindLogbookByStudentPeriodParam)
 
 	// admin
 	api.POST("/admin", authMiddleware.AuthMiddleWare(), adminRestHandler.CreateAdmin)

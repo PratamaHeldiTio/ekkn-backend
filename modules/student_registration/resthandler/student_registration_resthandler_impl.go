@@ -121,6 +121,38 @@ func (handler *StudentRegistrationResthandlerImpl) FindStudentRegistrationByNimP
 	c.JSON(http.StatusOK, response)
 }
 
+func (handler *StudentRegistrationResthandlerImpl) FindStudentRegistrationByNimPeriodIDParams(c *gin.Context) {
+	var studentRegistrationURI shareddomain.StudentRegistrationURI
+
+	if err := c.ShouldBindUri(&studentRegistrationURI); err != nil {
+		// create response
+		response := helper.APIResponseWithError(http.StatusBadRequest, false, "Logbook gagal didapatkan", err.Error())
+		c.JSON(http.StatusBadRequest, response)
+		return
+	}
+
+	// call service
+	registrationStudent, err := handler.service.FindStudentRegistrationByNimPeriodID(studentRegistrationURI.StudentID, studentRegistrationURI.PeriodID)
+	if err != nil {
+		// create response
+		response := helper.APIResponseWithError(http.StatusBadRequest, false, "Pendaftaran mahasiswa gagal didapatkan", err.Error())
+		c.JSON(http.StatusBadRequest, response)
+		return
+	}
+
+	if registrationStudent.ID == "" {
+		// create response
+		response := helper.APIResponseWithoutData(http.StatusNotFound, false, "Data tidak ditemukan")
+		c.JSON(http.StatusNotFound, response)
+		return
+	}
+
+	responseData := shareddomain.ToResponseStudentRegistrationByNimPeriodID(registrationStudent)
+	// create response
+	response := helper.APIResponseWithData(http.StatusOK, true, "Riwayat pendaftaran berhasil didapatkan", responseData)
+	c.JSON(http.StatusOK, response)
+}
+
 func (handler *StudentRegistrationResthandlerImpl) FindStudentRegistrationByPeriod(c *gin.Context) {
 	// get period from param
 	periodID := c.Param("periodID")

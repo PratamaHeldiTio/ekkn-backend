@@ -27,6 +27,7 @@ func (repo *StudentRegistrationRepositoryImpl) FindByStudentId(id string) ([]dom
 	var registeredUser []domain.StudentRegistration
 
 	if err := repo.db.Preload("Period").
+		Order("created_at desc").
 		Preload("Student").
 		Where("student_id = ?", id).
 		Find(&registeredUser).
@@ -55,6 +56,7 @@ func (repo *StudentRegistrationRepositoryImpl) FindByPeriod(periodID string) ([]
 	var studentRegistration []domain.StudentRegistration
 
 	if err := repo.db.Preload("Student").
+		Order("student_id").
 		Where("period_id = ?", periodID).
 		Find(&studentRegistration).
 		Error; err != nil {

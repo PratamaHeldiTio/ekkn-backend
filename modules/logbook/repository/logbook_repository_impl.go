@@ -23,7 +23,7 @@ func (repo *LogbookRespositoryImpl) Create(logbook domain.Logbook) error {
 
 func (repo *LogbookRespositoryImpl) FindAllByStudentPeriod(studentID, periodID string) ([]domain.Logbook, error) {
 	var logbooks []domain.Logbook
-	if err := repo.db.Order("date desc").Where("student_id = ? and period_id = ?", studentID, periodID).
+	if err := repo.db.Order("date desc").Preload("Student").Where("student_id = ? and period_id = ?", studentID, periodID).
 		Find(&logbooks).Error; err != nil {
 		return logbooks, err
 	}

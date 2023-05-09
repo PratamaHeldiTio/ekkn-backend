@@ -74,3 +74,32 @@ func (handler *LogbookRestHandlerImpl) FindLogbookByStudentPeriod(c *gin.Context
 	response := helper.APIResponseWithData(http.StatusOK, true, "Logbook berhasil didapatkan", logbookResponses)
 	c.JSON(http.StatusOK, response)
 }
+
+func (handler *LogbookRestHandlerImpl) FindLogbookByStudentPeriodParam(c *gin.Context) {
+	var logbookURI shareddomain.LogbookURI
+
+	if err := c.ShouldBindUri(&logbookURI); err != nil {
+		// create response
+		response := helper.APIResponseWithError(http.StatusBadRequest, false, "Logbook gagal didapatkan", err.Error())
+		c.JSON(http.StatusBadRequest, response)
+		return
+	}
+
+	// call service
+	logbooks, err := handler.service.FindLogbookByStudentPeriod(logbookURI.StudentID, logbookURI.PeriodID)
+	if err != nil {
+		// create response
+		response := helper.APIResponseWithError(http.StatusBadRequest, false, "Logbook gagal didapatkan", err.Error())
+		c.JSON(http.StatusBadRequest, response)
+		return
+	}
+
+	logbookResponses := []shareddomain.LogbookResponse{}
+	for _, logbook := range logbooks {
+		logbookResponses = append(logbookResponses, shareddomain.ToLogbookResponse(logbook))
+	}
+
+	//reponse
+	response := helper.APIResponseWithData(http.StatusOK, true, "Logbook berhasil didapatkan", logbookResponses)
+	c.JSON(http.StatusOK, response)
+}

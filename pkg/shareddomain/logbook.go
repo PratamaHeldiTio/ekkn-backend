@@ -17,10 +17,17 @@ type LogbookRequest struct {
 	Longitude float64               `form:"longitude" binding:"longitude"`
 }
 
+type LogbookURI struct {
+	PeriodID  string `uri:"periodID" binding:"required"`
+	StudentID string `uri:"studentID" binding:"required"`
+}
+
 type LogbookResponse struct {
 	ID        string `json:"id"`
 	PeriodID  string `json:"period_id"`
 	StudentID string `json:"student_id"`
+	Name      string `json:"name"`
+	Prodi     string `json:"prodi"`
 	Activity  string `json:"activity"`
 	Image     string `json:"image"`
 	Radius    int    `json:"radius"`
@@ -33,6 +40,8 @@ func ToLogbookResponse(logbook domain.Logbook) LogbookResponse {
 		ID:        logbook.ID,
 		PeriodID:  logbook.PeriodID,
 		StudentID: logbook.StudentID,
+		Name:      logbook.Student.Name,
+		Prodi:     logbook.Student.Prodi,
 		Activity:  logbook.Activity,
 		Image:     logbook.Image,
 		Radius:    logbook.Radius,
