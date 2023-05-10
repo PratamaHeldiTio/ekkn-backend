@@ -20,7 +20,7 @@ type UpdateStudent struct {
 }
 
 type LoginStudent struct {
-	Nim      string `json:"nim" binding:"required,max=13"`
+	Nim      string `json:"id" binding:"required,max=13"`
 	Password string `json:"password" binding:"required"`
 }
 
