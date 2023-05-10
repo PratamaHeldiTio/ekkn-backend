@@ -10,6 +10,9 @@ import (
 	repository4 "backend-ekkn/modules/group/repository"
 	resthandler4 "backend-ekkn/modules/group/resthandler"
 	service4 "backend-ekkn/modules/group/service"
+	repository8 "backend-ekkn/modules/lecturer/repository"
+	resthandler8 "backend-ekkn/modules/lecturer/resthandler"
+	service8 "backend-ekkn/modules/lecturer/service"
 	repository6 "backend-ekkn/modules/logbook/repository"
 	resthandler6 "backend-ekkn/modules/logbook/resthandler"
 	service6 "backend-ekkn/modules/logbook/service"
@@ -88,6 +91,11 @@ func main() {
 	adminService := service7.NewAdminRepository(adminRespository)
 	adminRestHandler := resthandler7.NewAdminRestHandler(adminService, jwtManager)
 
+	// module lecturer
+	lecturerRepository := repository8.NewLectureRepositoryImpl(db)
+	lecturerService := service8.NewLecturerService(lecturerRepository)
+	lecturerRestHandler := resthandler8.NewLecturerRestHandler(lecturerService, jwtManager)
+
 	// init router gin
 	router := gin.Default()
 
@@ -160,6 +168,16 @@ func main() {
 	// admin
 	api.POST("/admin", authMiddleware.AuthMiddleWareAdmin(), adminRestHandler.CreateAdmin)
 	api.POST("/auth/admin/login", adminRestHandler.LoginAdmin)
+
+	// lecturer
+	api.POST("/lecturer", authMiddleware.AuthMiddleWareAdmin(), lecturerRestHandler.CreateLecturer)
+	api.PUT("/lecturer/:id", authMiddleware.AuthMiddleWareAdmin(), lecturerRestHandler.UpdateLecturer)
+	api.DELETE("/lecturer/:id", authMiddleware.AuthMiddleWareAdmin(), lecturerRestHandler.DeleteLecturer)
+	api.PUT("/lecturer/reset_password/:id", authMiddleware.AuthMiddleWareAdmin(), lecturerRestHandler.ResetPassword)
+	api.GET("/lecturer/:id", authMiddleware.AuthMiddleWareAdmin(), lecturerRestHandler.FindByIdParam)
+	api.GET("/lecturer", authMiddleware.AuthMiddleWareLecturer(), lecturerRestHandler.FindByIdJwt)
+	api.GET("/lecturers", authMiddleware.AuthMiddleWareAdmin(), lecturerRestHandler.FindAllLecturer)
+	api.POST("/auth/lecturer/login", lecturerRestHandler.LoginLecturer)
 
 	router.Run()
 }
