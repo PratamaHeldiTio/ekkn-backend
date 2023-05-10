@@ -163,7 +163,7 @@ func main() {
 	// logbook
 	api.POST("/logbook", authMiddleware.AuthMiddleWare(), logbookRestHandler.CreateLogbook)
 	api.GET("/logbooks/:periodID", authMiddleware.AuthMiddleWare(), logbookRestHandler.FindLogbookByStudentPeriod)
-	api.GET("/logbook/:periodID/:studentID", authMiddleware.AuthMiddleWare(), logbookRestHandler.FindLogbookByStudentPeriodParam)
+	api.GET("/logbook/:periodID/:studentID", authMiddleware.AuthMiddleWareAdmin(), logbookRestHandler.FindLogbookByStudentPeriodParam)
 
 	// admin
 	api.POST("/admin", authMiddleware.AuthMiddleWareAdmin(), adminRestHandler.CreateAdmin)
