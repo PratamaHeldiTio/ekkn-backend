@@ -124,3 +124,35 @@ func (service *LecturerServiceImpl) LoginLecturer(request shareddomain.LecturerL
 
 	return lecturer, nil
 }
+
+func (service *LecturerServiceImpl) ChangePassword(request shareddomain.ChangePasswordLecturerRequest) error {
+	lecturer, err := service.FindLecturerByID(request.ID)
+	if err != nil {
+		return err
+	}
+
+	// old password match with password db
+	// check password is match
+	if err := bcrypt.CompareHashAndPassword([]byte(lecturer.Password), []byte(request.OldPassword)); err != nil {
+		return err
+	}
+
+	// check repeat password match with new password
+	if request.NewPassword != request.RepeatNewPassword {
+		return errors.New("password baru tidak match dengan ulangi password")
+	}
+
+	// hashing new password
+	newPasswordHash, err := bcrypt.GenerateFromPassword([]byte(request.NewPassword), bcrypt.MinCost)
+	if err != nil {
+		return err
+	}
+
+	// update table student
+	lecturer.Password = string(newPasswordHash)
+	if err := service.repo.Update(lecturer); err != nil {
+		return err
+	}
+
+	return nil
+}

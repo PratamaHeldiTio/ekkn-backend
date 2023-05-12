@@ -5,7 +5,6 @@ import (
 	"backend-ekkn/modules/student_registration/repository"
 	"backend-ekkn/pkg/shareddomain"
 	"errors"
-	"fmt"
 )
 
 type StudentRegistrationServiceImpl struct {
@@ -28,7 +27,6 @@ func (service *StudentRegistrationServiceImpl) CreateStudentRegistration(request
 		return errors.New("Pendaftaran gagal anda telah terdaftar")
 	}
 
-	fmt.Println(registeredStudent)
 	studentRegistration := domain.StudentRegistration{
 		PeriodID:  request.PeriodID,
 		StudentID: request.Nim,

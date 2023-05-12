@@ -13,6 +13,9 @@ import (
 	repository8 "backend-ekkn/modules/lecturer/repository"
 	resthandler8 "backend-ekkn/modules/lecturer/resthandler"
 	service8 "backend-ekkn/modules/lecturer/service"
+	repository9 "backend-ekkn/modules/lecturer_registration/repository"
+	resthandler9 "backend-ekkn/modules/lecturer_registration/resthandler"
+	service9 "backend-ekkn/modules/lecturer_registration/service"
 	repository6 "backend-ekkn/modules/logbook/repository"
 	resthandler6 "backend-ekkn/modules/logbook/resthandler"
 	service6 "backend-ekkn/modules/logbook/service"
@@ -96,6 +99,11 @@ func main() {
 	lecturerService := service8.NewLecturerService(lecturerRepository)
 	lecturerRestHandler := resthandler8.NewLecturerRestHandler(lecturerService, jwtManager)
 
+	// module lecturer registration
+	lecturerRegistationRepository := repository9.NewLecturerRegistrationRepository(db)
+	lecturerRegistrationService := service9.NewLecturerRegistrationService(lecturerRegistationRepository)
+	lecturerRegistrationRestHandler := resthandler9.NewLecturerRegistrationRestHandler(lecturerRegistrationService)
+
 	// init router gin
 	router := gin.Default()
 
@@ -129,7 +137,8 @@ func main() {
 	api.POST("/period", authMiddleware.AuthMiddleWareAdmin(), periodResthandler.CreatePeriod)
 	api.PUT("/period/:id", authMiddleware.AuthMiddleWareAdmin(), periodResthandler.UpdatePeriod)
 	api.GET("/period", authMiddleware.AuthMiddleWare(), periodResthandler.FindAllPeriod)
-	api.GET("/period/student", authMiddleware.AuthMiddleWare(), periodResthandler.FindAllPeriodByStudent)
+	api.GET("/period/student/open", authMiddleware.AuthMiddleWare(), periodResthandler.FindAllPeriodStudentOpen)
+	api.GET("/period/lecturer/open", authMiddleware.AuthMiddleWare(), periodResthandler.FindAllPeriodLecturerOpen)
 	api.GET("/period/:id", authMiddleware.AuthMiddleWare(), periodResthandler.FindPeriodById)
 	api.DELETE("/period/:id", authMiddleware.AuthMiddleWareAdmin(), periodResthandler.DeletePeriodById)
 
@@ -172,12 +181,17 @@ func main() {
 	// lecturer
 	api.POST("/lecturer", authMiddleware.AuthMiddleWareAdmin(), lecturerRestHandler.CreateLecturer)
 	api.PUT("/lecturer/:id", authMiddleware.AuthMiddleWareAdmin(), lecturerRestHandler.UpdateLecturer)
+	api.PUT("/lecturer", authMiddleware.AuthMiddleWareLecturer(), lecturerRestHandler.UpdateLecturerByJwt)
 	api.DELETE("/lecturer/:id", authMiddleware.AuthMiddleWareAdmin(), lecturerRestHandler.DeleteLecturer)
 	api.PUT("/lecturer/reset_password/:id", authMiddleware.AuthMiddleWareAdmin(), lecturerRestHandler.ResetPassword)
 	api.GET("/lecturer/:id", authMiddleware.AuthMiddleWareAdmin(), lecturerRestHandler.FindByIdParam)
 	api.GET("/lecturer", authMiddleware.AuthMiddleWareLecturer(), lecturerRestHandler.FindByIdJwt)
 	api.GET("/lecturers", authMiddleware.AuthMiddleWareAdmin(), lecturerRestHandler.FindAllLecturer)
 	api.POST("/auth/lecturer/login", lecturerRestHandler.LoginLecturer)
+	api.PUT("/lecturer/change_password", authMiddleware.AuthMiddleWareLecturer(), lecturerRestHandler.ChangePassword)
+
+	// lecturer registation
+	api.POST("/lecturer/registration", authMiddleware.AuthMiddleWareLecturer(), lecturerRegistrationRestHandler.LecturerRegistration)
 
 	router.Run()
 }

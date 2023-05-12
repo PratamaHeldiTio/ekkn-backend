@@ -41,6 +41,30 @@ func (handler *LecturerRestHandlerImpl) CreateLecturer(c *gin.Context) {
 	return
 }
 
+func (handler *LecturerRestHandlerImpl) UpdateLecturerByJwt(c *gin.Context) {
+	var request shareddomain.LecturerRequest
+	request.ID = c.MustGet("lecturerID").(string)
+
+	if err := c.ShouldBindJSON(&request); err != nil {
+		// create response
+		response := helper.APIResponseWithError(http.StatusUnprocessableEntity, false, "dosen gagal diedit", err.Error())
+		c.JSON(http.StatusUnprocessableEntity, response)
+		return
+	}
+
+	if err := handler.service.UpdateLecturer(request); err != nil {
+		// create response
+		response := helper.APIResponseWithError(http.StatusBadRequest, false, "dosen gagal diedit", err.Error())
+		c.JSON(http.StatusBadRequest, response)
+		return
+	}
+
+	// create response
+	response := helper.APIResponseWithoutData(http.StatusOK, true, "dosen berhasil diedit")
+	c.JSON(http.StatusOK, response)
+	return
+}
+
 func (handler *LecturerRestHandlerImpl) UpdateLecturer(c *gin.Context) {
 	var request shareddomain.LecturerRequest
 	request.ID = c.Param("id")
@@ -181,4 +205,26 @@ func (handler *LecturerRestHandlerImpl) FindByIdJwt(c *gin.Context) {
 	response := helper.APIResponseWithData(http.StatusOK, true, "berhasil mendapatkan dosen", lecturerResponse)
 	c.JSON(http.StatusOK, response)
 
+}
+
+func (handler *LecturerRestHandlerImpl) ChangePassword(c *gin.Context) {
+	var request shareddomain.ChangePasswordLecturerRequest
+	request.ID = c.MustGet("lecturerID").(string)
+
+	if err := c.ShouldBindJSON(&request); err != nil {
+		// create response
+		response := helper.APIResponseWithError(http.StatusUnprocessableEntity, false, "Data yang anda masukan salah", err.Error())
+		c.JSON(http.StatusUnprocessableEntity, response)
+		return
+	}
+
+	if err := handler.service.ChangePassword(request); err != nil {
+		response := helper.APIResponseWithError(http.StatusBadRequest, false, "gagal merubah password", err.Error())
+		c.JSON(http.StatusBadRequest, response)
+		return
+	}
+
+	// create response
+	response := helper.APIResponseWithoutData(http.StatusOK, true, "berhasil merubah password")
+	c.JSON(http.StatusOK, response)
 }

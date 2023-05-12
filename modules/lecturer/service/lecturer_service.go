@@ -13,4 +13,5 @@ type LecturerService interface {
 	LoginLecturer(request shareddomain.LecturerLogin) (domain.Lecturer, error)
 	DeleteLecture(ID string) error
 	ResetPassword(ID string) error
+	ChangePassword(request shareddomain.ChangePasswordLecturerRequest) error
 }

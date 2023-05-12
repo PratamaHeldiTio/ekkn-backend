@@ -27,6 +27,13 @@ type LecturerLogin struct {
 	Password string `json:"password" binding:"required"`
 }
 
+type ChangePasswordLecturerRequest struct {
+	ID                string
+	OldPassword       string `json:"old_password" binding:"required"`
+	NewPassword       string `json:"new_password" binding:"required"`
+	RepeatNewPassword string `json:"repeat_new_password" binding:"required"`
+}
+
 func ToLecturerResponse(lecturer domain.Lecturer) LecturerResponse {
 	lecturerResponse := LecturerResponse{
 		ID:         lecturer.ID,

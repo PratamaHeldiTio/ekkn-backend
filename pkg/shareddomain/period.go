@@ -30,7 +30,7 @@ type ResponsePeriod struct {
 	UpdatedAt             int64  `json:"updated_at"`
 }
 
-type ResponsePeriodStudent struct {
+type ResponsePeriodBasic struct {
 	ID          string `json:"period_id"`
 	Semester    string `json:"semester"`
 	TahunAjaran string `json:"tahun_ajaran"`
@@ -54,8 +54,8 @@ func ToResponsePeriod(period domain.Period) ResponsePeriod {
 	return periodResponse
 }
 
-func ToResponsePeriodStudent(period domain.Period) ResponsePeriodStudent {
-	periodResponse := ResponsePeriodStudent{
+func ToResponsePeriodStudent(period domain.Period) ResponsePeriodBasic {
+	periodResponse := ResponsePeriodBasic{
 		ID:          period.ID,
 		Semester:    period.Semester,
 		TahunAjaran: period.TahunAjaran,

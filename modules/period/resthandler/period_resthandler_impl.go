@@ -64,7 +64,7 @@ func (handler *PeriodResthandlerImpl) FindAllPeriod(c *gin.Context) {
 }
 
 // find all period by student filter period true register student true
-func (handler *PeriodResthandlerImpl) FindAllPeriodByStudent(c *gin.Context) {
+func (handler *PeriodResthandlerImpl) FindAllPeriodStudentOpen(c *gin.Context) {
 	periods, err := handler.service.FindAllPeriod()
 	if err != nil {
 		// create response
@@ -74,11 +74,36 @@ func (handler *PeriodResthandlerImpl) FindAllPeriodByStudent(c *gin.Context) {
 	}
 
 	// init type of response
-	responsePeriods := []shareddomain.ResponsePeriodStudent{}
+	responsePeriods := []shareddomain.ResponsePeriodBasic{}
 
 	// maping data
 	for _, period := range periods {
 		if period.Status == "true" && period.StatusRegisterStudent == "true" {
+			responsePeriods = append(responsePeriods, shareddomain.ToResponsePeriodStudent(period))
+		}
+	}
+
+	// create response
+	response := helper.APIResponseWithData(http.StatusOK, true, "Periode berhasil didapatkan", responsePeriods)
+	c.JSON(http.StatusOK, response)
+	return
+}
+
+func (handler *PeriodResthandlerImpl) FindAllPeriodLecturerOpen(c *gin.Context) {
+	periods, err := handler.service.FindAllPeriod()
+	if err != nil {
+		// create response
+		response := helper.APIResponseWithError(http.StatusInternalServerError, false, "Periode gagal didapatkan", err.Error())
+		c.JSON(http.StatusInternalServerError, response)
+		return
+	}
+
+	// init type of response
+	responsePeriods := []shareddomain.ResponsePeriodBasic{}
+
+	// maping data
+	for _, period := range periods {
+		if period.Status == "true" && period.StatusRegisterLecture == "true" {
 			responsePeriods = append(responsePeriods, shareddomain.ToResponsePeriodStudent(period))
 		}
 	}
