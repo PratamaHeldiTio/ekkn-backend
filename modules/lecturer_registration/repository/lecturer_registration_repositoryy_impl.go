@@ -31,3 +31,14 @@ func (repo *lecturerRegistrationRepositoryImpl) FindByPeriodLectureID(periodID, 
 
 	return lecturerRegistration, nil
 }
+
+func (repo *lecturerRegistrationRepositoryImpl) FindByLectureID(lectureID string) ([]domain.LecturerRegistration, error) {
+	var lecturerRegistration []domain.LecturerRegistration
+
+	if err := repo.db.Preload("Period").Where("lecturer_id = ?", lectureID).
+		Find(&lecturerRegistration).Error; err != nil {
+		return lecturerRegistration, err
+	}
+
+	return lecturerRegistration, nil
+}

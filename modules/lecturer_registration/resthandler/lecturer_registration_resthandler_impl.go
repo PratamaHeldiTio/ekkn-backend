@@ -39,3 +39,24 @@ func (handler *lecturerRegistrationRestHandlerImpl) LecturerRegistration(c *gin.
 	response := helper.APIResponseWithoutData(http.StatusCreated, true, "Pendaftaran berhasil dilakukan")
 	c.JSON(http.StatusCreated, response)
 }
+
+func (handler *lecturerRegistrationRestHandlerImpl) FindLecturerRegistrationHistory(c *gin.Context) {
+	lecturerID := c.MustGet("lecturerID").(string)
+
+	lecturerRegistrations, err := handler.service.FindLecturerRegistrationByLectureID(lecturerID)
+	if err != nil {
+		// create response
+		response := helper.APIResponseWithError(http.StatusBadRequest, false, "riwayat pendaftaran gagal didapatkan", err.Error())
+		c.JSON(http.StatusBadRequest, response)
+		return
+	}
+
+	// response valid
+	lecturerRegistrationResponses := []shareddomain.LecturerRegistrationHistoryResponse{}
+	for _, lecturerRegistration := range lecturerRegistrations {
+		lecturerRegistrationResponses = append(lecturerRegistrationResponses, shareddomain.ToLecturerRegistrationHistory(lecturerRegistration))
+	}
+	response := helper.APIResponseWithData(http.StatusOK, true, "riwayat pendaftaran berhasil didapatkan", lecturerRegistrationResponses)
+	c.JSON(http.StatusOK, response)
+
+}

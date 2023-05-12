@@ -192,6 +192,7 @@ func main() {
 
 	// lecturer registation
 	api.POST("/lecturer/registration", authMiddleware.AuthMiddleWareLecturer(), lecturerRegistrationRestHandler.LecturerRegistration)
+	api.GET("/lecturer/registration/history", authMiddleware.AuthMiddleWareLecturer(), lecturerRegistrationRestHandler.FindLecturerRegistrationHistory)
 
 	router.Run()
 }

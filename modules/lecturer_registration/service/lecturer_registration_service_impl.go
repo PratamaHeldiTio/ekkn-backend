@@ -1,6 +1,7 @@
 package service
 
 import (
+	"backend-ekkn/modules/lecturer_registration/domain"
 	"backend-ekkn/modules/lecturer_registration/repository"
 	"backend-ekkn/pkg/shareddomain"
 	"errors"
@@ -33,4 +34,13 @@ func (service *lecturerRegistrationServiceImpl) LecturerRegistration(request sha
 	}
 
 	return nil
+}
+
+func (service *lecturerRegistrationServiceImpl) FindLecturerRegistrationByLectureID(lectureID string) ([]domain.LecturerRegistration, error) {
+	lecturerRegistrations, err := service.repo.FindByLectureID(lectureID)
+	if err != nil {
+		return lecturerRegistrations, err
+	}
+
+	return lecturerRegistrations, nil
 }
