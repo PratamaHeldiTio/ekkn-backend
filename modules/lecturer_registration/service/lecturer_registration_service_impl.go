@@ -44,3 +44,40 @@ func (service *lecturerRegistrationServiceImpl) FindLecturerRegistrationByLectur
 
 	return lecturerRegistrations, nil
 }
+
+func (service *lecturerRegistrationServiceImpl) FindLecturerRegistrationByID(ID string) (domain.LecturerRegistration, error) {
+	lecturerRegistration, err := service.repo.FindByID(ID)
+	if err != nil {
+		return lecturerRegistration, err
+	}
+
+	if lecturerRegistration.ID == "" {
+		return lecturerRegistration, errors.New("data tidak ditemukan")
+	}
+
+	return lecturerRegistration, nil
+}
+
+func (service *lecturerRegistrationServiceImpl) ValidationLecturerRegistration(request shareddomain.ValidationLectureRegistrationRequest) error {
+	lecturerRegistration, err := service.FindLecturerRegistrationByID(request.ID)
+	if err != nil {
+		return err
+	}
+
+	// update
+	lecturerRegistration.Status = request.Status
+	if err := service.repo.Update(lecturerRegistration); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (service *lecturerRegistrationServiceImpl) FindLecturerRegistrationByPeriod(ID string) ([]domain.LecturerRegistration, error) {
+	lecturerRegistrations, err := service.repo.FindByPeriod(ID)
+	if err != nil {
+		return lecturerRegistrations, err
+	}
+
+	return lecturerRegistrations, nil
+}

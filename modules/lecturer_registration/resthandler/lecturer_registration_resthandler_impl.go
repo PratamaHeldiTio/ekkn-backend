@@ -60,3 +60,46 @@ func (handler *lecturerRegistrationRestHandlerImpl) FindLecturerRegistrationHist
 	c.JSON(http.StatusOK, response)
 
 }
+
+func (handler *lecturerRegistrationRestHandlerImpl) ValidationLecturerRegistration(c *gin.Context) {
+	var request shareddomain.ValidationLectureRegistrationRequest
+	request.ID = c.Param("id")
+
+	if err := c.ShouldBindJSON(&request); err != nil {
+		// create response
+		response := helper.APIResponseWithError(http.StatusUnprocessableEntity, false, "validasi gagal dilakukan", err.Error())
+		c.JSON(http.StatusUnprocessableEntity, response)
+		return
+	}
+
+	if err := handler.service.ValidationLecturerRegistration(request); err != nil {
+		// create response
+		response := helper.APIResponseWithError(http.StatusBadRequest, false, "validasi gagal dilakukan", err.Error())
+		c.JSON(http.StatusBadRequest, response)
+		return
+	}
+
+	// create response
+	response := helper.APIResponseWithoutData(http.StatusCreated, true, "validasi berhasil dilakukan")
+	c.JSON(http.StatusCreated, response)
+}
+
+func (handler *lecturerRegistrationRestHandlerImpl) FindLecturerRegistrationByPeriod(c *gin.Context) {
+	PeriodID := c.Param("periodID")
+
+	lecturerRegistrations, err := handler.service.FindLecturerRegistrationByPeriod(PeriodID)
+	if err != nil {
+		// create response
+		response := helper.APIResponseWithError(http.StatusBadRequest, false, "pendaftaran dosen gagal didapatkan", err.Error())
+		c.JSON(http.StatusBadRequest, response)
+		return
+	}
+
+	// response valid
+	lecturerRegistrationResponses := []shareddomain.LecturerRegistrationByPeriodResponse{}
+	for _, lecturerRegistration := range lecturerRegistrations {
+		lecturerRegistrationResponses = append(lecturerRegistrationResponses, shareddomain.ToLecturerRegistrationByPeriod(lecturerRegistration))
+	}
+	response := helper.APIResponseWithData(http.StatusOK, true, "pendaftaran dosen berhasil didapatkan", lecturerRegistrationResponses)
+	c.JSON(http.StatusOK, response)
+}

@@ -15,6 +15,20 @@ type LecturerRegistrationHistoryResponse struct {
 	CreatedAt   int64  `json:"created_at"`
 }
 
+type ValidationLectureRegistrationRequest struct {
+	ID     string
+	Status string `json:"status" binding:"required"`
+}
+
+type LecturerRegistrationByPeriodResponse struct {
+	ID         string `json:"id"`
+	LecturerID string `json:"lecturer_id"`
+	Name       string `json:"name"`
+	Prodi      string `json:"prodi"`
+	Fakultas   string `json:"fakultas"`
+	Status     string `json:"status"`
+}
+
 func ToLecturerRegistrationHistory(lecturerRegistration domain.LecturerRegistration) LecturerRegistrationHistoryResponse {
 	return LecturerRegistrationHistoryResponse{
 		ID:          lecturerRegistration.ID,
@@ -22,5 +36,16 @@ func ToLecturerRegistrationHistory(lecturerRegistration domain.LecturerRegistrat
 		TahunAjaran: lecturerRegistration.Period.TahunAjaran,
 		Status:      lecturerRegistration.Status,
 		CreatedAt:   lecturerRegistration.CreatedAt,
+	}
+}
+
+func ToLecturerRegistrationByPeriod(lecturerRegistration domain.LecturerRegistration) LecturerRegistrationByPeriodResponse {
+	return LecturerRegistrationByPeriodResponse{
+		ID:         lecturerRegistration.ID,
+		LecturerID: lecturerRegistration.LecturerID,
+		Name:       lecturerRegistration.Lecturer.Name,
+		Prodi:      lecturerRegistration.Lecturer.Prodi,
+		Fakultas:   lecturerRegistration.Lecturer.Fakultas,
+		Status:     lecturerRegistration.Status,
 	}
 }

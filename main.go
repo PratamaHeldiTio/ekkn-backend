@@ -190,9 +190,11 @@ func main() {
 	api.POST("/auth/lecturer/login", lecturerRestHandler.LoginLecturer)
 	api.PUT("/lecturer/change_password", authMiddleware.AuthMiddleWareLecturer(), lecturerRestHandler.ChangePassword)
 
-	// lecturer registation
+	// lecturer registration
 	api.POST("/lecturer/registration", authMiddleware.AuthMiddleWareLecturer(), lecturerRegistrationRestHandler.LecturerRegistration)
 	api.GET("/lecturer/registration/history", authMiddleware.AuthMiddleWareLecturer(), lecturerRegistrationRestHandler.FindLecturerRegistrationHistory)
+	api.PUT("/lecturer/registration/validation/:id", authMiddleware.AuthMiddleWareAdmin(), lecturerRegistrationRestHandler.ValidationLecturerRegistration)
+	api.GET("/lecturer/registration/:periodID", authMiddleware.AuthMiddleWareAdmin(), lecturerRegistrationRestHandler.FindLecturerRegistrationByPeriod)
 
 	router.Run()
 }
