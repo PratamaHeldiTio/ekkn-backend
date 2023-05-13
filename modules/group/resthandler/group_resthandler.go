@@ -12,4 +12,6 @@ type GroupReshandler interface {
 	UploadReport(c *gin.Context)
 	UploadPotentialVillage(c *gin.Context)
 	FindByGroupByPeriodLeader(c *gin.Context)
+	FindRegisteredGroupByPeriod(c *gin.Context)
+	AddLecturer(c *gin.Context)
 }

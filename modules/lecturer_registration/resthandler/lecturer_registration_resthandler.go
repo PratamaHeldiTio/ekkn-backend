@@ -9,4 +9,5 @@ type LecturerRegistrationRestHandler interface {
 	FindLecturerRegistrationHistory(c *gin.Context)
 	ValidationLecturerRegistration(c *gin.Context)
 	FindLecturerRegistrationByPeriod(c *gin.Context)
+	FindLecturerRegistrationByPeriodApprove(c *gin.Context)
 }

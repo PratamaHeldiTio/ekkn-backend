@@ -11,4 +11,5 @@ type GroupRepository interface {
 	FindByID(ID string) (domain.Group, error)
 	FindByPeriodLeader(periodID, leader string) (domain.Group, error)
 	Update(group domain.Group) error
+	FindByPeriod(ID string) ([]domain.Group, error)
 }

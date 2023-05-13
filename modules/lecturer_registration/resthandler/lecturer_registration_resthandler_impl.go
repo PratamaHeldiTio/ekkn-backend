@@ -103,3 +103,25 @@ func (handler *lecturerRegistrationRestHandlerImpl) FindLecturerRegistrationByPe
 	response := helper.APIResponseWithData(http.StatusOK, true, "pendaftaran dosen berhasil didapatkan", lecturerRegistrationResponses)
 	c.JSON(http.StatusOK, response)
 }
+
+func (handler *lecturerRegistrationRestHandlerImpl) FindLecturerRegistrationByPeriodApprove(c *gin.Context) {
+	PeriodID := c.Param("periodID")
+
+	lecturerRegistrations, err := handler.service.FindLecturerRegistrationByPeriod(PeriodID)
+	if err != nil {
+		// create response
+		response := helper.APIResponseWithError(http.StatusBadRequest, false, "dosen gagal didapatkan", err.Error())
+		c.JSON(http.StatusBadRequest, response)
+		return
+	}
+
+	// response valid
+	lecturerRegistrationResponses := []shareddomain.LecturerRegistrationByPeriodResponse{}
+	for _, lecturerRegistration := range lecturerRegistrations {
+		if lecturerRegistration.Status == "true" {
+			lecturerRegistrationResponses = append(lecturerRegistrationResponses, shareddomain.ToLecturerRegistrationByPeriod(lecturerRegistration))
+		}
+	}
+	response := helper.APIResponseWithData(http.StatusOK, true, "dosen berhasil didapatkan", lecturerRegistrationResponses)
+	c.JSON(http.StatusOK, response)
+}

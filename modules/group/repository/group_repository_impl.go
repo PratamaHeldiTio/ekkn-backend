@@ -73,6 +73,7 @@ func (repo *GroupRepositoryImpl) Join(studentID, PeriodID, groupID string) error
 func (repo *GroupRepositoryImpl) FindByID(ID string) (domain.Group, error) {
 	var group domain.Group
 	if err := repo.db.Preload("Students").
+		Preload("Lecturer").
 		Preload("Period").
 		Preload("Village").
 		Where("group_id = ?", ID).
@@ -99,4 +100,13 @@ func (repo *GroupRepositoryImpl) FindByPeriodLeader(periodID, leader string) (do
 	}
 
 	return group, nil
+}
+
+func (repo *GroupRepositoryImpl) FindByPeriod(ID string) ([]domain.Group, error) {
+	var groups []domain.Group
+	if err := repo.db.Preload("Lecturer").Preload("Village").Where("period_id = ?", ID).Find(&groups).Error; err != nil {
+		return groups, err
+	}
+
+	return groups, nil
 }

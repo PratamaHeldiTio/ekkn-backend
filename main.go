@@ -160,6 +160,8 @@ func main() {
 	api.POST("/group/report/:id", authMiddleware.AuthMiddleWare(), groupResthandler.UploadReport)
 	api.POST("/group/potential/:id", authMiddleware.AuthMiddleWare(), groupResthandler.UploadPotentialVillage)
 	api.GET("/group/leader/:periodID", authMiddleware.AuthMiddleWare(), groupResthandler.FindByGroupByPeriodLeader)
+	api.GET("/group/registered/:periodID", authMiddleware.AuthMiddleWareAdmin(), groupResthandler.FindRegisteredGroupByPeriod)
+	api.PUT("/group/add_lecturer/:id", authMiddleware.AuthMiddleWareAdmin(), groupResthandler.AddLecturer)
 
 	// endpoint village
 	api.POST("/village", authMiddleware.AuthMiddleWareAdmin(), villageResthandler.CreateVillage)
@@ -195,6 +197,6 @@ func main() {
 	api.GET("/lecturer/registration/history", authMiddleware.AuthMiddleWareLecturer(), lecturerRegistrationRestHandler.FindLecturerRegistrationHistory)
 	api.PUT("/lecturer/registration/validation/:id", authMiddleware.AuthMiddleWareAdmin(), lecturerRegistrationRestHandler.ValidationLecturerRegistration)
 	api.GET("/lecturer/registration/:periodID", authMiddleware.AuthMiddleWareAdmin(), lecturerRegistrationRestHandler.FindLecturerRegistrationByPeriod)
-
+	api.GET("/lecturer/registration/approve/:periodID", authMiddleware.AuthMiddleWareAdmin(), lecturerRegistrationRestHandler.FindLecturerRegistrationByPeriodApprove)
 	router.Run()
 }

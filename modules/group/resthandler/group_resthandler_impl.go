@@ -222,3 +222,48 @@ func (handler *GroupResthandlerImpl) UploadPotentialVillage(c *gin.Context) {
 	response := helper.APIResponseWithoutData(http.StatusOK, true, "Berhasil upload potensi desa")
 	c.JSON(http.StatusOK, response)
 }
+
+func (handler *GroupResthandlerImpl) FindRegisteredGroupByPeriod(c *gin.Context) {
+	ID := c.Param("periodID")
+	groups, err := handler.service.FindRegisteredGroupByPeriod(ID)
+	if err != nil {
+		// create response
+		response := helper.APIResponseWithError(http.StatusBadRequest, false, "gagal mendapatkan kelompok", err.Error())
+		c.JSON(http.StatusBadRequest, response)
+		return
+	}
+
+	// valid responses
+	groupResponses := []shareddomain.GroupRegisteredByPeriodResponse{}
+	for _, group := range groups {
+		if group.Status == "true" {
+			groupResponses = append(groupResponses, shareddomain.ToGroupRegisteredByPeriod(group))
+		}
+	}
+	response := helper.APIResponseWithData(http.StatusOK, true, "berhasil mendapatkan kelompok", groupResponses)
+	c.JSON(http.StatusOK, response)
+
+}
+
+func (handler *GroupResthandlerImpl) AddLecturer(c *gin.Context) {
+	var request shareddomain.AddLecturerRequest
+	request.ID = c.Param("id")
+
+	if err := c.ShouldBindJSON(&request); err != nil {
+		// create response
+		response := helper.APIResponseWithError(http.StatusUnprocessableEntity, false, "gagal menambahkan dosen", err.Error())
+		c.JSON(http.StatusUnprocessableEntity, response)
+		return
+	}
+
+	if err := handler.service.AddLecturer(request); err != nil {
+		// create response
+		response := helper.APIResponseWithError(http.StatusBadRequest, false, "gagal menambahkan dosen", err.Error())
+		c.JSON(http.StatusBadRequest, response)
+		return
+	}
+
+	// valid response
+	response := helper.APIResponseWithoutData(http.StatusOK, true, "berhasil menambahkan dosen")
+	c.JSON(http.StatusOK, response)
+}

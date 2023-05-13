@@ -213,3 +213,28 @@ func (service *GroupServiceImpl) FindGroupByPeriodLeader(periodID, leader string
 
 	return group, nil
 }
+
+func (service *GroupServiceImpl) FindRegisteredGroupByPeriod(ID string) ([]domain.Group, error) {
+	groups, err := service.repo.FindByPeriod(ID)
+	if err != nil {
+		return groups, err
+	}
+
+	return groups, nil
+}
+
+func (service *GroupServiceImpl) AddLecturer(request shareddomain.AddLecturerRequest) error {
+	//find group
+	group, err := service.FindGroupID(request.ID)
+	if err != nil {
+		return err
+	}
+
+	// change new value update
+	group.LecturerID = request.LecturerID
+	if err := service.repo.Update(group); err != nil {
+		return err
+	}
+
+	return nil
+}
