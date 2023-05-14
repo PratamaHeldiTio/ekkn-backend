@@ -110,3 +110,12 @@ func (repo *GroupRepositoryImpl) FindByPeriod(ID string) ([]domain.Group, error)
 
 	return groups, nil
 }
+
+func (repo *GroupRepositoryImpl) FindByPeriodLecturer(periodID, lecturerID string) ([]domain.Group, error) {
+	var groups []domain.Group
+	if err := repo.db.Preload("Village").Where("period_id = ? and lecturer_id = ?", periodID, lecturerID).Find(&groups).Error; err != nil {
+		return groups, err
+	}
+
+	return groups, nil
+}

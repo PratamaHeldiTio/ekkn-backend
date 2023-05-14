@@ -15,6 +15,12 @@ type LecturerRegistrationHistoryResponse struct {
 	CreatedAt   int64  `json:"created_at"`
 }
 
+type LecturerRegistrationApproveResponse struct {
+	PeriodID    string `json:"period_id"`
+	Semester    string `json:"semester"`
+	TahunAjaran string `json:"tahun_ajaran"`
+}
+
 type ValidationLectureRegistrationRequest struct {
 	ID     string
 	Status string `json:"status" binding:"required"`
@@ -47,5 +53,13 @@ func ToLecturerRegistrationByPeriod(lecturerRegistration domain.LecturerRegistra
 		Prodi:      lecturerRegistration.Lecturer.Prodi,
 		Fakultas:   lecturerRegistration.Lecturer.Fakultas,
 		Status:     lecturerRegistration.Status,
+	}
+}
+
+func ToLecturerRegistrationApprove(lecturerRegistration domain.LecturerRegistration) LecturerRegistrationApproveResponse {
+	return LecturerRegistrationApproveResponse{
+		PeriodID:    lecturerRegistration.PeriodID,
+		Semester:    lecturerRegistration.Period.Semester,
+		TahunAjaran: lecturerRegistration.Period.TahunAjaran,
 	}
 }

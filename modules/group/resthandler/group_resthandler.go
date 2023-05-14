@@ -14,4 +14,5 @@ type GroupReshandler interface {
 	FindByGroupByPeriodLeader(c *gin.Context)
 	FindRegisteredGroupByPeriod(c *gin.Context)
 	AddLecturer(c *gin.Context)
+	FindGroupByPeriodLecturer(c *gin.Context)
 }

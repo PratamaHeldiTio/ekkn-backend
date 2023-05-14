@@ -15,4 +15,5 @@ type GroupService interface {
 	FindGroupByPeriodLeader(periodID, leader string) (domain.Group, error)
 	FindRegisteredGroupByPeriod(ID string) ([]domain.Group, error)
 	AddLecturer(request shareddomain.AddLecturerRequest) error
+	FindGroupByPeriodLecturer(periodID, lecturerID string) ([]domain.Group, error)
 }

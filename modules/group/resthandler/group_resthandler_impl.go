@@ -267,3 +267,25 @@ func (handler *GroupResthandlerImpl) AddLecturer(c *gin.Context) {
 	response := helper.APIResponseWithoutData(http.StatusOK, true, "berhasil menambahkan dosen")
 	c.JSON(http.StatusOK, response)
 }
+
+func (handler *GroupResthandlerImpl) FindGroupByPeriodLecturer(c *gin.Context) {
+	lecturerId := c.MustGet("lecturerID").(string)
+	periodID := c.Param("periodId")
+
+	groups, err := handler.service.FindGroupByPeriodLecturer(periodID, lecturerId)
+	if err != nil {
+		// create response
+		response := helper.APIResponseWithError(http.StatusBadRequest, false, "gagal mendapatkan group", err.Error())
+		c.JSON(http.StatusBadRequest, response)
+		return
+	}
+
+	// valid response
+	groupResponses := []shareddomain.GroupByPeriodLecturerResponse{}
+	for _, group := range groups {
+		groupResponses = append(groupResponses, shareddomain.ToGroupByPeriodLecturer(group))
+	}
+	response := helper.APIResponseWithData(http.StatusOK, true, "berhasil mendapatkan kelompok", groupResponses)
+	c.JSON(http.StatusOK, response)
+
+}

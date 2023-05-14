@@ -1,7 +1,7 @@
 package main
 
 import (
-	"backend-ekkn/jwt_manager"
+	jwtmanager "backend-ekkn/jwt_manager"
 	"backend-ekkn/middleware"
 	"backend-ekkn/migration"
 	repository7 "backend-ekkn/modules/admin/repository"
@@ -162,6 +162,7 @@ func main() {
 	api.GET("/group/leader/:periodID", authMiddleware.AuthMiddleWare(), groupResthandler.FindByGroupByPeriodLeader)
 	api.GET("/group/registered/:periodID", authMiddleware.AuthMiddleWareAdmin(), groupResthandler.FindRegisteredGroupByPeriod)
 	api.PUT("/group/add_lecturer/:id", authMiddleware.AuthMiddleWareAdmin(), groupResthandler.AddLecturer)
+	api.GET("/group/lecturer/:periodId", authMiddleware.AuthMiddleWareLecturer(), groupResthandler.FindGroupByPeriodLecturer)
 
 	// endpoint village
 	api.POST("/village", authMiddleware.AuthMiddleWareAdmin(), villageResthandler.CreateVillage)
@@ -198,5 +199,6 @@ func main() {
 	api.PUT("/lecturer/registration/validation/:id", authMiddleware.AuthMiddleWareAdmin(), lecturerRegistrationRestHandler.ValidationLecturerRegistration)
 	api.GET("/lecturer/registration/:periodID", authMiddleware.AuthMiddleWareAdmin(), lecturerRegistrationRestHandler.FindLecturerRegistrationByPeriod)
 	api.GET("/lecturer/registration/approve/:periodID", authMiddleware.AuthMiddleWareAdmin(), lecturerRegistrationRestHandler.FindLecturerRegistrationByPeriodApprove)
+	api.GET("/lecturer/registration/approve", authMiddleware.AuthMiddleWareLecturer(), lecturerRegistrationRestHandler.FindLecturerRegistrationApprove)
 	router.Run()
 }

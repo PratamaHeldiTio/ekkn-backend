@@ -238,3 +238,12 @@ func (service *GroupServiceImpl) AddLecturer(request shareddomain.AddLecturerReq
 
 	return nil
 }
+
+func (service *GroupServiceImpl) FindGroupByPeriodLecturer(periodID, lecturerID string) ([]domain.Group, error) {
+	groups, err := service.repo.FindByPeriodLecturer(periodID, lecturerID)
+	if err != nil {
+		return groups, err
+	}
+
+	return groups, nil
+}

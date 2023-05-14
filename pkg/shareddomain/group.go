@@ -176,3 +176,23 @@ type AddLecturerRequest struct {
 	ID         string
 	LecturerID string `json:"lecturer_id"`
 }
+
+type GroupByPeriodLecturerResponse struct {
+	ID      string  `json:"id"`
+	Name    string  `json:"name"`
+	Village Village `json:"village"`
+}
+
+func ToGroupByPeriodLecturer(group domain.Group) GroupByPeriodLecturerResponse {
+	village := Village{
+		Name:      group.Village.Name,
+		Kecamatan: group.Village.Kecamatan,
+		Kabupaten: group.Village.Kabupaten,
+	}
+
+	return GroupByPeriodLecturerResponse{
+		ID:      group.ID,
+		Name:    group.Name,
+		Village: village,
+	}
+}
