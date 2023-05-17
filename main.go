@@ -150,6 +150,7 @@ func main() {
 	api.GET("/student/registration/:periodID/:studentID", authMiddleware.AuthMiddleWare(), studentRegistrationResthandler.FindStudentRegistrationByNimPeriodIDParams)
 	api.GET("/student/registrations/:periodID", authMiddleware.AuthMiddleWare(), studentRegistrationResthandler.FindStudentRegistrationByPeriod)
 	api.PUT("/student/registration/:ID", authMiddleware.AuthMiddleWareAdmin(), studentRegistrationResthandler.UpdateStudentRegistration)
+	api.PUT("/student/registration/proker/:id", authMiddleware.AuthMiddleWare(), studentRegistrationResthandler.AddProkerStudent)
 
 	//endpoint group
 	api.POST("/group/:periodID", authMiddleware.AuthMiddleWare(), groupResthandler.CrateGroup)

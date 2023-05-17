@@ -11,4 +11,5 @@ type StudentRegistrationService interface {
 	FindStudentRegistrationByNimPeriodID(nim, periodID string) (domain.StudentRegistration, error)
 	FindStudentRegistrationByPeriod(periodID string) ([]domain.StudentRegistration, error)
 	UpdateStudentRegistration(shareddomain.UpdateStudentRegistrationRequest) error
+	AddProkerStudent(request shareddomain.AddProkerStudent) error
 }

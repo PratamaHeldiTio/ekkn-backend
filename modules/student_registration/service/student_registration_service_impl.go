@@ -82,3 +82,21 @@ func (service *StudentRegistrationServiceImpl) UpdateStudentRegistration(request
 	}
 	return nil
 }
+
+func (service *StudentRegistrationServiceImpl) AddProkerStudent(request shareddomain.AddProkerStudent) error {
+	// cek registration isExist
+	registration, err := service.repo.FindByID(request.ID)
+	if err != nil {
+		return err
+	}
+
+	if registration.ID == "" {
+		return errors.New("data tidak ditemukan")
+	}
+
+	registration.Proker = request.Proker
+	if err := service.repo.Update(registration); err != nil {
+		return err
+	}
+	return nil
+}

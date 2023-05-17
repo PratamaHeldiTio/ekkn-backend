@@ -198,3 +198,27 @@ func (handler *StudentRegistrationResthandlerImpl) UpdateStudentRegistration(c *
 	response := helper.APIResponseWithoutData(http.StatusCreated, true, "Validasi berhasil dilakukan")
 	c.JSON(http.StatusCreated, response)
 }
+
+func (handler *StudentRegistrationResthandlerImpl) AddProkerStudent(c *gin.Context) {
+	var request shareddomain.AddProkerStudent
+	ID := c.Param("id")
+	request.ID = ID
+
+	if err := c.ShouldBindJSON(&request); err != nil {
+		// create response
+		response := helper.APIResponseWithError(http.StatusUnprocessableEntity, false, "Validasi gagal dilakukan", err.Error())
+		c.JSON(http.StatusUnprocessableEntity, response)
+		return
+	}
+
+	if err := handler.service.AddProkerStudent(request); err != nil {
+		// create response
+		response := helper.APIResponseWithError(http.StatusBadRequest, false, "gagal menambahkan program kerja", err.Error())
+		c.JSON(http.StatusBadRequest, response)
+		return
+	}
+
+	// create response
+	response := helper.APIResponseWithoutData(http.StatusOK, true, "berhasil menambahkan program kerja")
+	c.JSON(http.StatusOK, response)
+}

@@ -46,6 +46,11 @@ type UpdateStudentRegistrationRequest struct {
 	Status string `json:"status" binding:"required"`
 }
 
+type AddProkerStudent struct {
+	ID     string `binding:"required"`
+	Proker string `json:"proker" binding:"required"`
+}
+
 type StudentRegistrationPeriodResponse struct {
 	ID        string `json:"id"`
 	StudentID string `json:"nim"`

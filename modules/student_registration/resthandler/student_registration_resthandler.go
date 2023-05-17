@@ -10,4 +10,5 @@ type StudentRegistrationReshandler interface {
 	FindStudentRegistrationByNimPeriodIDParams(c *gin.Context)
 	FindStudentRegistrationByPeriod(c *gin.Context)
 	UpdateStudentRegistration(c *gin.Context)
+	AddProkerStudent(c *gin.Context)
 }
