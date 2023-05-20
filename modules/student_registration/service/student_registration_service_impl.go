@@ -118,3 +118,18 @@ func (service *StudentRegistrationServiceImpl) FindStudentRegistrationByGroup(ID
 	}
 	return studentRegistation, nil
 }
+
+func (service *StudentRegistrationServiceImpl) SaveGradeStudent(request shareddomain.SaveGradeRequest) error {
+	studentRegistration, err := service.FindStudentRegistrationByID(request.ID)
+	if err != nil {
+		return err
+	}
+
+	studentRegistration.Grade = request.Grade
+	if err := service.repo.Update(studentRegistration); err != nil {
+		return err
+	}
+
+	return nil
+
+}

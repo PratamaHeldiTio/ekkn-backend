@@ -262,3 +262,26 @@ func (handler *StudentRegistrationResthandlerImpl) FindStudentRegistrationByGrou
 	response := helper.APIResponseWithData(http.StatusOK, true, "mahasiswa berhasil didapatkan", responseData)
 	c.JSON(http.StatusOK, response)
 }
+
+func (handler *StudentRegistrationResthandlerImpl) SaveGrade(c *gin.Context) {
+	var request shareddomain.SaveGradeRequest
+	request.ID = c.Param("id")
+
+	if err := c.ShouldBindJSON(&request); err != nil {
+		// create response
+		response := helper.APIResponseWithError(http.StatusUnprocessableEntity, false, "gagal menyimpan nilai", err.Error())
+		c.JSON(http.StatusUnprocessableEntity, response)
+		return
+	}
+
+	if err := handler.service.SaveGradeStudent(request); err != nil {
+		// create response
+		response := helper.APIResponseWithError(http.StatusBadRequest, false, "gagal menyimpan nilai", err.Error())
+		c.JSON(http.StatusBadRequest, response)
+		return
+	}
+
+	// create response
+	response := helper.APIResponseWithoutData(http.StatusOK, true, "berhasil menyimpan nilai")
+	c.JSON(http.StatusOK, response)
+}

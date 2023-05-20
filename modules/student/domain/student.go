@@ -8,7 +8,6 @@ type Student struct {
 	Prodi      string `gorm:"type:varchar(50)"`
 	Fakultas   string `gorm:"type:varchar(50)"`
 	MaduraLang string `gorm:"type:varchar(5)"`
-	Grade      string `gorm:"type:varchar(2);"`
 	CreatedAt  int64  `gorm:"autoCreateTime"`
 	UpdateAt   int64  `gorm:"autoUpdateTime"`
 }

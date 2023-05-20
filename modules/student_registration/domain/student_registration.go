@@ -14,5 +14,6 @@ type StudentRegistration struct {
 	GroupID   string
 	Status    string `gorm:"type:varchar(5); default:false"`
 	Proker    string
+	Grade     uint8
 	CreatedAt int64 `gorm:"autoCreateTime"`
 }

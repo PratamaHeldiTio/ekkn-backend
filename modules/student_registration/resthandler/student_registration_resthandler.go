@@ -13,4 +13,5 @@ type StudentRegistrationReshandler interface {
 	AddProkerStudent(c *gin.Context)
 	FindStudentRegistrationByID(c *gin.Context)
 	FindStudentRegistrationByGroup(c *gin.Context)
+	SaveGrade(c *gin.Context)
 }

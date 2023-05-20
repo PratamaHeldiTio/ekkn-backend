@@ -69,6 +69,11 @@ type AddProkerStudent struct {
 	Proker string `json:"proker" binding:"required"`
 }
 
+type SaveGradeRequest struct {
+	ID    string
+	Grade uint8 `json:"grade" binding:"required,gte=1,lte=100"`
+}
+
 type StudentRegistrationPeriodResponse struct {
 	ID        string `json:"id"`
 	StudentID string `json:"nim"`

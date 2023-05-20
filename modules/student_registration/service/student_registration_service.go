@@ -14,4 +14,5 @@ type StudentRegistrationService interface {
 	AddProkerStudent(request shareddomain.AddProkerStudent) error
 	FindStudentRegistrationByID(ID string) (domain.StudentRegistration, error)
 	FindStudentRegistrationByGroup(ID string) ([]domain.StudentRegistration, error)
+	SaveGradeStudent(request shareddomain.SaveGradeRequest) error
 }

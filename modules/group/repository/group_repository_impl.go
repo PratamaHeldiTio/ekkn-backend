@@ -54,7 +54,7 @@ func (repo *GroupRepositoryImpl) Join(studentID, PeriodID, groupID string) error
 	// update field group in registration student
 	var registration studentRegistration.StudentRegistration
 	if err := repo.db.Model(&registration).Where("student_id = ? and period_id = ?", studentID, PeriodID).
-		Update("group", groupID).Error; err != nil {
+		Update("group_id", groupID).Error; err != nil {
 		return err
 	}
 

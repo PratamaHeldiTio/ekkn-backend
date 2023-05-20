@@ -7,7 +7,6 @@ type CreateStudent struct {
 	Name     string `json:"name" binding:"required,max=100"`
 	Prodi    string `json:"prodi" binding:"max=50"`
 	Fakultas string `json:"fakultas" binding:"max=50"`
-	Grade    string `json:"grade"`
 }
 
 type UpdateStudent struct {
@@ -32,7 +31,6 @@ type FindStudentByNim struct {
 	Gender     string `json:"gender"`
 	MaduraLang string `json:"madura_lang"`
 	GroupKkn   string `json:"groupKkn"`
-	Grade      string `json:"grade"`
 	CreatedAt  int64  `json:"created_at"`
 	UpdateAt   int64  `json:"update_at"`
 }
@@ -43,7 +41,6 @@ func ToResponseStudent(student domain.Student) CreateStudent {
 		Name:     student.Name,
 		Prodi:    student.Prodi,
 		Fakultas: student.Fakultas,
-		Grade:    student.Grade,
 	}
 
 	return studentResponse
@@ -58,7 +55,6 @@ func ToResponseFindStudentByNim(student domain.Student) FindStudentByNim {
 		Fakultas:   student.Fakultas,
 		Gender:     student.Gender,
 		MaduraLang: student.MaduraLang,
-		Grade:      student.Grade,
 		CreatedAt:  student.CreatedAt,
 		UpdateAt:   student.UpdateAt,
 	}
