@@ -33,8 +33,11 @@ type ResponseStudentRegistrationByNim struct {
 type StudentRegistrationByGroupResponse struct {
 	ID        string `json:"id"`
 	StudentID string `json:"nim"`
+	PeriodID  string `json:"period_id"`
 	Name      string `json:"name"`
 	Prodi     string `json:"prodi"`
+	Fakultas  string `json:"fakultas"`
+	Grade     uint8  `json:"grade"`
 	Proker    string `json:"proker"`
 }
 
@@ -70,8 +73,9 @@ type AddProkerStudent struct {
 }
 
 type SaveGradeRequest struct {
-	ID    string
-	Grade uint8 `json:"grade" binding:"required,gte=1,lte=100"`
+	PeriodID  string
+	StudentID string
+	Grade     uint8 `json:"grade" binding:"required,gte=1,lte=100"`
 }
 
 type StudentRegistrationPeriodResponse struct {
@@ -143,8 +147,11 @@ func ToStudentRegistrationByGroup(registration domain.StudentRegistration) Stude
 	registeredStudents := StudentRegistrationByGroupResponse{
 		ID:        registration.ID,
 		StudentID: registration.StudentID,
+		PeriodID:  registration.PeriodID,
 		Name:      registration.Student.Name,
 		Prodi:     registration.Student.Prodi,
+		Fakultas:  registration.Student.Fakultas,
+		Grade:     registration.Grade,
 		Proker:    registration.Proker,
 	}
 	return registeredStudents

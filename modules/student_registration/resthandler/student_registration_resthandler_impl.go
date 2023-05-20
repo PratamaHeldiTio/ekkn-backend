@@ -265,7 +265,17 @@ func (handler *StudentRegistrationResthandlerImpl) FindStudentRegistrationByGrou
 
 func (handler *StudentRegistrationResthandlerImpl) SaveGrade(c *gin.Context) {
 	var request shareddomain.SaveGradeRequest
-	request.ID = c.Param("id")
+	var studentRegistrationURI shareddomain.StudentRegistrationURI
+
+	if err := c.ShouldBindUri(&studentRegistrationURI); err != nil {
+		// create response
+		response := helper.APIResponseWithError(http.StatusBadRequest, false, "Logbook gagal didapatkan", err.Error())
+		c.JSON(http.StatusBadRequest, response)
+		return
+	}
+
+	request.PeriodID = studentRegistrationURI.PeriodID
+	request.StudentID = studentRegistrationURI.StudentID
 
 	if err := c.ShouldBindJSON(&request); err != nil {
 		// create response

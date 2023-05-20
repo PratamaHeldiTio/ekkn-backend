@@ -54,6 +54,10 @@ func (service *StudentRegistrationServiceImpl) FindStudentRegistrationByNimPerio
 		return registeredStudent, err
 	}
 
+	if registeredStudent.ID == "" {
+		return registeredStudent, err
+	}
+
 	return registeredStudent, nil
 }
 
@@ -120,7 +124,7 @@ func (service *StudentRegistrationServiceImpl) FindStudentRegistrationByGroup(ID
 }
 
 func (service *StudentRegistrationServiceImpl) SaveGradeStudent(request shareddomain.SaveGradeRequest) error {
-	studentRegistration, err := service.FindStudentRegistrationByID(request.ID)
+	studentRegistration, err := service.FindStudentRegistrationByNimPeriodID(request.StudentID, request.PeriodID)
 	if err != nil {
 		return err
 	}
