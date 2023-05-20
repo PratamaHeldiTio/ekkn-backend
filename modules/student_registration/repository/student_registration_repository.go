@@ -11,4 +11,5 @@ type StudentRegistrationRepository interface {
 	FindByPeriod(periodID string) ([]domain.StudentRegistration, error)
 	Update(registration domain.StudentRegistration) error
 	FindByID(ID string) (domain.StudentRegistration, error)
+	FindByGroup(ID string) ([]domain.StudentRegistration, error)
 }

@@ -11,7 +11,7 @@ type StudentRegistration struct {
 	Period    periodDomain.Period
 	StudentID string
 	Student   studentDomain.Student
-	Group     string
+	GroupID   string
 	Status    string `gorm:"type:varchar(5); default:false"`
 	Proker    string
 	CreatedAt int64 `gorm:"autoCreateTime"`

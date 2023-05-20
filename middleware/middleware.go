@@ -204,7 +204,7 @@ func (auth *AuthMiddleware) AuthMiddleWareLecturerAdmin() gin.HandlerFunc {
 
 		// mapping payload id to var
 		userRole := claim["role"].(string)
-		if userRole != "student" {
+		if userRole == "student" {
 			response := helper.APIResponseWithoutData(http.StatusUnauthorized, false, "Anda tidak memiliki akses ini")
 			c.AbortWithStatusJSON(http.StatusUnauthorized, response)
 			return

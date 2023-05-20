@@ -222,3 +222,43 @@ func (handler *StudentRegistrationResthandlerImpl) AddProkerStudent(c *gin.Conte
 	response := helper.APIResponseWithoutData(http.StatusOK, true, "berhasil menambahkan program kerja")
 	c.JSON(http.StatusOK, response)
 }
+
+func (handler *StudentRegistrationResthandlerImpl) FindStudentRegistrationByID(c *gin.Context) {
+	ID := c.Param("id")
+
+	registration, err := handler.service.FindStudentRegistrationByID(ID)
+	if err != nil {
+		// create response
+		response := helper.APIResponseWithError(http.StatusBadRequest, false, "gagal mendapatkan pendaftaran siswa", err.Error())
+		c.JSON(http.StatusBadRequest, response)
+		return
+	}
+
+	responseData := shareddomain.ToStudentRegistrationById(registration)
+	// create response
+	response := helper.APIResponseWithData(http.StatusOK, true, "Riwayat pendaftaran berhasil didapatkan", responseData)
+	c.JSON(http.StatusOK, response)
+
+}
+
+func (handler *StudentRegistrationResthandlerImpl) FindStudentRegistrationByGroup(c *gin.Context) {
+	// get groupid from param
+	ID := c.Param("groupID")
+
+	// call service
+	studentRegistration, err := handler.service.FindStudentRegistrationByGroup(ID)
+	if err != nil {
+		// create response
+		response := helper.APIResponseWithError(http.StatusBadRequest, false, "mahasiswa gagal didapatkan", err.Error())
+		c.JSON(http.StatusBadRequest, response)
+		return
+	}
+
+	responseData := []shareddomain.StudentRegistrationByGroupResponse{}
+	for _, data := range studentRegistration {
+		responseData = append(responseData, shareddomain.ToStudentRegistrationByGroup(data))
+	}
+	// create response
+	response := helper.APIResponseWithData(http.StatusOK, true, "mahasiswa berhasil didapatkan", responseData)
+	c.JSON(http.StatusOK, response)
+}

@@ -30,12 +30,30 @@ type ResponseStudentRegistrationByNim struct {
 	CreatedAt   int64  `json:"created_at"`
 }
 
+type StudentRegistrationByGroupResponse struct {
+	ID        string `json:"id"`
+	StudentID string `json:"nim"`
+	Name      string `json:"name"`
+	Prodi     string `json:"prodi"`
+	Proker    string `json:"proker"`
+}
+
+type StudentRegistrationByIdResponse struct {
+	ID        string `json:"id"`
+	PeriodID  string `json:"period_id"`
+	StudentID string `json:"nim"`
+	Status    string `json:"status"`
+	Proker    string `json:"proker"`
+	CreatedAt int64  `json:"created_at"`
+}
+
 type ResponseStudentRegistrationByNimPeriodID struct {
 	Status string `json:"status"`
 	Group  string `json:"group"`
 }
 
 type ResponseRegisteredStudents struct {
+	ID          string `json:"id"`
 	PeriodID    string `json:"period_id"`
 	Semester    string `json:"semester"`
 	TahunAjaran string `json:"tahun_ajaran"`
@@ -78,6 +96,7 @@ func ToResponRegiteredStudent(registration domain.StudentRegistration) ResponseS
 
 func ToResponseRegisteredStudents(registration domain.StudentRegistration) ResponseRegisteredStudents {
 	registeredStudents := ResponseRegisteredStudents{
+		ID:          registration.ID,
 		PeriodID:    registration.PeriodID,
 		Semester:    registration.Period.Semester,
 		TahunAjaran: registration.Period.TahunAjaran,
@@ -89,7 +108,7 @@ func ToResponseRegisteredStudents(registration domain.StudentRegistration) Respo
 func ToResponseStudentRegistrationByNimPeriodID(registration domain.StudentRegistration) ResponseStudentRegistrationByNimPeriodID {
 	registeredStudents := ResponseStudentRegistrationByNimPeriodID{
 		Status: registration.Status,
-		Group:  registration.Group,
+		Group:  registration.GroupID,
 	}
 	return registeredStudents
 }
@@ -101,6 +120,27 @@ func ToStudentRegistrationPeriod(registration domain.StudentRegistration) Studen
 		Name:      registration.Student.Name,
 		Prodi:     registration.Student.Prodi,
 		Status:    registration.Status,
+	}
+	return registeredStudents
+}
+
+func ToStudentRegistrationById(registration domain.StudentRegistration) StudentRegistrationByIdResponse {
+	registeredStudents := StudentRegistrationByIdResponse{
+		ID:        registration.ID,
+		StudentID: registration.StudentID,
+		Proker:    registration.Proker,
+		Status:    registration.Status,
+	}
+	return registeredStudents
+}
+
+func ToStudentRegistrationByGroup(registration domain.StudentRegistration) StudentRegistrationByGroupResponse {
+	registeredStudents := StudentRegistrationByGroupResponse{
+		ID:        registration.ID,
+		StudentID: registration.StudentID,
+		Name:      registration.Student.Name,
+		Prodi:     registration.Student.Prodi,
+		Proker:    registration.Proker,
 	}
 	return registeredStudents
 }

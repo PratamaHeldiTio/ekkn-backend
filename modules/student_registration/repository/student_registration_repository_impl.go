@@ -81,3 +81,16 @@ func (repo *StudentRegistrationRepositoryImpl) FindByID(ID string) (domain.Stude
 
 	return registration, nil
 }
+
+func (repo *StudentRegistrationRepositoryImpl) FindByGroup(ID string) ([]domain.StudentRegistration, error) {
+	var studentRegistration []domain.StudentRegistration
+
+	if err := repo.db.
+		Preload("Student").
+		Where("group_id = ?", ID).
+		Find(&studentRegistration).Error; err != nil {
+		return studentRegistration, err
+	}
+
+	return studentRegistration, nil
+}

@@ -85,13 +85,9 @@ func (service *StudentRegistrationServiceImpl) UpdateStudentRegistration(request
 
 func (service *StudentRegistrationServiceImpl) AddProkerStudent(request shareddomain.AddProkerStudent) error {
 	// cek registration isExist
-	registration, err := service.repo.FindByID(request.ID)
+	registration, err := service.FindStudentRegistrationByID(request.ID)
 	if err != nil {
 		return err
-	}
-
-	if registration.ID == "" {
-		return errors.New("data tidak ditemukan")
 	}
 
 	registration.Proker = request.Proker
@@ -99,4 +95,26 @@ func (service *StudentRegistrationServiceImpl) AddProkerStudent(request shareddo
 		return err
 	}
 	return nil
+}
+
+func (service *StudentRegistrationServiceImpl) FindStudentRegistrationByID(ID string) (domain.StudentRegistration, error) {
+	// cek registration isExist
+	registration, err := service.repo.FindByID(ID)
+	if err != nil {
+		return registration, err
+	}
+
+	if registration.ID == "" {
+		return registration, errors.New("data tidak ditemukan")
+	}
+
+	return registration, nil
+}
+
+func (service *StudentRegistrationServiceImpl) FindStudentRegistrationByGroup(ID string) ([]domain.StudentRegistration, error) {
+	studentRegistation, err := service.repo.FindByGroup(ID)
+	if err != nil {
+		return studentRegistation, err
+	}
+	return studentRegistation, nil
 }

@@ -34,7 +34,7 @@ func (service *GroupServiceImpl) CreateGroup(request shareddomain.RequestGroup) 
 	}
 
 	// cek student registration is valid and status true and have group
-	if studentRegistration.ID == "" || studentRegistration.Status == "false" || studentRegistration.Group != "" {
+	if studentRegistration.ID == "" || studentRegistration.Status == "false" || studentRegistration.GroupID != "" {
 		return errors.New("gagal membuat kelompok")
 	}
 
@@ -73,7 +73,7 @@ func (service *GroupServiceImpl) JoinGroup(studentID, periodID, referral string)
 	}
 
 	// cek student registration is valid and status true and have group
-	if studentRegistration.ID == "" || studentRegistration.Status == "false" || studentRegistration.Group != "" {
+	if studentRegistration.ID == "" || studentRegistration.Status == "false" || studentRegistration.GroupID != "" {
 		return errors.New("gagal bergabung dengan kelompok")
 	}
 
