@@ -31,9 +31,14 @@ func (repo *StudentRepositoryImpl) FindByNim(nim string) (domain.Student, error)
 	return student, nil
 }
 
-func (repo *StudentRepositoryImpl) FindAll() ([]domain.Student, error) {
+func (repo *StudentRepositoryImpl) FindAll(query string) ([]domain.Student, error) {
 	var students []domain.Student
-	if err := repo.db.Find(&students).Error; err != nil {
+	if err := repo.db.Where("nim LIKE ?", "%"+query+"%").
+		Or("name ILIKE ?", "%"+query+"%").
+		Or("prodi ILIKE ?", "%"+query+"%").
+		Or("fakultas ILIKE ?", "%"+query+"%").
+		Limit(100).
+		Find(&students).Error; err != nil {
 		return students, err
 	}
 	return students, nil

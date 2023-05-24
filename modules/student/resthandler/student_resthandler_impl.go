@@ -108,7 +108,8 @@ func (handler *StudentResthandlerImpl) LoginStudent(c *gin.Context) {
 
 func (handler *StudentResthandlerImpl) FindAllStudent(c *gin.Context) {
 	// send data to service and get return
-	students, err := handler.service.FindAllStudent()
+	query := c.Query("search")
+	students, err := handler.service.FindAllStudent(query)
 	if err != nil {
 		// create response
 		response := helper.APIResponseWithError(http.StatusInternalServerError, false, "Mahasiswa gagal didapatkan", err.Error())
