@@ -19,6 +19,9 @@ import (
 	repository6 "backend-ekkn/modules/logbook/repository"
 	resthandler6 "backend-ekkn/modules/logbook/resthandler"
 	service6 "backend-ekkn/modules/logbook/service"
+	repository10 "backend-ekkn/modules/output/repository"
+	resthandler10 "backend-ekkn/modules/output/resthandler"
+	service10 "backend-ekkn/modules/output/service"
 	repository2 "backend-ekkn/modules/period/repository"
 	resthandler2 "backend-ekkn/modules/period/resthandler"
 	service2 "backend-ekkn/modules/period/service"
@@ -103,6 +106,11 @@ func main() {
 	lecturerRegistationRepository := repository9.NewLecturerRegistrationRepository(db)
 	lecturerRegistrationService := service9.NewLecturerRegistrationService(lecturerRegistationRepository)
 	lecturerRegistrationRestHandler := resthandler9.NewLecturerRegistrationRestHandler(lecturerRegistrationService)
+
+	// module output
+	outputRepository := repository10.NewOutputRepository(db)
+	outputService := service10.NewOutputService(outputRepository)
+	outputRestHandler := resthandler10.NewOutputRestHandler(outputService)
 
 	// init router gin
 	router := gin.Default()
@@ -204,5 +212,11 @@ func main() {
 	api.GET("/lecturer/registration/:periodID", authMiddleware.AuthMiddleWareAdmin(), lecturerRegistrationRestHandler.FindLecturerRegistrationByPeriod)
 	api.GET("/lecturer/registration/approve/:periodID", authMiddleware.AuthMiddleWareAdmin(), lecturerRegistrationRestHandler.FindLecturerRegistrationByPeriodApprove)
 	api.GET("/lecturer/registration/approve", authMiddleware.AuthMiddleWareLecturer(), lecturerRegistrationRestHandler.FindLecturerRegistrationApprove)
+
+	// output
+	api.POST("/output", authMiddleware.AuthMiddleWare(), outputRestHandler.CreateOutput)
+	api.PUT("/output/:id", authMiddleware.AuthMiddleWare(), outputRestHandler.UpdateOutput)
+	api.GET("/output/group/:groupID", authMiddleware.AuthMiddleWare(), outputRestHandler.FindOutputByGroup)
+
 	router.Run()
 }

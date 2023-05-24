@@ -6,6 +6,7 @@ import (
 	lecture "backend-ekkn/modules/lecturer/domain"
 	lecturerRegistration "backend-ekkn/modules/lecturer_registration/domain"
 	logbook "backend-ekkn/modules/logbook/domain"
+	output "backend-ekkn/modules/output/domain"
 	period "backend-ekkn/modules/period/domain"
 	student "backend-ekkn/modules/student/domain"
 	studentRegistration "backend-ekkn/modules/student_registration/domain"
@@ -26,6 +27,7 @@ func RunMigration(db *gorm.DB) {
 		&admin.Admin{},
 		&lecture.Lecturer{},
 		&lecturerRegistration.LecturerRegistration{},
+		&output.Output{},
 	)
 	if err != nil {
 		log.Println(err)
