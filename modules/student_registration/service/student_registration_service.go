@@ -9,7 +9,7 @@ type StudentRegistrationService interface {
 	CreateStudentRegistration(request shareddomain.RequestStudentRegistration) error
 	FindStudentRegistrationByStudentID(id string) ([]domain.StudentRegistration, error)
 	FindStudentRegistrationByNimPeriodID(nim, periodID string) (domain.StudentRegistration, error)
-	FindStudentRegistrationByPeriod(periodID string) ([]domain.StudentRegistration, error)
+	FindStudentRegistrationByPeriod(periodID, query string) ([]domain.StudentRegistration, error)
 	UpdateStudentRegistration(shareddomain.UpdateStudentRegistrationRequest) error
 	AddProkerStudent(request shareddomain.AddProkerStudent) error
 	FindStudentRegistrationByID(ID string) (domain.StudentRegistration, error)

@@ -103,8 +103,8 @@ func (service *LecturerServiceImpl) ResetPassword(ID string) error {
 	return nil
 }
 
-func (service *LecturerServiceImpl) FindAllLecturer() ([]domain.Lecturer, error) {
-	lecturers, err := service.repo.FindAll()
+func (service *LecturerServiceImpl) FindAllLecturer(query string) ([]domain.Lecturer, error) {
+	lecturers, err := service.repo.FindAll(query)
 	if err != nil {
 		return lecturers, err
 	}

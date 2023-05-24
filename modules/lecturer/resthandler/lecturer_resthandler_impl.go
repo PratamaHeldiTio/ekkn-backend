@@ -138,7 +138,8 @@ func (handler *LecturerRestHandlerImpl) FindByIdParam(c *gin.Context) {
 }
 
 func (handler *LecturerRestHandlerImpl) FindAllLecturer(c *gin.Context) {
-	lecturers, err := handler.service.FindAllLecturer()
+	query := c.Query("search")
+	lecturers, err := handler.service.FindAllLecturer(query)
 	if err != nil {
 		response := helper.APIResponseWithError(http.StatusBadRequest, false, "gagal mendapatkan dosen", err.Error())
 		c.JSON(http.StatusBadRequest, response)

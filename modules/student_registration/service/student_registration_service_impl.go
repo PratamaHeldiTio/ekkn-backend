@@ -61,8 +61,8 @@ func (service *StudentRegistrationServiceImpl) FindStudentRegistrationByNimPerio
 	return registeredStudent, nil
 }
 
-func (service *StudentRegistrationServiceImpl) FindStudentRegistrationByPeriod(periodID string) ([]domain.StudentRegistration, error) {
-	studentRegistation, err := service.repo.FindByPeriod(periodID)
+func (service *StudentRegistrationServiceImpl) FindStudentRegistrationByPeriod(periodID, query string) ([]domain.StudentRegistration, error) {
+	studentRegistation, err := service.repo.FindByPeriod(periodID, query)
 	if err != nil {
 		return studentRegistation, err
 	}

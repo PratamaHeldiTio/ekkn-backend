@@ -156,7 +156,7 @@ func main() {
 	api.GET("/student/registered", authMiddleware.AuthMiddleWare(), studentRegistrationResthandler.FindStudentRegistrationRegistered)
 	api.GET("/student/registration/:periodID", authMiddleware.AuthMiddleWare(), studentRegistrationResthandler.FindStudentRegistrationByNimPeriodID)
 	api.GET("/student/registration/:periodID/:studentID", authMiddleware.AuthMiddleWare(), studentRegistrationResthandler.FindStudentRegistrationByNimPeriodIDParams)
-	api.GET("/student/registrations/:periodID", authMiddleware.AuthMiddleWare(), studentRegistrationResthandler.FindStudentRegistrationByPeriod)
+	api.GET("/student/registrations/:periodID", authMiddleware.AuthMiddleWareAdmin(), studentRegistrationResthandler.FindStudentRegistrationByPeriod)
 	api.GET("/student/registration/by_id/:id", authMiddleware.AuthMiddleWare(), studentRegistrationResthandler.FindStudentRegistrationByID)
 	api.PUT("/student/registration/:ID", authMiddleware.AuthMiddleWareAdmin(), studentRegistrationResthandler.UpdateStudentRegistration)
 	api.PUT("/student/registration/proker/:id", authMiddleware.AuthMiddleWare(), studentRegistrationResthandler.AddProkerStudent)

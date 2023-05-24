@@ -44,9 +44,14 @@ func (repo *LecturerRepositoryImpl) Delete(lecturer domain.Lecturer) error {
 	return nil
 }
 
-func (repo *LecturerRepositoryImpl) FindAll() ([]domain.Lecturer, error) {
+func (repo *LecturerRepositoryImpl) FindAll(query string) ([]domain.Lecturer, error) {
 	var lecturer []domain.Lecturer
-	if err := repo.db.Order("created_at asc").Find(&lecturer).Error; err != nil {
+	if err := repo.db.Order("created_at asc").
+		Where("id LIKE ?", "%"+query+"%").
+		Or("name ILIKE ?", "%"+query+"%").
+		Or("prodi ILIKE ?", "%"+query+"%").
+		Or("fakultas ILIKE ?", "%"+query+"%").
+		Find(&lecturer).Error; err != nil {
 		return lecturer, err
 	}
 

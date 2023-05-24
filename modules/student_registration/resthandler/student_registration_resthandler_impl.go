@@ -156,9 +156,10 @@ func (handler *StudentRegistrationResthandlerImpl) FindStudentRegistrationByNimP
 func (handler *StudentRegistrationResthandlerImpl) FindStudentRegistrationByPeriod(c *gin.Context) {
 	// get period from param
 	periodID := c.Param("periodID")
+	query := c.Query("search")
 
 	// call service
-	studentRegistration, err := handler.service.FindStudentRegistrationByPeriod(periodID)
+	studentRegistration, err := handler.service.FindStudentRegistrationByPeriod(periodID, query)
 	if err != nil {
 		// create response
 		response := helper.APIResponseWithError(http.StatusBadRequest, false, "Pendaftaran mahasiswa gagal didapatkan", err.Error())

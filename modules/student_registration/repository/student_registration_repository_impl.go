@@ -52,12 +52,13 @@ func (repo *StudentRegistrationRepositoryImpl) FindByNimPeriodId(nim string, per
 	return registeredUser, nil
 }
 
-func (repo *StudentRegistrationRepositoryImpl) FindByPeriod(periodID string) ([]domain.StudentRegistration, error) {
+func (repo *StudentRegistrationRepositoryImpl) FindByPeriod(periodID, query string) ([]domain.StudentRegistration, error) {
 	var studentRegistration []domain.StudentRegistration
 
 	if err := repo.db.Preload("Student").
 		Order("student_id").
 		Where("period_id = ?", periodID).
+		Where("student_id LIKE ?", "%"+query+"%").
 		Find(&studentRegistration).
 		Error; err != nil {
 		return studentRegistration, err
