@@ -225,7 +225,8 @@ func (handler *GroupResthandlerImpl) UploadPotentialVillage(c *gin.Context) {
 
 func (handler *GroupResthandlerImpl) FindRegisteredGroupByPeriod(c *gin.Context) {
 	ID := c.Param("periodID")
-	groups, err := handler.service.FindRegisteredGroupByPeriod(ID)
+	query := c.Query("search")
+	groups, err := handler.service.FindRegisteredGroupByPeriod(ID, query)
 	if err != nil {
 		// create response
 		response := helper.APIResponseWithError(http.StatusBadRequest, false, "gagal mendapatkan kelompok", err.Error())

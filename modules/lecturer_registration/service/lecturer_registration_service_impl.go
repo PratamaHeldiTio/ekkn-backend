@@ -73,8 +73,8 @@ func (service *lecturerRegistrationServiceImpl) ValidationLecturerRegistration(r
 	return nil
 }
 
-func (service *lecturerRegistrationServiceImpl) FindLecturerRegistrationByPeriod(ID string) ([]domain.LecturerRegistration, error) {
-	lecturerRegistrations, err := service.repo.FindByPeriod(ID)
+func (service *lecturerRegistrationServiceImpl) FindLecturerRegistrationByPeriod(ID, query string) ([]domain.LecturerRegistration, error) {
+	lecturerRegistrations, err := service.repo.FindByPeriod(ID, query)
 	if err != nil {
 		return lecturerRegistrations, err
 	}

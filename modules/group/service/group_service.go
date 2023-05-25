@@ -13,7 +13,7 @@ type GroupService interface {
 	UpdateGroup(request shareddomain.GroupUpdateRequest) error
 	AddVillage(request shareddomain.AddVillage) error
 	FindGroupByPeriodLeader(periodID, leader string) (domain.Group, error)
-	FindRegisteredGroupByPeriod(ID string) ([]domain.Group, error)
+	FindRegisteredGroupByPeriod(ID, query string) ([]domain.Group, error)
 	AddLecturer(request shareddomain.AddLecturerRequest) error
 	FindGroupByPeriodLecturer(periodID, lecturerID string) ([]domain.Group, error)
 }

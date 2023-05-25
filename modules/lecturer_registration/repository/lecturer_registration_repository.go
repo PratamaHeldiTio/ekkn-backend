@@ -10,5 +10,5 @@ type LecturerRegistrationRepository interface {
 	FindByLectureID(lecturerID string) ([]domain.LecturerRegistration, error)
 	FindByID(ID string) (domain.LecturerRegistration, error)
 	Update(registration domain.LecturerRegistration) error
-	FindByPeriod(ID string) ([]domain.LecturerRegistration, error)
+	FindByPeriod(ID, query string) ([]domain.LecturerRegistration, error)
 }

@@ -10,5 +10,5 @@ type LecturerRegistrationService interface {
 	FindLecturerRegistrationByLectureID(lectureID string) ([]domain.LecturerRegistration, error)
 	ValidationLecturerRegistration(request shareddomain.ValidationLectureRegistrationRequest) error
 	FindLecturerRegistrationByID(ID string) (domain.LecturerRegistration, error)
-	FindLecturerRegistrationByPeriod(ID string) ([]domain.LecturerRegistration, error)
+	FindLecturerRegistrationByPeriod(ID, query string) ([]domain.LecturerRegistration, error)
 }

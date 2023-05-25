@@ -102,9 +102,13 @@ func (repo *GroupRepositoryImpl) FindByPeriodLeader(periodID, leader string) (do
 	return group, nil
 }
 
-func (repo *GroupRepositoryImpl) FindByPeriod(ID string) ([]domain.Group, error) {
+func (repo *GroupRepositoryImpl) FindByPeriod(ID, query string) ([]domain.Group, error) {
 	var groups []domain.Group
-	if err := repo.db.Preload("Lecturer").Preload("Village").Where("period_id = ?", ID).Find(&groups).Error; err != nil {
+	if err := repo.db.Preload("Lecturer").
+		Preload("Village").
+		Where("period_id = ?", ID).
+		Where("name ILIKE ?", "%"+query+"%").
+		Find(&groups).Error; err != nil {
 		return groups, err
 	}
 

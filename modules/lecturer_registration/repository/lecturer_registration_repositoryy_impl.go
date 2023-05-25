@@ -61,10 +61,12 @@ func (repo *lecturerRegistrationRepositoryImpl) FindByID(ID string) (domain.Lect
 	return lecturerRegistration, nil
 }
 
-func (repo *lecturerRegistrationRepositoryImpl) FindByPeriod(ID string) ([]domain.LecturerRegistration, error) {
+func (repo *lecturerRegistrationRepositoryImpl) FindByPeriod(ID, query string) ([]domain.LecturerRegistration, error) {
 	var lecturerRegistration []domain.LecturerRegistration
 
-	if err := repo.db.Preload("Lecturer").Where("period_id = ?", ID).
+	if err := repo.db.Preload("Lecturer").
+		Where("period_id = ?", ID).
+		Where("lecturer_id LIKE ?", "%"+query+"%").
 		Find(&lecturerRegistration).Error; err != nil {
 		return lecturerRegistration, err
 	}

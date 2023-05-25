@@ -86,8 +86,9 @@ func (handler *lecturerRegistrationRestHandlerImpl) ValidationLecturerRegistrati
 
 func (handler *lecturerRegistrationRestHandlerImpl) FindLecturerRegistrationByPeriod(c *gin.Context) {
 	PeriodID := c.Param("periodID")
+	query := c.Query("search")
 
-	lecturerRegistrations, err := handler.service.FindLecturerRegistrationByPeriod(PeriodID)
+	lecturerRegistrations, err := handler.service.FindLecturerRegistrationByPeriod(PeriodID, query)
 	if err != nil {
 		// create response
 		response := helper.APIResponseWithError(http.StatusBadRequest, false, "pendaftaran dosen gagal didapatkan", err.Error())
@@ -107,7 +108,7 @@ func (handler *lecturerRegistrationRestHandlerImpl) FindLecturerRegistrationByPe
 func (handler *lecturerRegistrationRestHandlerImpl) FindLecturerRegistrationByPeriodApprove(c *gin.Context) {
 	PeriodID := c.Param("periodID")
 
-	lecturerRegistrations, err := handler.service.FindLecturerRegistrationByPeriod(PeriodID)
+	lecturerRegistrations, err := handler.service.FindLecturerRegistrationByPeriod(PeriodID, "")
 	if err != nil {
 		// create response
 		response := helper.APIResponseWithError(http.StatusBadRequest, false, "dosen gagal didapatkan", err.Error())

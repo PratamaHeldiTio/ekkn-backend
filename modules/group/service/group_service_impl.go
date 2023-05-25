@@ -214,8 +214,8 @@ func (service *GroupServiceImpl) FindGroupByPeriodLeader(periodID, leader string
 	return group, nil
 }
 
-func (service *GroupServiceImpl) FindRegisteredGroupByPeriod(ID string) ([]domain.Group, error) {
-	groups, err := service.repo.FindByPeriod(ID)
+func (service *GroupServiceImpl) FindRegisteredGroupByPeriod(ID, query string) ([]domain.Group, error) {
+	groups, err := service.repo.FindByPeriod(ID, query)
 	if err != nil {
 		return groups, err
 	}
