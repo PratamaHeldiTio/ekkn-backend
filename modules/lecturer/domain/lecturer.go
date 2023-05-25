@@ -9,6 +9,7 @@ type Lecturer struct {
 	Fakultas   string `gorm:"type:varchar(50)"`
 	MaduraLang string `gorm:"type:varchar(5)"`
 	Contact    string `gorm:"type:varchar(15);"`
+	Profile    string `gorm:"type:varchar(255)"`
 	CreatedAt  int64  `gorm:"autoCreateTime"`
 	UpdateAt   int64  `gorm:"autoUpdateTime"`
 }

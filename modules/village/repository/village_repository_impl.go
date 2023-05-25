@@ -21,9 +21,11 @@ func (repo *VillageRepositoryImpl) Create(village domain.Village) error {
 	return nil
 }
 
-func (repo *VillageRepositoryImpl) FindByPeriod(periodID string) ([]domain.Village, error) {
+func (repo *VillageRepositoryImpl) FindByPeriod(periodID, query string) ([]domain.Village, error) {
 	var vilages []domain.Village
-	if err := repo.db.Where("period_id = ?", periodID).Find(&vilages).Error; err != nil {
+	if err := repo.db.Where("period_id = ?", periodID).
+		Where("name ILIKE ? ", "%"+query+"%").
+		Find(&vilages).Error; err != nil {
 		return vilages, err
 	}
 

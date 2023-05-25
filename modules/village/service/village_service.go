@@ -7,7 +7,7 @@ import (
 
 type VillageService interface {
 	CreateVillage(request shareddomain.RequestVillage) error
-	FindVillageByPeriod(periodID string) ([]domain.Village, error)
+	FindVillageByPeriod(periodID, query string) ([]domain.Village, error)
 	UpdateVillage(request shareddomain.UpdateVillageRequest) error
 	FindVillageById(ID string) (domain.Village, error)
 	DeleteVillage(ID string) error

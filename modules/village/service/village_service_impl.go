@@ -31,8 +31,8 @@ func (service *VillageServiceImpl) CreateVillage(request shareddomain.RequestVil
 	return nil
 }
 
-func (service *VillageServiceImpl) FindVillageByPeriod(periodID string) ([]domain.Village, error) {
-	villages, err := service.repo.FindByPeriod(periodID)
+func (service *VillageServiceImpl) FindVillageByPeriod(periodID, query string) ([]domain.Village, error) {
+	villages, err := service.repo.FindByPeriod(periodID, query)
 	if err != nil {
 		return villages, err
 	}

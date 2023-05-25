@@ -40,8 +40,9 @@ func (handler *VillageResthandlerImpl) CreateVillage(c *gin.Context) {
 
 func (handler *VillageResthandlerImpl) FindByPeriod(c *gin.Context) {
 	periodID := c.Param("periodID")
+	query := c.Query("search")
 	// call service
-	villages, err := handler.service.FindVillageByPeriod(periodID)
+	villages, err := handler.service.FindVillageByPeriod(periodID, query)
 	if err != nil {
 		// create response
 		response := helper.APIResponseWithError(http.StatusBadRequest, false, "desa gagal didapatkan", err.Error())

@@ -176,7 +176,7 @@ func (handler *LecturerRestHandlerImpl) LoginLecturer(c *gin.Context) {
 	}
 
 	// jwt service generation
-	token, err := handler.authService.GenerateJwt(lecturer.ID, "lecturer")
+	token, err := handler.authService.GenerateJwt(lecturer.ID, "lecturer", lecturer.Profile)
 	if err != nil {
 		// create response
 		response := helper.APIResponseWithError(http.StatusInternalServerError, false, "Gagal login silahkan coba lagi", err.Error())

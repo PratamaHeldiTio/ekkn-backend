@@ -56,7 +56,7 @@ func (handler *AdminResthandlerImpl) LoginAdmin(c *gin.Context) {
 		return
 	}
 
-	token, err := handler.jwt.GenerateJwt(admin.Username, "admin")
+	token, err := handler.jwt.GenerateJwt(admin.Username, "admin", "")
 	if err != nil {
 		// create response
 		response := helper.APIResponseWithError(http.StatusInternalServerError, false, "Gagal login silahkan coba lagi", err.Error())
