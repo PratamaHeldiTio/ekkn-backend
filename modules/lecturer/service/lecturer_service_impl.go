@@ -156,3 +156,17 @@ func (service *LecturerServiceImpl) ChangePassword(request shareddomain.ChangePa
 
 	return nil
 }
+
+func (service *LecturerServiceImpl) UploadProfile(ID, filename string) error {
+	lecturer, err := service.FindLecturerByID(ID)
+	if err != nil {
+		return err
+	}
+
+	lecturer.Profile = filename
+	if err := service.repo.Update(lecturer); err != nil {
+		return err
+	}
+
+	return nil
+}

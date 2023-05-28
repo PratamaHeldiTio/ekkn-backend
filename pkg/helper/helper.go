@@ -140,7 +140,7 @@ func DistanceHarversine(origin, destination Coordinate) int {
 }
 
 func SaveImage(c *gin.Context, image *multipart.FileHeader, destination string) (string, error) {
-	if image.Size > 5242880 {
+	if image.Size > 1048576 {
 		return "", errors.New("file terlalu besar")
 	}
 

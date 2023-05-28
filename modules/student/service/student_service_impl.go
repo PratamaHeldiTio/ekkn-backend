@@ -178,3 +178,17 @@ func (service *StudentServiceImpl) ResetPassword(studentID string) error {
 
 	return nil
 }
+
+func (service *StudentServiceImpl) UploadProfile(ID, filename string) error {
+	student, err := service.FindStudentByNim(ID)
+	if err != nil {
+		return err
+	}
+
+	student.Profile = filename
+	if err := service.repo.Update(student); err != nil {
+		return err
+	}
+
+	return nil
+}

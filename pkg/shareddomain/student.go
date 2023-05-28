@@ -31,6 +31,7 @@ type FindStudentByNim struct {
 	Gender     string `json:"gender"`
 	MaduraLang string `json:"madura_lang"`
 	GroupKkn   string `json:"groupKkn"`
+	Profile    string `json:"profile"`
 	CreatedAt  int64  `json:"created_at"`
 	UpdateAt   int64  `json:"update_at"`
 }
@@ -56,6 +57,7 @@ func ToResponseFindStudentByNim(student domain.Student) FindStudentByNim {
 		Gender:     student.Gender,
 		MaduraLang: student.MaduraLang,
 		CreatedAt:  student.CreatedAt,
+		Profile:    student.Profile,
 		UpdateAt:   student.UpdateAt,
 	}
 

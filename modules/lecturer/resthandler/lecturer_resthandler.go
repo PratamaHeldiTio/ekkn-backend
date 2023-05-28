@@ -13,4 +13,5 @@ type LecturerRestHandler interface {
 	DeleteLecturer(c *gin.Context)
 	ResetPassword(c *gin.Context)
 	ChangePassword(c *gin.Context)
+	UploadProfile(c *gin.Context)
 }

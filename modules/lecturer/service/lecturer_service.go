@@ -14,4 +14,5 @@ type LecturerService interface {
 	DeleteLecture(ID string) error
 	ResetPassword(ID string) error
 	ChangePassword(request shareddomain.ChangePasswordLecturerRequest) error
+	UploadProfile(ID, filename string) error
 }

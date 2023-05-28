@@ -14,4 +14,5 @@ type StudentService interface {
 	DeleteStudent(nim string) error
 	ChangePassword(request shareddomain.ChangePasswordRequest) error
 	ResetPassword(studentID string) error
+	UploadProfile(ID, filename string) error
 }

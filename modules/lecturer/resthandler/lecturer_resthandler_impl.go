@@ -229,3 +229,33 @@ func (handler *LecturerRestHandlerImpl) ChangePassword(c *gin.Context) {
 	response := helper.APIResponseWithoutData(http.StatusOK, true, "berhasil merubah password")
 	c.JSON(http.StatusOK, response)
 }
+
+func (handler *LecturerRestHandlerImpl) UploadProfile(c *gin.Context) {
+	profile, err := c.FormFile("profile")
+	ID := c.MustGet("currentUser").(string)
+	if err != nil {
+		// create response
+		response := helper.APIResponseWithError(http.StatusBadRequest, false, "profile gagal diperbaharui", err.Error())
+		c.JSON(http.StatusBadRequest, response)
+		return
+	}
+
+	filename, err := helper.SaveImage(c, profile, "profile")
+	if err != nil {
+		// create response
+		response := helper.APIResponseWithError(http.StatusBadRequest, false, "profile gagal diperbaharui", err.Error())
+		c.JSON(http.StatusBadRequest, response)
+		return
+	}
+
+	if err := handler.service.UploadProfile(ID, filename); err != nil {
+		// create response
+		response := helper.APIResponseWithError(http.StatusBadRequest, false, "profile gagal diperbaharui", err.Error())
+		c.JSON(http.StatusBadRequest, response)
+		return
+	}
+
+	// create response
+	response := helper.APIResponseWithoutData(http.StatusOK, true, "profile berhasil diperbaharui")
+	c.JSON(http.StatusOK, response)
+}

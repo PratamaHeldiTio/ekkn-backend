@@ -20,6 +20,7 @@ type LecturerResponse struct {
 	Fakultas   string `json:"fakultas"`
 	MaduraLang string `json:"madura_lang"`
 	Contact    string `json:"contact"`
+	Profile    string `json:"profile"`
 }
 
 type LecturerLogin struct {
@@ -43,6 +44,7 @@ func ToLecturerResponse(lecturer domain.Lecturer) LecturerResponse {
 		Fakultas:   lecturer.Fakultas,
 		MaduraLang: lecturer.MaduraLang,
 		Contact:    lecturer.Contact,
+		Profile:    lecturer.Profile,
 	}
 
 	return lecturerResponse

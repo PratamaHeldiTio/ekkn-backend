@@ -140,7 +140,7 @@ func main() {
 	api.DELETE("/student/:nim", authMiddleware.AuthMiddleWareAdmin(), studentResthandler.DeleteStudent)
 	api.PUT("/student/change_password", authMiddleware.AuthMiddleWare(), studentResthandler.ChangePassword)
 	api.PUT("/student/reset_password/:studentID", authMiddleware.AuthMiddleWareAdmin(), studentResthandler.ResetPassword)
-
+	api.PUT("/student/profile", authMiddleware.AuthMiddleWare(), studentResthandler.UploadProfile)
 	// endpoint period
 	api.POST("/period", authMiddleware.AuthMiddleWareAdmin(), periodResthandler.CreatePeriod)
 	api.PUT("/period/:id", authMiddleware.AuthMiddleWareAdmin(), periodResthandler.UpdatePeriod)
@@ -204,6 +204,7 @@ func main() {
 	api.GET("/lecturers", authMiddleware.AuthMiddleWareAdmin(), lecturerRestHandler.FindAllLecturer)
 	api.POST("/auth/lecturer/login", lecturerRestHandler.LoginLecturer)
 	api.PUT("/lecturer/change_password", authMiddleware.AuthMiddleWareLecturer(), lecturerRestHandler.ChangePassword)
+	api.PUT("/lecturer/profile", authMiddleware.AuthMiddleWare(), lecturerRestHandler.UploadProfile)
 
 	// lecturer registration
 	api.POST("/lecturer/registration", authMiddleware.AuthMiddleWareLecturer(), lecturerRegistrationRestHandler.LecturerRegistration)
