@@ -24,7 +24,7 @@ func (repo *GroupRepositoryImpl) Create(group domain.Group) error {
 	var registration studentRegistration.StudentRegistration
 	if err := repo.db.Model(&registration).
 		Where("student_id = ? AND period_id = ?", group.Leader, group.PeriodID).
-		Update("group", group.ID).Error; err != nil {
+		Update("group_id", group.ID).Error; err != nil {
 		return err
 	}
 

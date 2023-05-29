@@ -16,7 +16,7 @@ type Group struct {
 	Village    village.Village
 	VillageID  string `gorm:"default:null"`
 	Lecturer   lecture.Lecturer
-	LecturerID string
+	LecturerID string `gorm:"default:null"`
 	Leader     string `gorm:"type:varchar(12)"`
 	Referral   string `gorm:"type:varchar(6); unique; not null"`
 	Status     string `gorm:"type:varchar(5); default:false"`

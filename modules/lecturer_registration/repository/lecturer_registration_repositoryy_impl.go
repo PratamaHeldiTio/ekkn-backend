@@ -35,7 +35,7 @@ func (repo *lecturerRegistrationRepositoryImpl) FindByPeriodLectureID(periodID, 
 func (repo *lecturerRegistrationRepositoryImpl) FindByLectureID(lectureID string) ([]domain.LecturerRegistration, error) {
 	var lecturerRegistration []domain.LecturerRegistration
 
-	if err := repo.db.Preload("Period").Where("lecturer_id = ?", lectureID).
+	if err := repo.db.Preload("Period").Order("created_at desc").Where("lecturer_id = ?", lectureID).
 		Find(&lecturerRegistration).Error; err != nil {
 		return lecturerRegistration, err
 	}
