@@ -1,7 +1,7 @@
 package resthandler
 
 import (
-	"backend-ekkn/jwt_manager"
+	jwtmanager "backend-ekkn/jwt_manager"
 	"backend-ekkn/modules/student/service"
 	"backend-ekkn/pkg/helper"
 	"backend-ekkn/pkg/shareddomain"
