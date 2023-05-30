@@ -46,12 +46,11 @@ import (
 
 func main() {
 	// db connect
-	host := os.Getenv("DB_HOST")
 	user := os.Getenv("DB_USER")
 	password := os.Getenv("USER_PASSWORD")
 	dbname := os.Getenv("DB_NAME")
 	port := os.Getenv("DB_PORT")
-	dsn := fmt.Sprintf("postgres://%s:%s@%s:%s/%s?sslmode=disable,TimeZone=Asia/Shanghai", user, password, host, port, dbname)
+	dsn := fmt.Sprintf("postgres://%s:%s@%s.flycast:%s", user, password, dbname, port)
 	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
 
 	if err != nil {
