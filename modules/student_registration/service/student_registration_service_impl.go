@@ -137,3 +137,18 @@ func (service *StudentRegistrationServiceImpl) SaveGradeStudent(request shareddo
 	return nil
 
 }
+
+func (service *StudentRegistrationServiceImpl) ValidationStudentRegistration(request shareddomain.ValidationStudentRegistrationRequest) error {
+	studentRegistration, err := service.FindStudentRegistrationByID(request.ID)
+	if err != nil {
+		return err
+	}
+
+	// update
+	studentRegistration.Status = request.Status
+	if err := service.repo.Update(studentRegistration); err != nil {
+		return err
+	}
+
+	return nil
+}

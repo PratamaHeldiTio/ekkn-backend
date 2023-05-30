@@ -14,4 +14,5 @@ type StudentRegistrationReshandler interface {
 	FindStudentRegistrationByID(c *gin.Context)
 	FindStudentRegistrationByGroup(c *gin.Context)
 	SaveGrade(c *gin.Context)
+	ValidationStudentRegistration(c *gin.Context)
 }

@@ -15,4 +15,5 @@ type StudentRegistrationService interface {
 	FindStudentRegistrationByID(ID string) (domain.StudentRegistration, error)
 	FindStudentRegistrationByGroup(ID string) ([]domain.StudentRegistration, error)
 	SaveGradeStudent(request shareddomain.SaveGradeRequest) error
+	ValidationStudentRegistration(request shareddomain.ValidationStudentRegistrationRequest) error
 }

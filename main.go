@@ -162,6 +162,7 @@ func main() {
 	api.PUT("/student/registration/proker/:id", authMiddleware.AuthMiddleWare(), studentRegistrationResthandler.AddProkerStudent)
 	api.GET("/student/registration/group/:groupID", authMiddleware.AuthMiddleWareLecturerAdmin(), studentRegistrationResthandler.FindStudentRegistrationByGroup)
 	api.PUT("/student/registration/grade/:periodID/:studentID", authMiddleware.AuthMiddleWareLecturer(), studentRegistrationResthandler.SaveGrade)
+	api.PUT("/student/registration/validation/:id", authMiddleware.AuthMiddleWareAdmin(), studentRegistrationResthandler.ValidationStudentRegistration)
 
 	//endpoint group
 	api.POST("/group/:periodID", authMiddleware.AuthMiddleWare(), groupResthandler.CrateGroup)
@@ -190,7 +191,8 @@ func main() {
 	api.GET("/logbook/:periodID/:studentID", authMiddleware.AuthMiddleWareLecturerAdmin(), logbookRestHandler.FindLogbookByStudentPeriodParam)
 
 	// admin
-	api.POST("/admin", authMiddleware.AuthMiddleWareAdmin(), adminRestHandler.CreateAdmin)
+	api.POST("/admin", authMiddleware.AuthMiddleWareSuperAdmin(), adminRestHandler.CreateAdmin)
+	api.DELETE("/admin/:username", authMiddleware.AuthMiddleWareSuperAdmin(), adminRestHandler.DeleteAdmin)
 	api.POST("/auth/admin/login", adminRestHandler.LoginAdmin)
 
 	// lecturer

@@ -8,4 +8,5 @@ import (
 type AdminService interface {
 	CreateAdmin(request shareddomain.AdminRequest) error
 	LoginAdmin(request shareddomain.AdminRequest) (domain.Admin, error)
+	DeleteAdmin(username string) error
 }

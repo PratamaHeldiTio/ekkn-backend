@@ -12,7 +12,7 @@ type StudentRegistration struct {
 	StudentID string
 	Student   studentDomain.Student
 	GroupID   string
-	Status    string `gorm:"type:varchar(5); default:false"`
+	Status    string `gorm:"type:varchar(5)"`
 	Proker    string
 	Grade     uint8
 	CreatedAt int64 `gorm:"autoCreateTime"`

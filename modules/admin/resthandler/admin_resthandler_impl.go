@@ -71,3 +71,18 @@ func (handler *AdminResthandlerImpl) LoginAdmin(c *gin.Context) {
 
 	c.JSON(http.StatusOK, response)
 }
+
+func (handler *AdminResthandlerImpl) DeleteAdmin(c *gin.Context) {
+	username := c.Param("username")
+
+	if err := handler.service.DeleteAdmin(username); err != nil {
+		// create response
+		response := helper.APIResponseWithError(http.StatusBadRequest, false, "Admin gagal dihapus", err.Error())
+		c.JSON(http.StatusBadRequest, response)
+		return
+	}
+
+	// create response
+	response := helper.APIResponseWithoutData(http.StatusOK, true, "Admin berhasil dihapus")
+	c.JSON(http.StatusOK, response)
+}

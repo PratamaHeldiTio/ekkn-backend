@@ -17,6 +17,11 @@ type StudentRegistrationURI struct {
 	StudentID string `uri:"studentID" binding:"required"`
 }
 
+type ValidationStudentRegistrationRequest struct {
+	ID     string
+	Status string `json:"status" binding:"required"`
+}
+
 type ResponseStudentRegistrationByNim struct {
 	ID          string `json:"student_registration_id"`
 	PeriodID    string `json:"period_id"`

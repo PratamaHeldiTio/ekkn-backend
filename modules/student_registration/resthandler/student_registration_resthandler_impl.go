@@ -296,3 +296,26 @@ func (handler *StudentRegistrationResthandlerImpl) SaveGrade(c *gin.Context) {
 	response := helper.APIResponseWithoutData(http.StatusOK, true, "berhasil menyimpan nilai")
 	c.JSON(http.StatusOK, response)
 }
+
+func (handler *StudentRegistrationResthandlerImpl) ValidationStudentRegistration(c *gin.Context) {
+	var request shareddomain.ValidationStudentRegistrationRequest
+	request.ID = c.Param("id")
+
+	if err := c.ShouldBindJSON(&request); err != nil {
+		// create response
+		response := helper.APIResponseWithError(http.StatusUnprocessableEntity, false, "validasi gagal dilakukan", err.Error())
+		c.JSON(http.StatusUnprocessableEntity, response)
+		return
+	}
+
+	if err := handler.service.ValidationStudentRegistration(request); err != nil {
+		// create response
+		response := helper.APIResponseWithError(http.StatusBadRequest, false, "validasi gagal dilakukan", err.Error())
+		c.JSON(http.StatusBadRequest, response)
+		return
+	}
+
+	// create response
+	response := helper.APIResponseWithoutData(http.StatusCreated, true, "validasi berhasil dilakukan")
+	c.JSON(http.StatusCreated, response)
+}

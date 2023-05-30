@@ -7,4 +7,5 @@ import (
 type AdminRepository interface {
 	Create(admin domain.Admin) error
 	FindByUsername(username string) (domain.Admin, error)
+	Delete(admin domain.Admin) error
 }

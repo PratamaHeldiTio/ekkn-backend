@@ -29,3 +29,11 @@ func (repo *AdminRepositoryImpl) FindByUsername(username string) (domain.Admin, 
 
 	return admin, nil
 }
+
+func (repo *AdminRepositoryImpl) Delete(admin domain.Admin) error {
+	if err := repo.db.Delete(&admin).Error; err != nil {
+		return err
+	}
+
+	return nil
+}

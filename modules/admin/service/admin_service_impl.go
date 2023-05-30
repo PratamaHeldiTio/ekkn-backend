@@ -51,3 +51,20 @@ func (service *AdminServiceImpl) LoginAdmin(request shareddomain.AdminRequest) (
 
 	return admin, err
 }
+
+func (service *AdminServiceImpl) DeleteAdmin(username string) error {
+	admin, err := service.repo.FindByUsername(username)
+	if err != nil {
+		return err
+	}
+
+	if admin.Username == "" {
+		return errors.New("Data tidak ditemukan")
+	}
+
+	if err := service.repo.Delete(admin); err != nil {
+		return err
+	}
+
+	return nil
+}
