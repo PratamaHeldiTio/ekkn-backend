@@ -37,6 +37,7 @@ func (repo *StudentRepositoryImpl) FindAll(query string) ([]domain.Student, erro
 		Or("name ILIKE ?", "%"+query+"%").
 		Or("prodi ILIKE ?", "%"+query+"%").
 		Or("fakultas ILIKE ?", "%"+query+"%").
+		Order("nim desc").
 		Limit(100).
 		Find(&students).Error; err != nil {
 		return students, err
