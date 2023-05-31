@@ -1,3 +1,6 @@
 .idea
 .env
-/public
+/public/logbook
+/public/profile
+/public/report
+/public/potetial
