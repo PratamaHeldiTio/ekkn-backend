@@ -1,0 +1,22 @@
+app = "ekknutm-backend"
+primary_region = "sin"
+
+[env]
+ DB_NAME = "ekkn-trunojoyo-db"
+ DB_PORT = "5432"
+ DB_USER = "postgres"
+ DB_HOSTNAME = "flycast"
+ USER_PASSWORD = "gjg059xyc69Y6rI"
+ SECRET_JWT = "d64KoCPpoDiJwpNqhLRVDoRJ2STk8TKpXtds1QOp7pG9IOeMICYnHycj0oGRMJgmtEfRVi4w8F8h4xcg6qPeij5e8FypC4MrWsB6sNVD3btcrr1KhrRIr2CPa0ZlF4tAeJJ/ZDT+x3OlBKPTLNJFEZlRGKEqMMYp9yrnYHrJGhO58feahwgGGmQSP11ztAhopsT+lS0YsKXla9jzVfE6pgb0iswEbvddewyUsRcCTmaoFLePA195lLIXqdkFC3kZnHehCcVkD4D9jwwbLkiKU4ULSzZQJMWAQJxn/WIzRxuDFA8GUICL5wnvtsK2R0kmL/s6bv5osxh89lqwC5C22g=="
+
+
+[http_service]
+ internal_port = 8080
+ force_https = true
+ auto_stop_machines = false
+ auto_start_machines = true
+ min_machines_running = 0
+
+[mounts]
+ source = "ekknutm_static_data"
+ destination = "/public"

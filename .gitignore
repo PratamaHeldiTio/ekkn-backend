@@ -1,6 +1,4 @@
 .idea
 .env
-/public/logbook
-/public/profile
-/public/report
-/public/potetial
+/public
+fly.toml
