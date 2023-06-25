@@ -3,10 +3,14 @@ package shareddomain
 import "backend-ekkn/modules/student/domain"
 
 type CreateStudent struct {
-	Nim      string `json:"nim" binding:"required,max=13"`
+	Nim      string `json:"nim" binding:"required,len=12,numeric"`
 	Name     string `json:"name" binding:"required,max=100"`
 	Prodi    string `json:"prodi" binding:"max=50"`
 	Fakultas string `json:"fakultas" binding:"max=50"`
+}
+
+type ImportStudent struct {
+	NewStudents []CreateStudent `json:"data" binding:"dive"`
 }
 
 type UpdateStudent struct {

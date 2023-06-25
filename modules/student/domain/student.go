@@ -1,7 +1,7 @@
 package domain
 
 type Student struct {
-	Nim        string `gorm:"type:varchar(13);primaryKey"`
+	Nim        string `gorm:"type:varchar(12);primaryKey"`
 	Name       string `gorm:"type:varchar(100)"`
 	Gender     string `gorm:"type:varchar(9)"`
 	Password   string `gorm:"type:varchar(255)"`

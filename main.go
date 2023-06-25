@@ -141,6 +141,8 @@ func main() {
 	api.PUT("/student/change_password", authMiddleware.AuthMiddleWare(), studentResthandler.ChangePassword)
 	api.PUT("/student/reset_password/:studentID", authMiddleware.AuthMiddleWareAdmin(), studentResthandler.ResetPassword)
 	api.PUT("/student/profile", authMiddleware.AuthMiddleWare(), studentResthandler.UploadProfile)
+	api.POST("/student/import", authMiddleware.AuthMiddleWareAdmin(), studentResthandler.ImportStudent)
+
 	// endpoint period
 	api.POST("/period", authMiddleware.AuthMiddleWareAdmin(), periodResthandler.CreatePeriod)
 	api.PUT("/period/:id", authMiddleware.AuthMiddleWareAdmin(), periodResthandler.UpdatePeriod)
