@@ -8,4 +8,5 @@ type StudentRepository interface {
 	FindAll(query string) ([]domain.Student, error)
 	Update(student domain.Student) error
 	Delete(student domain.Student) error
+	Import(student []*domain.Student) error
 }

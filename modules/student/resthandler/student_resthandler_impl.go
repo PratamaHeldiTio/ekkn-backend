@@ -296,3 +296,27 @@ func (handler *StudentResthandlerImpl) UploadProfile(c *gin.Context) {
 	response := helper.APIResponseWithoutData(http.StatusOK, true, "profile berhasil diperbaharui")
 	c.JSON(http.StatusOK, response)
 }
+
+func (handler *StudentResthandlerImpl) ImportStudent(c *gin.Context) {
+	var data shareddomain.ImportStudent
+
+	if err := c.ShouldBindJSON(&data); err != nil {
+		// create response
+		response := helper.APIResponseWithError(http.StatusUnprocessableEntity, false, "Mahasiswa gagal ditambahkan", err.Error())
+		c.JSON(http.StatusUnprocessableEntity, response)
+		return
+	}
+
+	// send data to service and get return
+	if err := handler.service.ImportStudents(data); err != nil {
+		// create response
+		response := helper.APIResponseWithError(http.StatusBadRequest, false, "Mahasiswa gagal ditambahkan", err.Error())
+		c.JSON(http.StatusBadRequest, response)
+		return
+	}
+
+	// create response
+	response := helper.APIResponseWithoutData(http.StatusCreated, true, "Mahasiswa berhasil ditambahkan")
+
+	c.JSON(http.StatusCreated, response)
+}

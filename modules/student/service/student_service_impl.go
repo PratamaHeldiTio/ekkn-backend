@@ -192,3 +192,30 @@ func (service *StudentServiceImpl) UploadProfile(ID, filename string) error {
 
 	return nil
 }
+
+func (service *StudentServiceImpl) ImportStudents(request shareddomain.ImportStudent) error {
+
+	var students []*domain.Student
+
+	for _, value := range request.NewStudents {
+		student := domain.Student{
+			Nim:  value.Nim,
+			Name: value.Name,
+		}
+		// hashing password
+		passwordHash, err := bcrypt.GenerateFromPassword([]byte(value.Nim), bcrypt.MinCost)
+		if err != nil {
+			return err
+		}
+
+		student.Password = string(passwordHash)
+
+		students = append(students, &student)
+	}
+
+	err := service.repo.Import(students)
+	if err != nil {
+		return err
+	}
+	return nil
+}

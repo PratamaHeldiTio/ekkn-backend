@@ -60,3 +60,11 @@ func (repo *StudentRepositoryImpl) Delete(student domain.Student) error {
 	}
 	return nil
 }
+
+func (repo *StudentRepositoryImpl) Import(student []*domain.Student) error {
+	// import data to database
+	if err := repo.db.Create(&student).Error; err != nil {
+		return err
+	}
+	return nil
+}

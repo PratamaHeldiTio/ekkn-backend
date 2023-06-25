@@ -9,6 +9,10 @@ type CreateStudent struct {
 	Fakultas string `json:"fakultas" binding:"max=50"`
 }
 
+type ImportStudent struct {
+	NewStudents []CreateStudent `json:"data" binding:"dive"`
+}
+
 type UpdateStudent struct {
 	Nim        string `json:"nim"`
 	Name       string `json:"name" binding:"required,max=100"`

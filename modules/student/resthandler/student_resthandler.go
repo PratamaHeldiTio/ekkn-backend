@@ -14,4 +14,5 @@ type StudentResthandler interface {
 	ChangePassword(c *gin.Context)
 	ResetPassword(c *gin.Context)
 	UploadProfile(c *gin.Context)
+	ImportStudent(c *gin.Context)
 }

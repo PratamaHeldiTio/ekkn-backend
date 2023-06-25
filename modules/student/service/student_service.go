@@ -15,4 +15,5 @@ type StudentService interface {
 	ChangePassword(request shareddomain.ChangePasswordRequest) error
 	ResetPassword(studentID string) error
 	UploadProfile(ID, filename string) error
+	ImportStudents(request shareddomain.ImportStudent) error
 }
